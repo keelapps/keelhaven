@@ -1,0 +1,30 @@
+Keelhaven/Wizard/WizardModel.swift
+  s_eb21fc291bb59a::t_1dfb16ac535334 94-103
+  s_eb21fc291bb59a::t_beae9621265929 172
+  s_eb21fc291bb59a::t_5409d9335a40ca 43
+Keelhaven/MenuBar/PlanStatusRow.swift
+  s_eb21fc291bb59a::t_e37fd5f6d795bb 31-73
+  s_eb21fc291bb59a::t_935c1afb526922 7
+Keelhaven/Services/BiometricAuthService.swift
+  s_eb21fc291bb59a::t_226dd889fc2489 1-22
+Keelhaven/Wizard/DestinationStepView.swift
+  s_eb21fc291bb59a::t_45af15bde7edae 29-57
+Keelhaven/AppState.swift
+  s_eb21fc291bb59a::t_223a8a1abbbee2 188-193
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "af4fa74b52c6640b7e09cea33523d3289a2f1037",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
