@@ -1,0 +1,22 @@
+Keelhaven/MenuBar/PlanStatusRow.swift
+  s_396bb220086e64::t_b180f7f9408e44 115
+  s_396bb220086e64::t_5d5f9ae611e2e4 26,33,35-43,45-57,59-63
+  s_396bb220086e64::t_5bb4a4e349a82c 64,66-95,102
+  s_396bb220086e64::t_79a413e56c502a 65
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "d291399911bf7bb3c3b6fe019476a3c8b8f540a7",
+  "prompts": {},
+  "sessions": {
+    "s_396bb220086e64": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f5665d8c-88b7-45d5-9df9-638a25e371d2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
