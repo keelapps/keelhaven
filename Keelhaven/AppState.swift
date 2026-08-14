@@ -185,6 +185,12 @@ final class AppState {
         try? await historyStore.append(record, planID: plan.id)
     }
 
+    /// For the Touch ID–gated "Copy Repository Password" action only.
+    /// Callers must authenticate via BiometricAuthService first.
+    func repositoryPassword(for plan: BackupPlan) -> String? {
+        try? keychain.secret(account: KeychainAccount.repositoryPassword(planID: plan.id))
+    }
+
     private func credentials(for plan: BackupPlan) throws -> RepoCredentials {
         guard let password = try keychain.secret(
             account: KeychainAccount.repositoryPassword(planID: plan.id)

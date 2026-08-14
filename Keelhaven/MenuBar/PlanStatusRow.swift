@@ -4,6 +4,7 @@ import KeelhavenCore
 struct PlanStatusRow: View {
     @Environment(AppState.self) private var appState
     let plan: BackupPlan
+    @State private var confirmingDelete = false
 
     private var runState: PlanRunState {
         appState.runStates[plan.id] ?? .idle
@@ -27,6 +28,49 @@ struct PlanStatusRow: View {
             statusLine
         }
         .padding(.vertical, 2)
+        .contentShape(Rectangle())
+        .contextMenu {
+            Button("Copy Repository Password") {
+                copyPassword()
+            }
+            Divider()
+            Button("Delete Backup Plan…", role: .destructive) {
+                confirmingDelete = true
+            }
+            .disabled(appState.isBackupRunning)
+        }
+        .alert("Delete “\(plan.name)”?", isPresented: $confirmingDelete) {
+            Button("Delete", role: .destructive) {
+                deletePlan()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Removes the plan and its saved password from this Mac. Already backed-up data at the destination is not deleted.")
+        }
+    }
+
+    /// Both actions below are gated behind Touch ID (login password fallback
+    /// on Macs without it).
+
+    private func copyPassword() {
+        Task {
+            guard await BiometricAuthService.authenticate(
+                reason: "copy the backup password for “\(plan.name)”"
+            ) else { return }
+            guard let password = appState.repositoryPassword(for: plan) else { return }
+            let pasteboard = NSPasteboard.general
+            pasteboard.clearContents()
+            pasteboard.setString(password, forType: .string)
+        }
+    }
+
+    private func deletePlan() {
+        Task {
+            guard await BiometricAuthService.authenticate(
+                reason: "delete the backup plan “\(plan.name)”"
+            ) else { return }
+            appState.deletePlan(plan)
+        }
     }
 
     @ViewBuilder

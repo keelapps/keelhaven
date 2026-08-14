@@ -40,6 +40,7 @@ final class WizardModel {
     var sftpPath = ""
     var password = ""
     var passwordConfirm = ""
+    var passwordWasGenerated = false
 
     var scheduleKind: ScheduleKind = .daily
     var dailyTime = Calendar.current.date(bySettingHour: 21, minute: 0, second: 0, of: Date()) ?? Date()
@@ -88,6 +89,16 @@ final class WizardModel {
         case 1: return destinationStepValid
         default: return true
         }
+    }
+
+    /// Fills both password fields with a generated passphrase. Ambiguous
+    /// characters (0/O, 1/l/I) are excluded since users may need to type it
+    /// during a future restore.
+    func generatePassword() {
+        let charset = Array("abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789")
+        password = String((0..<20).compactMap { _ in charset.randomElement() })
+        passwordConfirm = password
+        passwordWasGenerated = true
     }
 
     // MARK: - Draft assembly
@@ -158,6 +169,7 @@ final class WizardModel {
         sftpPath = fresh.sftpPath
         password = fresh.password
         passwordConfirm = fresh.passwordConfirm
+        passwordWasGenerated = fresh.passwordWasGenerated
         scheduleKind = fresh.scheduleKind
         dailyTime = fresh.dailyTime
         isCreating = fresh.isCreating

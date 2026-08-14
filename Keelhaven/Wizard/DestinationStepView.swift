@@ -26,10 +26,35 @@ struct DestinationStepView: View {
                 Text("Backups are encrypted before leaving your Mac. This password is stored in your Keychain — without it, backups cannot be restored.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                SecureField("Password (at least 8 characters)", text: $model.password)
-                    .textFieldStyle(.roundedBorder)
-                SecureField("Confirm password", text: $model.passwordConfirm)
-                    .textFieldStyle(.roundedBorder)
+                if model.passwordWasGenerated {
+                    HStack {
+                        Text(model.password)
+                            .font(.body.monospaced())
+                            .textSelection(.enabled)
+                        Button("Copy") {
+                            let pasteboard = NSPasteboard.general
+                            pasteboard.clearContents()
+                            pasteboard.setString(model.password, forType: .string)
+                        }
+                    }
+                    Text("Write this down or store it in a password manager now — without it, your backups cannot be restored.")
+                        .font(.caption)
+                        .foregroundStyle(.orange)
+                } else {
+                    SecureField("Password (at least 8 characters)", text: $model.password)
+                        .textFieldStyle(.roundedBorder)
+                    SecureField("Confirm password", text: $model.passwordConfirm)
+                        .textFieldStyle(.roundedBorder)
+                }
+                Button(model.passwordWasGenerated ? "Type My Own Instead" : "Generate Strong Password") {
+                    if model.passwordWasGenerated {
+                        model.password = ""
+                        model.passwordConfirm = ""
+                        model.passwordWasGenerated = false
+                    } else {
+                        model.generatePassword()
+                    }
+                }
                 if !model.password.isEmpty && !model.passwordValid {
                     Text(model.password.count < 8
                          ? "Password must be at least 8 characters."
