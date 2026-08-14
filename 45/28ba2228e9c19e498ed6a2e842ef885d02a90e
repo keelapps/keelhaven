@@ -1,0 +1,21 @@
+README.md
+  s_eb21fc291bb59a::t_5044d0ea176beb 2-46
+docs/ARCHITECTURE.md
+  s_eb21fc291bb59a::t_a70605390aeb94 1-81
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "4528ba2228e9c19e498ed6a2e842ef885d02a90e",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
