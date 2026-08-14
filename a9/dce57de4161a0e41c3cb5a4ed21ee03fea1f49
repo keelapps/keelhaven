@@ -1,0 +1,37 @@
+Keelhaven/Wizard/DestinationStepView.swift
+  s_eb21fc291bb59a::t_34614c78c4601c 21-26
+Keelhaven/Services/PlanManager.swift
+  s_eb21fc291bb59a::t_5c4a55be83f15e 26-32
+KeelhavenCore/Sources/KeelhavenCore/Restic/ResticError.swift
+  s_eb21fc291bb59a::t_1a9ebb722527c9 11,28-32,42-46
+  s_eb21fc291bb59a::t_a58cef30f37f56 59-60
+Keelhaven/Wizard/WizardWindowView.swift
+  s_eb21fc291bb59a::t_d0916d62efa478 67-68
+  s_eb21fc291bb59a::t_4681a0aca28bda 33-35
+KeelhavenCore/Tests/KeelhavenCoreTests/Fixtures/error-repo-exists.json
+  s_eb21fc291bb59a::t_a624ead50a9807 1
+Keelhaven/Wizard/WizardModel.swift
+  s_eb21fc291bb59a::t_d4e33ebd5bf3d4 51-55
+  s_eb21fc291bb59a::t_2022a02bd55875 73,76,79-105
+  s_eb21fc291bb59a::t_5178976272e376 147
+KeelhavenCore/Tests/KeelhavenCoreTests/ResticMessageParsingTests.swift
+  s_eb21fc291bb59a::t_a4ff7d0d9897b8 130-150
+Keelhaven/MenuBar/PlanStatusRow.swift
+  s_eb21fc291bb59a::t_90a9b1a870e6bf 103-104
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "a9dce57de4161a0e41c3cb5a4ed21ee03fea1f49",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
