@@ -1,0 +1,19 @@
+CLAUDE.md
+  s_396bb220086e64::t_fe425b81ccb4a3 1-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "0b346ed331ba7e7a2aa389dd7f9466638c1c0ab0",
+  "prompts": {},
+  "sessions": {
+    "s_396bb220086e64": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f5665d8c-88b7-45d5-9df9-638a25e371d2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
