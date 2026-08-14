@@ -1,0 +1,28 @@
+name: Keelhaven
+options:
+  bundleIdPrefix: com.keelhaven
+  deploymentTarget:
+    macOS: "14.0"
+packages:
+  KeelhavenCore:
+    path: KeelhavenCore
+targets:
+  Keelhaven:
+    type: application
+    platform: macOS
+    sources: [Keelhaven]
+    dependencies:
+      - package: KeelhavenCore
+    info:
+      path: Keelhaven/Info.plist
+      properties:
+        CFBundleDisplayName: Keelhaven
+        # Menu-bar-only app: no Dock icon, no app switcher entry
+        LSUIElement: true
+    settings:
+      base:
+        SWIFT_VERSION: "5.0"
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_STYLE: Automatic
+        MARKETING_VERSION: 0.1.0
+        CURRENT_PROJECT_VERSION: 1
