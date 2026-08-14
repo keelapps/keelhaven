@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  core-tests:
+    name: KeelhavenCore tests
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7
+      # The integration test suite exercises the real restic binary end-to-end
+      # (it self-skips when restic is missing, but we want it running in CI).
+      - name: Install restic
+        # untap: the runner image ships an untrusted aws/tap that makes every
+        # brew command print tap-trust warnings; we don't use it.
+        run: |
+          brew untap aws/tap || true
+          brew install restic
+      - name: Run tests
+        run: swift test --package-path KeelhavenCore
+
+  build-app:
+    name: Build app (ad-hoc signed)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install XcodeGen
+        run: |
+          brew untap aws/tap || true
+          brew install xcodegen
+      - name: Generate Xcode project
+        run: xcodegen generate
+      # Ad-hoc signing (identity "-"): runnable on any Mac after removing the
+      # quarantine attribute, good enough for personal installs from the
+      # artifact below. Public distribution still needs a Developer ID cert
+      # + notarization, added once those are in repo secrets.
+      - name: Build Release
+        run: >
+          xcodebuild
+          -project Keelhaven.xcodeproj
+          -scheme Keelhaven
+          -configuration Release
+          -derivedDataPath build
+          build
+          CODE_SIGN_STYLE=Manual
+          CODE_SIGN_IDENTITY=-
+      - name: Zip app
+        run: ditto -c -k --keepParent build/Build/Products/Release/Keelhaven.app Keelhaven.zip
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Keelhaven-${{ github.run_number }}
+          path: Keelhaven.zip
+          if-no-files-found: error

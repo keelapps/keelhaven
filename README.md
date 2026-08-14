@@ -6,6 +6,22 @@ Keelhaven wraps the battle-tested [restic](https://restic.net) engine in a nativ
 
 **Status: early development.** The engine, wizard, and scheduled backups work; restore and snapshot browsing are next.
 
+## Install from CI (personal use)
+
+Every CI run on `main` uploads an ad-hoc-signed build as a workflow artifact:
+[Actions](../../actions) → latest CI run → download `Keelhaven-<n>` → then:
+
+```bash
+unzip ~/Downloads/Keelhaven-*.zip -d /Applications   # or drag Keelhaven.app over
+xattr -dr com.apple.quarantine /Applications/Keelhaven.app
+open /Applications/Keelhaven.app
+```
+
+The `xattr` step is required: downloaded apps get macOS's quarantine flag, and
+ad-hoc-signed (un-notarized) apps are blocked by Gatekeeper until it's removed.
+This is fine for installing on your own Macs; public releases will be
+Developer-ID-signed and notarized instead.
+
 ## Development setup
 
 ```bash
