@@ -1,0 +1,80 @@
+KeelhavenCore/Tests/KeelhavenCoreTests/Fixtures/init.json
+  s_eb21fc291bb59a::t_3354f8367c1bee 1
+.gitignore
+  s_eb21fc291bb59a::t_0daf62715a00d6 1-8
+project.yml
+  s_eb21fc291bb59a::t_34ede1b6687027 1-28
+KeelhavenCore/Sources/KeelhavenCore/Restic/ResticError.swift
+  s_eb21fc291bb59a::t_6e26de4de27bd0 1-58
+KeelhavenCore/Sources/KeelhavenCore/Keychain/KeychainStoring.swift
+  s_eb21fc291bb59a::t_96f9a5baa6b8ee 1-25
+KeelhavenCore/Sources/KeelhavenCore/Restic/ResticRunner.swift
+  s_eb21fc291bb59a::t_3bf5cf12e1cf15 1-187
+KeelhavenCore/Sources/KeelhavenCore/Persistence/PlanStore.swift
+  s_eb21fc291bb59a::t_aca69cf7d16d43 1-44
+KeelhavenCore/Tests/KeelhavenCoreTests/Fixtures/stats.json
+  s_eb21fc291bb59a::t_3354f8367c1bee 1
+KeelhavenCore/Tests/KeelhavenCoreTests/Fixtures/backup-incremental.jsonl
+  s_eb21fc291bb59a::t_3354f8367c1bee 1
+KeelhavenCore/Tests/KeelhavenCoreTests/ResticCommandTests.swift
+  s_eb21fc291bb59a::t_44b3c7f371088b 1-94
+KeelhavenCore/Tests/KeelhavenCoreTests/ModelRoundTripTests.swift
+  s_eb21fc291bb59a::t_2a5642d5538092 1-56
+KeelhavenCore/Sources/KeelhavenCore/Models/BackupPlan.swift
+  s_eb21fc291bb59a::t_90640393e02c27 1-43
+KeelhavenCore/Sources/KeelhavenCore/Restic/RepoCredentials.swift
+  s_eb21fc291bb59a::t_55f53a1591e8be 1-38
+KeelhavenCore/Package.swift
+  s_eb21fc291bb59a::t_88e0dfe7b1393b 1-18
+KeelhavenCore/Sources/KeelhavenCore/Models/Destination.swift
+  s_eb21fc291bb59a::t_4b867949d87524 1-84,88-89
+  s_eb21fc291bb59a::t_826bdef95f71b4 85-87
+KeelhavenCore/Sources/KeelhavenCore/Keychain/InMemoryKeychain.swift
+  s_eb21fc291bb59a::t_dc4ac04338b94a 1-27
+KeelhavenCore/Sources/KeelhavenCore/Scheduling/SchedulePolicy.swift
+  s_eb21fc291bb59a::t_430bc2e3d8d2c7 1-40
+KeelhavenCore/Tests/KeelhavenCoreTests/Fixtures/snapshots.json
+  s_eb21fc291bb59a::t_3354f8367c1bee 1
+KeelhavenCore/Sources/KeelhavenCore/Models/BackupRunRecord.swift
+  s_eb21fc291bb59a::t_eedb6fe176c5eb 1-33
+KeelhavenCore/Tests/KeelhavenCoreTests/ResticMessageParsingTests.swift
+  s_eb21fc291bb59a::t_4243a065857f20 1-140
+KeelhavenCore/Sources/KeelhavenCore/Restic/ResticMessage.swift
+  s_eb21fc291bb59a::t_76ec1065927227 1-184
+KeelhavenCore/Tests/KeelhavenCoreTests/PlanStoreTests.swift
+  s_eb21fc291bb59a::t_2e039903df2a7b 1-70
+KeelhavenCore/Tests/KeelhavenCoreTests/Fixtures/error-no-repo.json
+  s_eb21fc291bb59a::t_3354f8367c1bee 1
+KeelhavenCore/Tests/KeelhavenCoreTests/Fixtures/backup-progress.jsonl
+  s_eb21fc291bb59a::t_3354f8367c1bee 1-10
+KeelhavenCore/Tests/KeelhavenCoreTests/Fixtures/error-wrong-password.json
+  s_eb21fc291bb59a::t_3354f8367c1bee 1
+KeelhavenCore/Tests/KeelhavenCoreTests/SchedulePolicyTests.swift
+  s_eb21fc291bb59a::t_aea08996692ce3 1-66
+KeelhavenCore/Sources/KeelhavenCore/Persistence/RunHistoryStore.swift
+  s_eb21fc291bb59a::t_ab5360f8eba7cb 1-54
+KeelhavenCore/Sources/KeelhavenCore/Keychain/KeychainStore.swift
+  s_eb21fc291bb59a::t_9265e3de585a1d 1-79
+KeelhavenCore/Sources/KeelhavenCore/Models/Schedule.swift
+  s_eb21fc291bb59a::t_f57aa3275b700f 1-7
+KeelhavenCore/Tests/KeelhavenCoreTests/ResticRunnerIntegrationTests.swift
+  s_eb21fc291bb59a::t_0589181f81af79 1-131
+KeelhavenCore/Sources/KeelhavenCore/Restic/ResticCommand.swift
+  s_eb21fc291bb59a::t_75576d05fa619c 1-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "a9d3ad4281ca51df68067fb7ab13ad26413f490c",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
