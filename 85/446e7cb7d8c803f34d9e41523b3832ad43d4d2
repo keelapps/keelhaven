@@ -1,0 +1,31 @@
+Keelhaven/MenuBar/MenuBarView.swift
+  s_eb21fc291bb59a::t_736f8fc34804c5 11-25
+CLAUDE.md
+  s_396bb220086e64::t_fe425b81ccb4a3 1-40
+Keelhaven/MenuBar/AboutView.swift
+  s_eb21fc291bb59a::t_ceab466bc30c9d 40-43
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "85446e7cb7d8c803f34d9e41523b3832ad43d4d2",
+  "prompts": {},
+  "sessions": {
+    "s_396bb220086e64": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f5665d8c-88b7-45d5-9df9-638a25e371d2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    },
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
