@@ -100,7 +100,8 @@ struct PlanStatusRow: View {
             Text(message)
                 .font(.caption)
                 .foregroundStyle(.red)
-                .lineLimit(2)
+                .lineLimit(3)
+                .help(message)
         case .succeeded(let date):
             Text("Backed up \(date.formatted(.relative(presentation: .named)))")
                 .font(.caption)

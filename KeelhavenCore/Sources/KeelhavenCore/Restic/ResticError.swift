@@ -8,6 +8,7 @@ import Foundation
 public enum ResticError: Error, Equatable, Sendable {
     case binaryNotFound
     case repositoryDoesNotExist(message: String)
+    case repositoryAlreadyExists(message: String)
     case repositoryLocked(message: String)
     case wrongPassword(message: String)
     case commandFailed(exitCode: Int, message: String)
@@ -24,6 +25,11 @@ public enum ResticError: Error, Equatable, Sendable {
                 break
             }
         }
+        // restic sometimes stacks "Fatal: Fatal: …"; our own descriptions
+        // provide the framing, so drop the prefixes entirely.
+        while message.hasPrefix("Fatal: ") {
+            message = String(message.dropFirst("Fatal: ".count))
+        }
 
         switch exitCode {
         case 10:
@@ -33,6 +39,11 @@ public enum ResticError: Error, Equatable, Sendable {
         case 12:
             return .wrongPassword(message: message)
         default:
+            // `restic init` against a non-empty destination; only generic
+            // exit code 1 exists for this, so match on the message.
+            if message.contains("config file already exists") {
+                return .repositoryAlreadyExists(message: message)
+            }
             return .commandFailed(exitCode: Int(exitCode), message: message)
         }
     }
@@ -45,6 +56,8 @@ extension ResticError: LocalizedError {
             return "The restic command-line tool could not be found. Install it with: brew install restic"
         case .repositoryDoesNotExist(let message):
             return "The backup repository was not found. \(message)"
+        case .repositoryAlreadyExists:
+            return "This destination already contains a backup repository. Each plan needs its own empty destination folder."
         case .repositoryLocked(let message):
             return "The backup repository is locked by another process. \(message)"
         case .wrongPassword(let message):

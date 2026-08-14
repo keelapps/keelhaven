@@ -127,6 +127,27 @@ final class ResticMessageParsingTests: XCTestCase {
         XCTAssertTrue(message.contains("repository does not exist"))
     }
 
+    func testClassifyRepositoryAlreadyExistsFromRealStderr() throws {
+        // Captured from `restic init` against a folder already holding a repo
+        // (exit code 1). Note restic's own doubled "Fatal: Fatal:" prefix.
+        let stderr = String(decoding: try fixtureData("error-repo-exists.json"), as: UTF8.self)
+        let error = ResticError.classify(exitCode: 1, stderr: stderr)
+        guard case .repositoryAlreadyExists(let message) = error else {
+            return XCTFail("Expected repositoryAlreadyExists, got \(error)")
+        }
+        XCTAssertFalse(message.hasPrefix("Fatal:"), "Fatal: prefixes should be stripped")
+        XCTAssertTrue(message.contains("config file already exists"))
+    }
+
+    func testClassifyStripsFatalPrefixes() throws {
+        let stderr = String(decoding: try fixtureData("error-wrong-password.json"), as: UTF8.self)
+        let error = ResticError.classify(exitCode: 12, stderr: stderr)
+        guard case .wrongPassword(let message) = error else {
+            return XCTFail("Expected wrongPassword, got \(error)")
+        }
+        XCTAssertEqual(message, "wrong password or no key found")
+    }
+
     func testClassifyUnknownExitCodeFallsBack() {
         let error = ResticError.classify(exitCode: 1, stderr: "some plain text failure")
         XCTAssertEqual(error, .commandFailed(exitCode: 1, message: "some plain text failure"))

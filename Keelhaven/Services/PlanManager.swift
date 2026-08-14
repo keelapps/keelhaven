@@ -23,6 +23,13 @@ struct PlanManager {
             throw ResticError.binaryNotFound
         }
 
+        // A local destination that already holds a repository would make
+        // `restic init` fail with a cryptic error — catch it up front.
+        if case .local(let path) = draft.destination,
+           FileManager.default.fileExists(atPath: (path as NSString).appendingPathComponent("config")) {
+            throw ResticError.repositoryAlreadyExists(message: "config file already exists at \(path)")
+        }
+
         let plan = BackupPlan(
             name: draft.name,
             sourcePaths: draft.sourcePaths,

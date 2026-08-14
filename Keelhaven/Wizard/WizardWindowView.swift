@@ -30,6 +30,9 @@ struct WizardWindowView: View {
             footer
         }
         .frame(width: 560, height: 500)
+        .onAppear {
+            model.existingRepositoryLocations = appState.plans.map { $0.destination.repositoryLocation }
+        }
     }
 
     private var header: some View {
@@ -61,7 +64,8 @@ struct WizardWindowView: View {
                 Text(creationError)
                     .font(.callout)
                     .foregroundStyle(.red)
-                    .lineLimit(2)
+                    .lineLimit(4)
+                    .help(creationError)
             }
             Spacer()
 

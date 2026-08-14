@@ -48,6 +48,11 @@ final class WizardModel {
     var isCreating = false
     var creationError: String?
 
+    /// Repository locations of already-configured plans, injected by the
+    /// wizard window. Two plans must never share one repository: the second
+    /// init would fail, and the passwords could diverge (issues #4/#5).
+    var existingRepositoryLocations: [String] = []
+
     // MARK: - Validation
 
     var sourcesStepValid: Bool {
@@ -65,11 +70,39 @@ final class WizardModel {
     var destinationFieldsValid: Bool {
         switch destinationType {
         case .local:
-            return !localPath.isEmpty && !localDestinationInsideSource
+            return !localPath.isEmpty && !localDestinationInsideSource && !destinationAlreadyUsed
         case .s3:
             return !s3Endpoint.isEmpty && !s3Bucket.isEmpty && !s3AccessKey.isEmpty && !s3SecretKey.isEmpty
+                && !destinationAlreadyUsed
         case .sftp:
             return !sftpUser.isEmpty && !sftpHost.isEmpty && !sftpPath.isEmpty && Int(sftpPort) != nil
+                && !destinationAlreadyUsed
+        }
+    }
+
+    /// True when the draft destination matches an existing plan's repository.
+    var destinationAlreadyUsed: Bool {
+        existingRepositoryLocations.contains(currentDestination.repositoryLocation)
+    }
+
+    private var currentDestination: Destination {
+        switch destinationType {
+        case .local:
+            return .local(path: localPath)
+        case .s3:
+            return .s3(S3Config(
+                endpoint: s3Endpoint,
+                bucket: s3Bucket,
+                pathPrefix: s3Prefix,
+                accessKeyID: s3AccessKey
+            ))
+        case .sftp:
+            return .sftp(SFTPConfig(
+                user: sftpUser,
+                host: sftpHost,
+                port: Int(sftpPort) ?? 22,
+                path: sftpPath
+            ))
         }
     }
 
@@ -111,25 +144,7 @@ final class WizardModel {
     }
 
     func buildDraft() -> PlanDraft {
-        let destination: Destination
-        switch destinationType {
-        case .local:
-            destination = .local(path: localPath)
-        case .s3:
-            destination = .s3(S3Config(
-                endpoint: s3Endpoint,
-                bucket: s3Bucket,
-                pathPrefix: s3Prefix,
-                accessKeyID: s3AccessKey
-            ))
-        case .sftp:
-            destination = .sftp(SFTPConfig(
-                user: sftpUser,
-                host: sftpHost,
-                port: Int(sftpPort) ?? 22,
-                path: sftpPath
-            ))
-        }
+        let destination = currentDestination
 
         let schedule: Schedule
         switch scheduleKind {

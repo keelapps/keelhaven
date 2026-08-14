@@ -18,6 +18,12 @@ struct DestinationStepView: View {
 
             destinationForm
 
+            if model.destinationAlreadyUsed {
+                Text("Another plan already backs up to this destination. Each plan needs its own folder or bucket path.")
+                    .font(.caption)
+                    .foregroundStyle(.red)
+            }
+
             Divider()
 
             VStack(alignment: .leading, spacing: 8) {
