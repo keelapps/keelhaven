@@ -1,0 +1,32 @@
+Keelhaven/Wizard/WizardModel.swift
+  s_396bb220086e64::t_20078d363ce309 146-164
+  s_396bb220086e64::t_02720fb0664c26 211
+Keelhaven/MenuBar/PlanStatusRow.swift
+  s_396bb220086e64::t_3fcc933a7f0af5 8-9
+  s_396bb220086e64::t_1ffa2606066858 35-38,48-53
+  s_396bb220086e64::t_2fd904f60af4ee 54
+Keelhaven/Wizard/SourceStepView.swift
+  s_396bb220086e64::t_0a246dbce00983 47
+  s_396bb220086e64::t_366f7fa2a7d843 25
+Keelhaven/AppState.swift
+  s_396bb220086e64::t_a83156097fa4ba 100-109
+Keelhaven/MenuBar/MenuBarView.swift
+  s_396bb220086e64::t_69f91b40efcea6 62-65
+  s_396bb220086e64::t_ae1e95dc95dc7b 80
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "2aaf4dda46287a60ce88adb69cf5594df80ff18f",
+  "prompts": {},
+  "sessions": {
+    "s_396bb220086e64": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f5665d8c-88b7-45d5-9df9-638a25e371d2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
