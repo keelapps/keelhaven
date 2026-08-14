@@ -1,0 +1,35 @@
+project.yml
+  s_eb21fc291bb59a::t_e746863adbdd40 37-48
+  s_eb21fc291bb59a::t_4778b65fae27e3 13-20
+Scripts/fetch-restic.sh
+  s_eb21fc291bb59a::t_631c0519418b78 1-29,31-53
+  s_eb21fc291bb59a::t_9ff849e4ac8b72 30
+.github/workflows/ci.yml
+  s_eb21fc291bb59a::t_11f7eea130624e 34-35
+README.md
+  s_eb21fc291bb59a::t_8c3b5d25b9add7 28,34-36,43-45
+  s_eb21fc291bb59a::t_948191bcd28811 46
+Keelhaven/Support/ResticLocator.swift
+  s_eb21fc291bb59a::t_b803c89ca9a0f8 23-26
+  s_eb21fc291bb59a::t_500d21ae8f0762 4-7
+.gitignore
+  s_eb21fc291bb59a::t_f0a83d376a841f 9-10
+docs/ARCHITECTURE.md
+  s_eb21fc291bb59a::t_bde03380a40e89 53
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "a1ba3c20a9a1d2987a25013c55c6a53845eb91b0",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
