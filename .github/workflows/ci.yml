@@ -47,6 +47,7 @@ jobs:
           build
           CODE_SIGN_STYLE=Manual
           CODE_SIGN_IDENTITY=-
+          CURRENT_PROJECT_VERSION=${{ github.run_number }}
       - name: Zip app
         run: ditto -c -k --keepParent build/Build/Products/Release/Keelhaven.app Keelhaven.zip
       - name: Upload artifact

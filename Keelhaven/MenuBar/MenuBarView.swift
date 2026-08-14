@@ -57,6 +57,11 @@ struct MenuBarView: View {
 
             Divider()
 
+            Button("About Keelhaven") {
+                openWindow(id: WindowID.about)
+                NSApp.activate(ignoringOtherApps: true)
+            }
+
             Button("Quit Keelhaven") {
                 NSApplication.shared.terminate(nil)
             }

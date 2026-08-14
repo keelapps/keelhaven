@@ -26,3 +26,17 @@ targets:
         CODE_SIGN_STYLE: Automatic
         MARKETING_VERSION: 0.1.0
         CURRENT_PROJECT_VERSION: 1
+    postBuildScripts:
+      # Stamp the current git commit into Info.plist for the About window.
+      # Runs before code signing, so the signature stays valid.
+      - name: Embed git commit
+        basedOnDependencyAnalysis: false
+        # Declared input forces this to run after ProcessInfoPlistFile,
+        # so the edit is never overwritten (and still precedes signing).
+        inputFiles:
+          - $(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)
+        script: |
+          INFO="$TARGET_BUILD_DIR/$INFOPLIST_PATH"
+          COMMIT=$(cd "$SRCROOT" && git rev-parse --short HEAD 2>/dev/null || echo unknown)
+          /usr/libexec/PlistBuddy -c "Delete :GitCommit" "$INFO" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :GitCommit string $COMMIT" "$INFO"
