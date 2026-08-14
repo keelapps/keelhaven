@@ -1,0 +1,29 @@
+Keelhaven/KeelhavenApp.swift
+  s_eb21fc291bb59a::t_2fb589c8fbb8c7 6
+  s_eb21fc291bb59a::t_10fa9ea778b951 28-32
+Keelhaven/MenuBar/MenuBarView.swift
+  s_eb21fc291bb59a::t_07bdfd75c1cf12 60-64
+.github/workflows/ci.yml
+  s_eb21fc291bb59a::t_410093bd0735ae 50
+Keelhaven/MenuBar/AboutView.swift
+  s_eb21fc291bb59a::t_d4f595bb9d8826 1-53
+project.yml
+  s_eb21fc291bb59a::t_b5b023a4d26ff3 29-33,38-42
+  s_eb21fc291bb59a::t_e01406a363bd23 34-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "42baba76b4c8cbeb5eb2e2b3cbe2a7792900de3e",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
