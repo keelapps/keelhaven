@@ -8,8 +8,21 @@ struct MenuBarView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Keelhaven")
-                .font(.headline)
+            HStack {
+                Text("Keelhaven")
+                    .font(.headline)
+                Spacer()
+                Button {
+                    openWindow(id: WindowID.about)
+                    NSApp.activate(ignoringOtherApps: true)
+                } label: {
+                    Image(systemName: "info.circle")
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+                .help("About Keelhaven")
+                .accessibilityLabel("About Keelhaven")
+            }
 
             if let startupError = appState.startupError {
                 Label(startupError, systemImage: "exclamationmark.triangle")
@@ -56,11 +69,6 @@ struct MenuBarView: View {
                 }
 
             Divider()
-
-            Button("About Keelhaven") {
-                openWindow(id: WindowID.about)
-                NSApp.activate(ignoringOtherApps: true)
-            }
 
             Button("Quit Keelhaven") {
                 NSApplication.shared.terminate(nil)

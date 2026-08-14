@@ -37,13 +37,10 @@ struct AboutView: View {
                 .font(.callout)
                 .foregroundStyle(.secondary)
 
-            HStack(spacing: 16) {
-                Link("GitHub", destination: URL(string: "https://github.com/keelapps/keelhaven")!)
-                Button("Copy Version Info") {
-                    let pasteboard = NSPasteboard.general
-                    pasteboard.clearContents()
-                    pasteboard.setString("Keelhaven \(versionLine)", forType: .string)
-                }
+            Button("Copy Version Info") {
+                let pasteboard = NSPasteboard.general
+                pasteboard.clearContents()
+                pasteboard.setString("Keelhaven \(versionLine)", forType: .string)
             }
             .font(.callout)
         }
