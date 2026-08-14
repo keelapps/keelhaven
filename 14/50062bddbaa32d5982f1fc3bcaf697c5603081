@@ -1,0 +1,47 @@
+Keelhaven/Wizard/FolderPicker.swift
+  s_eb21fc291bb59a::t_19276e2af5d31c 1-29
+Keelhaven/KeelhavenApp.swift
+  s_eb21fc291bb59a::t_0b6e97e012fe40 1-28
+Keelhaven/Wizard/WizardModel.swift
+  s_eb21fc291bb59a::t_6179c6e804910d 1-166
+Keelhaven/Services/SchedulerService.swift
+  s_eb21fc291bb59a::t_c3ce2609e8888b 1-26
+Keelhaven/Wizard/ScheduleStepView.swift
+  s_eb21fc291bb59a::t_0808dadd3301ce 1-73
+Keelhaven/AppState.swift
+  s_eb21fc291bb59a::t_51919d032fd8fb 1-200
+Keelhaven/Services/LoginItemService.swift
+  s_eb21fc291bb59a::t_04bbe6111a80d1 1-17
+Keelhaven/MenuBar/MenuBarView.swift
+  s_eb21fc291bb59a::t_08b63f5a33838d 1-73
+Keelhaven/MenuBar/PlanStatusRow.swift
+  s_eb21fc291bb59a::t_72e8337b1a6956 1-82
+Keelhaven/Services/PlanManager.swift
+  s_eb21fc291bb59a::t_b193bdca2f0a46 1-68
+Keelhaven/Wizard/SourceStepView.swift
+  s_eb21fc291bb59a::t_eb16d51f81b457 1-51
+Keelhaven/Wizard/DestinationStepView.swift
+  s_eb21fc291bb59a::t_2f3716b2b497da 1-88
+Keelhaven/Support/ResticLocator.swift
+  s_eb21fc291bb59a::t_0d7169a1df9c61 1-81
+Keelhaven/Wizard/WizardWindowView.swift
+  s_eb21fc291bb59a::t_e1e6e9ced2128e 1-114
+Keelhaven/Services/NotificationService.swift
+  s_eb21fc291bb59a::t_a68fca796ca72f 1-42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "1450062bddbaa32d5982f1fc3bcaf697c5603081",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
