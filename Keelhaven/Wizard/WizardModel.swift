@@ -143,6 +143,25 @@ final class WizardModel {
         return "My Backup"
     }
 
+    /// The name this model last wrote into `name` itself. Lets
+    /// `syncAutofilledName` distinguish its own writes from user input.
+    private var lastAutofilledName: String?
+
+    /// Keeps the name field showing the first folder's name as real,
+    /// editable text instead of a grayed-out placeholder — so users can see
+    /// the field is theirs to change. Never overwrites a name the user typed.
+    func syncAutofilledName() {
+        let trimmed = name.trimmingCharacters(in: .whitespaces)
+        guard trimmed.isEmpty || trimmed == lastAutofilledName else { return }
+        if let first = sourcePaths.first {
+            name = URL(fileURLWithPath: first).lastPathComponent
+            lastAutofilledName = name
+        } else {
+            name = ""
+            lastAutofilledName = nil
+        }
+    }
+
     func buildDraft() -> PlanDraft {
         let destination = currentDestination
 
@@ -189,5 +208,6 @@ final class WizardModel {
         dailyTime = fresh.dailyTime
         isCreating = fresh.isCreating
         creationError = fresh.creationError
+        lastAutofilledName = fresh.lastAutofilledName
     }
 }

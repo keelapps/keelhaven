@@ -22,6 +22,7 @@ struct SourceStepView: View {
                         Spacer()
                         Button {
                             model.sourcePaths.removeAll { $0 == path }
+                            model.syncAutofilledName()
                         } label: {
                             Image(systemName: "minus.circle")
                         }
@@ -43,6 +44,7 @@ struct SourceStepView: View {
                 for url in urls where !model.sourcePaths.contains(url.path) {
                     model.sourcePaths.append(url.path)
                 }
+                model.syncAutofilledName()
             } label: {
                 Label("Add Folders…", systemImage: "plus")
             }

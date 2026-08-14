@@ -97,6 +97,16 @@ final class AppState {
         try await planStore.save(plans)
     }
 
+    func renamePlan(_ plan: BackupPlan, to newName: String) {
+        let trimmed = newName.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty,
+              let index = plans.firstIndex(where: { $0.id == plan.id }) else { return }
+        plans[index].name = trimmed
+        Task {
+            try? await planStore.save(plans)
+        }
+    }
+
     func deletePlan(_ plan: BackupPlan) {
         guard !isBackupRunning else { return }
         plans.removeAll { $0.id == plan.id }

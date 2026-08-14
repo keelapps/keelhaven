@@ -5,6 +5,8 @@ struct PlanStatusRow: View {
     @Environment(AppState.self) private var appState
     let plan: BackupPlan
     @State private var confirmingDelete = false
+    @State private var renaming = false
+    @State private var draftName = ""
 
     private var runState: PlanRunState {
         appState.runStates[plan.id] ?? .idle
@@ -30,6 +32,10 @@ struct PlanStatusRow: View {
         .padding(.vertical, 2)
         .contentShape(Rectangle())
         .contextMenu {
+            Button("Rename…") {
+                draftName = plan.name
+                renaming = true
+            }
             Button("Copy Repository Password") {
                 copyPassword()
             }
@@ -38,6 +44,13 @@ struct PlanStatusRow: View {
                 confirmingDelete = true
             }
             .disabled(appState.isBackupRunning)
+        }
+        .alert("Rename “\(plan.name)”", isPresented: $renaming) {
+            TextField("Plan name", text: $draftName)
+            Button("Rename") {
+                appState.renamePlan(plan, to: draftName)
+            }
+            Button("Cancel", role: .cancel) {}
         }
         .alert("Delete “\(plan.name)”?", isPresented: $confirmingDelete) {
             Button("Delete", role: .destructive) {

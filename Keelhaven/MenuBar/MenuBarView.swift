@@ -59,6 +59,10 @@ struct MenuBarView: View {
             }
             .disabled(appState.resticBinaryURL == nil)
 
+            Divider()
+
+            // Settings live below the last divider, grouped with Quit —
+            // the section above is for actions, this one is app-level.
             Toggle("Start at Login", isOn: $startAtLogin)
                 .onChange(of: startAtLogin) { _, newValue in
                     do {
@@ -68,14 +72,12 @@ struct MenuBarView: View {
                     }
                 }
 
-            Divider()
-
             Button("Quit Keelhaven") {
                 NSApplication.shared.terminate(nil)
             }
         }
         .padding(14)
-        .frame(width: 340)
+        .frame(width: 300)
     }
 
     private func openWizard() {
