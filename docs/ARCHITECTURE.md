@@ -50,7 +50,7 @@ Backups are serialized: one at a time, app-wide.
 |---|---|---|
 | One restic repository per plan | Independent passwords, no lock contention, trivial snapshot mapping | — |
 | Secrets via child env (`RESTIC_PASSWORD`) | Never argv (world-visible), never disk | `RESTIC_PASSWORD_COMMAND` helper reading Keychain directly |
-| User-installed restic, auto-discovered | Bundling needs notarization work; download-on-run is a liability | Bundle a universal binary in `Resources/`, prefer it over PATH |
+| Bundled universal restic (`Contents/MacOS/restic`, vendored + checksum-verified by `Scripts/fetch-restic.sh`, ad-hoc/app-signed at build) | End users must not need Homebrew | User path override and Homebrew locations remain as fallbacks |
 | In-app 60s timer + login item | No launchd plist lifecycle to manage | `SMAppService.agent(plistName:)` launchd agent reusing `SchedulePolicy` |
 | App Sandbox OFF (hardened runtime ON) | restic child needs arbitrary folder read, network, ssh | Security-scoped bookmarks + XPC — known App Store blocker, revisit post-v1 |
 | JSON files in Application Support | Human-readable, atomic writes, Codable round-trip tested | — |

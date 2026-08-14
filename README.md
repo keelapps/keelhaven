@@ -8,8 +8,9 @@ Keelhaven wraps the battle-tested [restic](https://restic.net) engine in a nativ
 
 ## Install from CI (personal use)
 
-Every CI run on `main` uploads an ad-hoc-signed build as a workflow artifact:
-[Actions](../../actions) → latest CI run → download `Keelhaven-<n>` → then:
+Every CI run on `main` uploads ad-hoc-signed builds as workflow artifacts, one
+per architecture: [Actions](../../actions) → latest CI run → download
+`Keelhaven-<n>-apple-silicon` (M-series Macs) or `Keelhaven-<n>-intel` → then:
 
 ```bash
 unzip ~/Downloads/Keelhaven-*.zip -d /Applications   # or drag Keelhaven.app over
@@ -25,17 +26,24 @@ Developer-ID-signed and notarized instead.
 ## Development setup
 
 ```bash
-brew install restic xcodegen        # restic ≥ 0.19 required
+brew install restic xcodegen        # restic here is for the integration tests
 git clone git@github.com:keelapps/keelhaven.git && cd keelhaven
 
 # Core engine: compiles + 34 tests against real restic fixtures
 cd KeelhavenCore && swift test && cd ..
+
+# Vendor the universal restic binary that gets bundled into the app
+./Scripts/fetch-restic.sh
 
 # App: generate the Xcode project (never committed), then build
 xcodegen generate
 xcodebuild -project Keelhaven.xcodeproj -scheme Keelhaven build
 # …or: open Keelhaven.xcodeproj and hit Run
 ```
+
+The app ships with its own copy of restic (universal binary, checksum-verified
+against the official release) in `Contents/MacOS/` — end users never install
+anything. A user-set path override and Homebrew locations remain as fallbacks.
 
 ### Manual smoke test
 

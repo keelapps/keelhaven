@@ -1,8 +1,10 @@
 import Foundation
 import KeelhavenCore
 
-/// Finds the restic binary. v1 uses the user's own install (Homebrew paths or
-/// a manual override in UserDefaults); a bundled binary is the ship-phase plan.
+/// Finds the restic binary. The copy bundled inside the app
+/// (Contents/MacOS/restic, vendored by Scripts/fetch-restic.sh) is used
+/// unless the user explicitly overrides the path; Homebrew installs are a
+/// final fallback for development builds made without the vendored binary.
 enum ResticLocator {
     static let overrideDefaultsKey = "resticBinaryPath"
     static let minimumVersionText = "0.19"
@@ -17,6 +19,10 @@ enum ResticLocator {
         if let override = UserDefaults.standard.string(forKey: overrideDefaultsKey),
            FileManager.default.isExecutableFile(atPath: override) {
             return URL(fileURLWithPath: override)
+        }
+        if let bundled = Bundle.main.url(forAuxiliaryExecutable: "restic"),
+           FileManager.default.isExecutableFile(atPath: bundled.path) {
+            return bundled
         }
         for path in knownPaths where FileManager.default.isExecutableFile(atPath: path) {
             return URL(fileURLWithPath: path)

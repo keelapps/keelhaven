@@ -10,7 +10,14 @@ targets:
   Keelhaven:
     type: application
     platform: macOS
-    sources: [Keelhaven]
+    sources:
+      - Keelhaven
+      # Universal restic binary produced by Scripts/fetch-restic.sh, copied
+      # into Contents/MacOS/ next to the app executable.
+      - path: Vendor/restic/restic
+        buildPhase:
+          copyFiles:
+            destination: executables
     dependencies:
       - package: KeelhavenCore
     info:
@@ -27,6 +34,18 @@ targets:
         MARKETING_VERSION: 0.1.0
         CURRENT_PROJECT_VERSION: 1
     postBuildScripts:
+      # Nested executables must carry their own signature before the outer
+      # app bundle is signed (Xcode signs the app last, but does not sign
+      # plain copied executables).
+      - name: Sign bundled restic
+        basedOnDependencyAnalysis: false
+        inputFiles:
+          - $(TARGET_BUILD_DIR)/$(EXECUTABLE_FOLDER_PATH)/restic
+        script: |
+          BINARY="$TARGET_BUILD_DIR/$EXECUTABLE_FOLDER_PATH/restic"
+          IDENTITY="${EXPANDED_CODE_SIGN_IDENTITY:--}"
+          if [ -z "$IDENTITY" ]; then IDENTITY="-"; fi
+          codesign --force --options runtime --sign "$IDENTITY" "$BINARY"
       # Stamp the current git commit into Info.plist for the About window.
       # Runs before code signing, so the signature stays valid.
       - name: Embed git commit

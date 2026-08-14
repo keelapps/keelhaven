@@ -23,14 +23,27 @@ jobs:
         run: swift test --package-path KeelhavenCore
 
   build-app:
-    name: Build app (ad-hoc signed)
+    name: Build app (${{ matrix.label }})
     runs-on: macos-15
+    # One artifact per architecture: bundling only the matching restic slice
+    # halves the download compared to a universal build.
+    strategy:
+      matrix:
+        include:
+          - label: apple-silicon
+            restic_arch: arm64
+            xcode_archs: arm64
+          - label: intel
+            restic_arch: amd64
+            xcode_archs: x86_64
     steps:
       - uses: actions/checkout@v7
       - name: Install XcodeGen
         run: |
           brew untap aws/tap || true
           brew install xcodegen
+      - name: Vendor restic (checksum-verified)
+        run: ./Scripts/fetch-restic.sh ${{ matrix.restic_arch }}
       - name: Generate Xcode project
         run: xcodegen generate
       # Ad-hoc signing (identity "-"): runnable on any Mac after removing the
@@ -48,11 +61,13 @@ jobs:
           CODE_SIGN_STYLE=Manual
           CODE_SIGN_IDENTITY=-
           CURRENT_PROJECT_VERSION=${{ github.run_number }}
+          ARCHS=${{ matrix.xcode_archs }}
+          ONLY_ACTIVE_ARCH=NO
       - name: Zip app
         run: ditto -c -k --keepParent build/Build/Products/Release/Keelhaven.app Keelhaven.zip
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: Keelhaven-${{ github.run_number }}
+          name: Keelhaven-${{ github.run_number }}-${{ matrix.label }}
           path: Keelhaven.zip
           if-no-files-found: error
