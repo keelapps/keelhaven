@@ -126,6 +126,28 @@ final class AppState {
         }
     }
 
+    /// Applies an Edit Plan save. Mutates the four editable fields in place —
+    /// never replaces the whole struct, so a backup finishing concurrently
+    /// keeps its `lastRun` write (`finishRun` mutates the same array slot).
+    func updatePlan(
+        id: UUID,
+        name: String,
+        sourcePaths: [String],
+        excludePatterns: [String],
+        schedule: Schedule
+    ) {
+        let trimmed = name.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty, !sourcePaths.isEmpty,
+              let index = plans.firstIndex(where: { $0.id == id }) else { return }
+        plans[index].name = trimmed
+        plans[index].sourcePaths = sourcePaths
+        plans[index].excludePatterns = excludePatterns
+        plans[index].schedule = schedule
+        Task {
+            try? await planStore.save(plans)
+        }
+    }
+
     func deletePlan(_ plan: BackupPlan) {
         guard !isBackupRunning else { return }
         plans.removeAll { $0.id == plan.id }
@@ -224,6 +246,9 @@ final class AppState {
 
     /// The plan the restore window operates on, set before opening it.
     var restorePlanID: UUID?
+
+    /// Which plan the Edit Plan window is editing — same handoff as restore.
+    var editPlanID: UUID?
 
     func restoreCredentials(for plan: BackupPlan) throws -> RepoCredentials {
         try credentials(for: plan)

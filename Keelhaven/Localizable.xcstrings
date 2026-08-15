@@ -551,6 +551,36 @@
         }
       }
     },
+    "Edit Backup Plan": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "编辑备份计划"
+          }
+        }
+      }
+    },
+    "Edit Plan…": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "编辑计划…"
+          }
+        }
+      }
+    },
+    "Edit “%@”": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "编辑“%@”"
+          }
+        }
+      }
+    },
     "Encryption password": {
       "localizations": {
         "zh-Hans": {
@@ -591,6 +621,16 @@
         }
       }
     },
+    "Exclude patterns": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "排除规则"
+          }
+        }
+      }
+    },
     "Existing repository password": {
       "localizations": {
         "zh-Hans": {
@@ -607,6 +647,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "文件数"
+          }
+        }
+      }
+    },
+    "Files and folders matching these patterns are skipped.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "匹配这些规则的文件和文件夹将被跳过。"
           }
         }
       }
@@ -1221,12 +1271,32 @@
         }
       }
     },
+    "Save": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存"
+          }
+        }
+      }
+    },
     "Schedule": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "频率"
+          }
+        }
+      }
+    },
+    "Schedule: %@": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "备份频率：%@"
           }
         }
       }
@@ -1307,6 +1377,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "确认信息"
+          }
+        }
+      }
+    },
+    "The destination can't be changed. To back up somewhere else, create a new backup plan.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "备份目的地无法更改。若要备份到其他位置，请新建一个备份计划。"
           }
         }
       }

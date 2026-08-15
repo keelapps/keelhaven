@@ -1,0 +1,171 @@
+import SwiftUI
+import KeelhavenCore
+
+/// Edits an existing plan's name, folders, schedule and exclude patterns.
+/// The destination is shown but locked: changing it means a different
+/// repository and password, which is a new plan, not an edit (issue #42).
+struct EditPlanWindowView: View {
+    @Environment(AppState.self) private var appState
+    @Environment(\.dismiss) private var dismiss
+    @State private var model = EditPlanModel()
+
+    private var plan: BackupPlan? {
+        appState.plans.first { $0.id == appState.editPlanID }
+    }
+
+    var body: some View {
+        Group {
+            if let plan {
+                content(for: plan)
+                    .task(id: plan.id) {
+                        model.load(from: plan)
+                    }
+            } else {
+                Text("This backup plan no longer exists.")
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding(20)
+        .frame(width: 560)
+    }
+
+    @ViewBuilder
+    private func content(for plan: BackupPlan) -> some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("Edit “\(plan.name)”")
+                .font(.title3.bold())
+
+            TextField("Name", text: $model.name)
+                .textFieldStyle(.roundedBorder)
+                .frame(maxWidth: 300)
+
+            folderList
+
+            Text("Schedule")
+                .font(.headline)
+            ScheduleEditor(kind: $model.scheduleKind, dailyTime: $model.dailyTime)
+
+            destinationRow(for: plan)
+
+            excludeSection
+
+            Divider()
+
+            HStack {
+                Spacer()
+                Button("Cancel") {
+                    dismiss()
+                }
+                Button("Save") {
+                    appState.updatePlan(
+                        id: plan.id,
+                        name: model.name,
+                        sourcePaths: model.sourcePaths,
+                        excludePatterns: model.excludePatterns,
+                        schedule: model.builtSchedule()
+                    )
+                    dismiss()
+                }
+                .keyboardShortcut(.defaultAction)
+                .disabled(!model.isValid)
+            }
+        }
+    }
+
+    // Same list-row pattern as the wizard's source step, minus the preset
+    // chips and the name autofill — editing must never silently rename.
+    private var folderList: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Folders")
+                .font(.headline)
+            List {
+                ForEach(model.sourcePaths, id: \.self) { path in
+                    HStack {
+                        Image(systemName: "folder")
+                        Text(path)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                        Spacer()
+                        Button {
+                            model.sourcePaths.removeAll { $0 == path }
+                        } label: {
+                            Image(systemName: "minus.circle")
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("Remove \(path)")
+                    }
+                }
+            }
+            .frame(height: 110)
+            .overlay {
+                if model.sourcePaths.isEmpty {
+                    Text("No folders yet — add at least one.")
+                        .foregroundStyle(.secondary)
+                }
+            }
+            Button {
+                let urls = FolderPicker.pickFolders()
+                for url in urls where !model.sourcePaths.contains(url.path) {
+                    model.sourcePaths.append(url.path)
+                }
+            } label: {
+                Label("Add Folders…", systemImage: "plus")
+            }
+        }
+    }
+
+    private func destinationRow(for plan: BackupPlan) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Destination")
+                .font(.headline)
+            HStack(spacing: 6) {
+                Image(systemName: "lock.fill")
+                    .foregroundStyle(.secondary)
+                Text(plan.destination.displayName)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+            }
+            Text("The destination can't be changed. To back up somewhere else, create a new backup plan.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private var excludeSection: some View {
+        DisclosureGroup("Exclude patterns") {
+            VStack(alignment: .leading, spacing: 8) {
+                List {
+                    ForEach(model.excludePatterns, id: \.self) { pattern in
+                        HStack {
+                            Text(pattern)
+                                .font(.callout.monospaced())
+                            Spacer()
+                            Button {
+                                model.removeExcludePattern(pattern)
+                            } label: {
+                                Image(systemName: "minus.circle")
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("Remove \(pattern)")
+                        }
+                    }
+                }
+                .frame(height: 100)
+                HStack {
+                    TextField("*.log", text: $model.newExcludePattern)
+                        .textFieldStyle(.roundedBorder)
+                        .frame(maxWidth: 200)
+                        .onSubmit { model.addExcludePattern() }
+                    Button("Add") {
+                        model.addExcludePattern()
+                    }
+                    .disabled(model.newExcludePattern.trimmingCharacters(in: .whitespaces).isEmpty)
+                }
+                Text("Files and folders matching these patterns are skipped.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.top, 6)
+        }
+    }
+}

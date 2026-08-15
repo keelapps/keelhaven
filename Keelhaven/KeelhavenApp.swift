@@ -6,6 +6,7 @@ enum WindowID {
     static let about = "about"
     static let restore = "restore"
     static let welcome = "welcome"
+    static let editPlan = "editPlan"
 }
 
 @main
@@ -38,6 +39,12 @@ struct KeelhavenApp: App {
 
         Window("Restore Backup", id: WindowID.restore) {
             RestoreWindowView()
+                .environment(appState)
+        }
+        .windowResizability(.contentSize)
+
+        Window("Edit Backup Plan", id: WindowID.editPlan) {
+            EditPlanWindowView()
                 .environment(appState)
         }
         .windowResizability(.contentSize)

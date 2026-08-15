@@ -83,6 +83,16 @@ struct PlanStatusRow: View {
                     .lineLimit(1)
                     .truncationMode(.middle)
                     .help(plan.destination.displayName)
+                // The trigger policy, visible at a glance (issue #42) — the
+                // status line's tooltip still carries the concrete next-run time.
+                HStack(spacing: 4) {
+                    Image(systemName: "clock")
+                    Text(plan.schedule.displayText)
+                }
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(String(localized: "Schedule: \(plan.schedule.displayText)"))
                 statusLine
             }
         }
@@ -112,6 +122,11 @@ struct PlanStatusRow: View {
         Button("Restore…") {
             appState.restorePlanID = plan.id
             openWindow(id: WindowID.restore)
+            NSApp.activate(ignoringOtherApps: true)
+        }
+        Button("Edit Plan…") {
+            appState.editPlanID = plan.id
+            openWindow(id: WindowID.editPlan)
             NSApp.activate(ignoringOtherApps: true)
         }
         Button("Rename…") {

@@ -244,14 +244,7 @@ final class WizardModel {
     func buildDraft() -> PlanDraft {
         let destination = currentDestination
 
-        let schedule: Schedule
-        switch scheduleKind {
-        case .hourly:
-            schedule = .hourly
-        case .daily:
-            let components = Calendar.current.dateComponents([.hour, .minute], from: dailyTime)
-            schedule = .daily(hour: components.hour ?? 21, minute: components.minute ?? 0)
-        }
+        let schedule = Schedule(kind: scheduleKind, dailyTime: dailyTime)
 
         let trimmedName = name.trimmingCharacters(in: .whitespaces)
         return PlanDraft(
