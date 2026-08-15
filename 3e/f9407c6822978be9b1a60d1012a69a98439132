@@ -1,0 +1,26 @@
+Scripts/install-latest.sh
+  s_eb21fc291bb59a::t_55d7deea8af8c3 1-53
+Keelhaven/Support/AppDelegate.swift
+  s_eb21fc291bb59a::t_9c0772293c932f 1-19
+Keelhaven/KeelhavenApp.swift
+  s_eb21fc291bb59a::t_e52ec34e454e47 12
+README.md
+  s_eb21fc291bb59a::t_946a1749a54820 11-21,24,38-41
+  s_eb21fc291bb59a::t_490db54a2ce3ef 42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "3ef9407c6822978be9b1a60d1012a69a98439132",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
