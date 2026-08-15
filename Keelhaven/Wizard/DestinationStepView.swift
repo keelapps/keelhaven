@@ -131,6 +131,11 @@ struct DestinationStepView: View {
                 Text("The destination can't be inside a folder you're backing up.")
                     .font(.callout)
                     .foregroundStyle(.red)
+            } else if model.destinationType == .local, model.localPath.isEmpty {
+                // Gray guidance, not red: nothing is wrong yet (issue #38).
+                Text("No destination chosen yet.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
             }
         }
     }
@@ -181,6 +186,11 @@ struct DestinationStepView: View {
             }
             .formStyle(.columns)
             .textFieldStyle(.roundedBorder)
+            if !model.destinationFieldsComplete {
+                Text("All fields except the path prefix are required.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
         case .sftp:
             Form {
                 TextField("User", text: $model.sftpUser)
@@ -193,6 +203,11 @@ struct DestinationStepView: View {
             Text("Uses your existing SSH keys (~/.ssh) or ssh-agent for authentication.")
                 .font(.callout)
                 .foregroundStyle(.secondary)
+            if !model.destinationFieldsComplete {
+                Text("All fields are required.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
         }
     }
 
@@ -264,6 +279,10 @@ struct DestinationStepView: View {
                  : "Passwords don't match.")
                 .font(.callout)
                 .foregroundStyle(.red)
+        } else if model.password.isEmpty {
+            Text("A password is required to encrypt the backup.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
         }
     }
 }

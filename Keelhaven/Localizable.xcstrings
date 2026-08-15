@@ -61,6 +61,16 @@
         }
       }
     },
+    "A password is required to encrypt the backup.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要设置密码来加密备份"
+          }
+        }
+      }
+    },
     "About Keelhaven": {
       "localizations": {
         "zh-Hans": {
@@ -121,12 +131,42 @@
         }
       }
     },
+    "Add at least one folder to continue.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加至少一个文件夹后继续"
+          }
+        }
+      }
+    },
     "Advanced options": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "高级选项"
+          }
+        }
+      }
+    },
+    "All fields are required.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所有字段均为必填"
+          }
+        }
+      }
+    },
+    "All fields except the path prefix are required.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "除路径前缀外均为必填"
           }
         }
       }
@@ -307,6 +347,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "选取"
+          }
+        }
+      }
+    },
+    "Choose a destination folder to continue.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择备份目标文件夹后继续"
           }
         }
       }
@@ -611,6 +661,16 @@
         }
       }
     },
+    "Enter the repository password.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "输入现有仓库的密码"
+          }
+        }
+      }
+    },
     "Every hour": {
       "localizations": {
         "zh-Hans": {
@@ -657,6 +717,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "匹配这些规则的文件和文件夹将被跳过。"
+          }
+        }
+      }
+    },
+    "Fill in the remaining S3 fields.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "填写剩余的 S3 字段后继续"
+          }
+        }
+      }
+    },
+    "Fill in the remaining SFTP fields.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "填写剩余的 SFTP 字段后继续"
+          }
+        }
+      }
+    },
+    "Fix the destination issue shown above.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先解决上方提示的目标问题"
           }
         }
       }
@@ -907,6 +997,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "下次备份：尽快进行"
+          }
+        }
+      }
+    },
+    "No destination chosen yet.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "还未选择备份目标"
           }
         }
       }

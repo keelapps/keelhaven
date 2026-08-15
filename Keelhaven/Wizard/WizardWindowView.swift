@@ -70,6 +70,14 @@ struct WizardWindowView: View {
                     .foregroundStyle(.red)
                     .lineLimit(4)
                     .help(creationError)
+            } else if let hint = model.blockingHint, !model.isVerifyingPassword {
+                // Why Next is grayed out (issue #38) — guidance, not an
+                // error, so it stays secondary rather than red.
+                Text(hint)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                    .help(hint)
             }
             Spacer()
 

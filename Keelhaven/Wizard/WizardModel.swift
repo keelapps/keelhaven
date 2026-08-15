@@ -136,18 +136,31 @@ final class WizardModel {
         destinationType == .local && RepositoryProbe.localPathContainsRepository(localPath)
     }
 
-    var destinationFieldsValid: Bool {
+    /// The current destination type's required fields are all filled in.
+    /// Split from the conflict checks so `blockingHint` can tell "not filled
+    /// in yet" (gray guidance) apart from "conflicts" (red errors).
+    var destinationFieldsComplete: Bool {
         switch destinationType {
         case .local:
-            return !localPath.isEmpty && !localDestinationInsideSource
-                && (adoptExistingRepository || (!destinationAlreadyUsed && !localDestinationHasRepository))
+            return !localPath.isEmpty
         case .s3:
             return !s3Endpoint.isEmpty && !s3Bucket.isEmpty && !s3AccessKey.isEmpty && !s3SecretKey.isEmpty
-                && (adoptExistingRepository || !destinationAlreadyUsed)
         case .sftp:
             return !sftpUser.isEmpty && !sftpHost.isEmpty && !sftpPath.isEmpty && Int(sftpPort) != nil
-                && (adoptExistingRepository || !destinationAlreadyUsed)
         }
+    }
+
+    /// The destination conflicts with existing state (all shown as red
+    /// inline errors in the destination step).
+    var destinationHasConflict: Bool {
+        if localDestinationInsideSource { return true }
+        if adoptExistingRepository { return false }
+        if destinationAlreadyUsed { return true }
+        return localDestinationHasRepository
+    }
+
+    var destinationFieldsValid: Bool {
+        destinationFieldsComplete && !destinationHasConflict
     }
 
     /// True when the draft destination matches an existing plan's repository.
@@ -191,6 +204,43 @@ final class WizardModel {
         case 0: return sourcesStepValid
         case 1: return destinationStepValid
         default: return true
+        }
+    }
+
+    /// Why Next is disabled, as one gray guidance sentence — the first
+    /// missing requirement in top-to-bottom order (issue #38). Nil whenever
+    /// the step can advance.
+    var blockingHint: String? {
+        guard !canAdvance else { return nil }
+        switch step {
+        case 0:
+            return String(localized: "Add at least one folder to continue.")
+        case 1:
+            if !destinationFieldsComplete {
+                switch destinationType {
+                case .local:
+                    return String(localized: "Choose a destination folder to continue.")
+                case .s3:
+                    return String(localized: "Fill in the remaining S3 fields.")
+                case .sftp:
+                    return String(localized: "Fill in the remaining SFTP fields.")
+                }
+            }
+            if destinationHasConflict {
+                return String(localized: "Fix the destination issue shown above.")
+            }
+            if adoptExistingRepository {
+                return String(localized: "Enter the repository password.")
+            }
+            if password.isEmpty {
+                return String(localized: "A password is required to encrypt the backup.")
+            }
+            if password.count < 8 {
+                return String(localized: "Password must be at least 8 characters.")
+            }
+            return String(localized: "Passwords don't match.")
+        default:
+            return nil
         }
     }
 
