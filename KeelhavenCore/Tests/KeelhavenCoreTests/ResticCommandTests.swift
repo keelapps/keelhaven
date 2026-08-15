@@ -26,6 +26,10 @@ final class ResticCommandTests: XCTestCase {
         XCTAssertEqual(command.arguments, ["backup", "--json", "/tmp/data"])
     }
 
+    func testCatConfigArguments() {
+        XCTAssertEqual(ResticCommand.catConfig.arguments, ["cat", "config", "--json"])
+    }
+
     func testLocalRepositoryLocation() {
         let destination = Destination.local(path: "/Volumes/Backup/keelhaven")
         XCTAssertEqual(destination.repositoryLocation, "/Volumes/Backup/keelhaven")

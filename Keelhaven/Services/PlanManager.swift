@@ -9,11 +9,16 @@ struct PlanDraft {
     var schedule: Schedule
     var password: String
     var s3SecretKey: String?
+    /// True when the destination already holds a repository the user wants to
+    /// connect to: the password is verified against it instead of `restic init`.
+    var adoptExistingRepository = false
 }
 
-/// Creates and deletes plans. Creation order matters for failure recovery:
-/// secrets go into the Keychain first, then `restic init` proves the
-/// destination works; on init failure the secrets are rolled back.
+/// Creates and deletes plans. For a new repository, secrets go into the
+/// Keychain first and `restic init` proves the destination works (secrets are
+/// rolled back on failure). When adopting an existing repository, the password
+/// is verified against it first — multiple plans may share one repository as
+/// long as every adoption proves it holds the same password.
 struct PlanManager {
     let keychain: KeychainStoring
     let resticBinaryURL: URL?
@@ -25,8 +30,9 @@ struct PlanManager {
 
         // A local destination that already holds a repository would make
         // `restic init` fail with a cryptic error — catch it up front.
-        if case .local(let path) = draft.destination,
-           FileManager.default.fileExists(atPath: (path as NSString).appendingPathComponent("config")) {
+        if !draft.adoptExistingRepository,
+           case .local(let path) = draft.destination,
+           RepositoryProbe.localPathContainsRepository(path) {
             throw ResticError.repositoryAlreadyExists(message: "config file already exists at \(path)")
         }
 
@@ -36,6 +42,24 @@ struct PlanManager {
             destination: draft.destination,
             schedule: draft.schedule
         )
+
+        let credentials = RepoCredentials(
+            repositoryPassword: draft.password,
+            s3SecretAccessKey: draft.s3SecretKey
+        )
+        let runner = ResticRunner(binaryURL: binaryURL)
+
+        if draft.adoptExistingRepository {
+            // Prove the password opens the existing repository before
+            // anything is stored; wrongPassword/repositoryDoesNotExist
+            // surface directly in the wizard.
+            _ = try await runner.run(
+                .catConfig,
+                destination: draft.destination,
+                credentials: credentials,
+                decoding: ResticRepoConfig.self
+            )
+        }
 
         try keychain.setSecret(
             draft.password,
@@ -48,21 +72,18 @@ struct PlanManager {
             )
         }
 
-        let credentials = RepoCredentials(
-            repositoryPassword: draft.password,
-            s3SecretAccessKey: draft.s3SecretKey
-        )
-        do {
-            let runner = ResticRunner(binaryURL: binaryURL)
-            _ = try await runner.run(
-                .initRepository,
-                destination: draft.destination,
-                credentials: credentials,
-                decoding: ResticInitResult.self
-            )
-        } catch {
-            removeSecrets(planID: plan.id)
-            throw error
+        if !draft.adoptExistingRepository {
+            do {
+                _ = try await runner.run(
+                    .initRepository,
+                    destination: draft.destination,
+                    credentials: credentials,
+                    decoding: ResticInitResult.self
+                )
+            } catch {
+                removeSecrets(planID: plan.id)
+                throw error
+            }
         }
 
         return plan

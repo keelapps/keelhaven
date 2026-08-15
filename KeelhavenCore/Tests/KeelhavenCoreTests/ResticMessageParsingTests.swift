@@ -99,6 +99,14 @@ final class ResticMessageParsingTests: XCTestCase {
         XCTAssertLessThan(snapshots[0].time, snapshots[1].time)
     }
 
+    func testDecodeRepoConfig() throws {
+        // Captured from `restic cat config --json`; a successful decode is
+        // how adopting an existing repository verifies its password.
+        let config = try ResticJSON.decoder.decode(ResticRepoConfig.self, from: fixtureData("cat-config.json"))
+        XCTAssertEqual(config.version, 2)
+        XCTAssertEqual(config.id.count, 64)
+    }
+
     func testDecodeStats() throws {
         let stats = try ResticJSON.decoder.decode(ResticStats.self, from: fixtureData("stats.json"))
         XCTAssertEqual(stats.snapshotsCount, 2)

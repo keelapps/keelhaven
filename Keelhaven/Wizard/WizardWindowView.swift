@@ -72,6 +72,7 @@ struct WizardWindowView: View {
             if model.step > 0 {
                 Button("Back") {
                     model.step -= 1
+                    model.creationError = nil
                 }
                 .disabled(model.isCreating)
             }
@@ -79,6 +80,7 @@ struct WizardWindowView: View {
             if model.step < WizardModel.stepCount - 1 {
                 Button("Next") {
                     model.step += 1
+                    model.creationError = nil
                 }
                 .keyboardShortcut(.defaultAction)
                 .disabled(!model.canAdvance)

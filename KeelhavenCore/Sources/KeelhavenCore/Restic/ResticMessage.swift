@@ -109,6 +109,18 @@ public struct ResticSnapshot: Decodable, Identifiable, Sendable {
     }
 }
 
+/// `restic cat config --json` output — decoding it successfully proves the
+/// supplied password opens the repository.
+public struct ResticRepoConfig: Decodable, Sendable {
+    public let version: Int
+    public let id: String
+
+    enum CodingKeys: String, CodingKey {
+        case version
+        case id
+    }
+}
+
 /// `restic stats --json` output.
 public struct ResticStats: Decodable, Sendable {
     public let totalSize: Int64

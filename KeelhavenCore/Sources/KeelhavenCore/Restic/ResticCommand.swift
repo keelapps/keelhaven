@@ -9,6 +9,9 @@ public enum ResticCommand: Equatable, Sendable {
     case snapshots
     case stats
     case check
+    /// Reads the repository config — the cheapest command that proves a
+    /// password opens an existing repository (used when adopting one).
+    case catConfig
 
     public var arguments: [String] {
         switch self {
@@ -32,6 +35,8 @@ public enum ResticCommand: Equatable, Sendable {
             return ["stats", "--json"]
         case .check:
             return ["check"]
+        case .catConfig:
+            return ["cat", "config", "--json"]
         }
     }
 }

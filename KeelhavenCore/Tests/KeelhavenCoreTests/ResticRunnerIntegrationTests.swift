@@ -80,6 +80,16 @@ final class ResticRunnerIntegrationTests: XCTestCase {
         XCTAssertEqual(snapshots.count, 1)
         XCTAssertEqual(snapshots[0].id, snapshotID)
 
+        // cat config with the right password: how adoption verifies a repo
+        let config = try await runner.run(
+            .catConfig,
+            destination: destination,
+            credentials: credentials,
+            decoding: ResticRepoConfig.self
+        )
+        XCTAssertEqual(config.version, 2)
+        XCTAssertEqual(config.id.count, 64)
+
         // wrong password → typed error from the real exit code
         do {
             _ = try await runner.run(

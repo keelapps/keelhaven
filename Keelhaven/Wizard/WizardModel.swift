@@ -41,6 +41,9 @@ final class WizardModel {
     var password = ""
     var passwordConfirm = ""
     var passwordWasGenerated = false
+    /// Connect to a repository that already exists at the destination:
+    /// the password is verified against it instead of running `restic init`.
+    var adoptExistingRepository = false
 
     var scheduleKind: ScheduleKind = .daily
     var dailyTime = Calendar.current.date(bySettingHour: 21, minute: 0, second: 0, of: Date()) ?? Date()
@@ -64,19 +67,33 @@ final class WizardModel {
     }
 
     var passwordValid: Bool {
-        password.count >= 8 && password == passwordConfirm
+        if adoptExistingRepository {
+            // The existing repository's password; verified at create time,
+            // so no length or confirmation rules apply.
+            return !password.isEmpty
+        }
+        return password.count >= 8 && password == passwordConfirm
+    }
+
+    /// Live check: the chosen local folder already holds a restic repository
+    /// (e.g. left over from a deleted plan). Caught here on step 2 rather
+    /// than at Create time (issue #18). Remote destinations can't be probed
+    /// without network access, so those still surface at Create.
+    var localDestinationHasRepository: Bool {
+        destinationType == .local && RepositoryProbe.localPathContainsRepository(localPath)
     }
 
     var destinationFieldsValid: Bool {
         switch destinationType {
         case .local:
-            return !localPath.isEmpty && !localDestinationInsideSource && !destinationAlreadyUsed
+            return !localPath.isEmpty && !localDestinationInsideSource
+                && (adoptExistingRepository || (!destinationAlreadyUsed && !localDestinationHasRepository))
         case .s3:
             return !s3Endpoint.isEmpty && !s3Bucket.isEmpty && !s3AccessKey.isEmpty && !s3SecretKey.isEmpty
-                && !destinationAlreadyUsed
+                && (adoptExistingRepository || !destinationAlreadyUsed)
         case .sftp:
             return !sftpUser.isEmpty && !sftpHost.isEmpty && !sftpPath.isEmpty && Int(sftpPort) != nil
-                && !destinationAlreadyUsed
+                && (adoptExistingRepository || !destinationAlreadyUsed)
         }
     }
 
@@ -181,7 +198,8 @@ final class WizardModel {
             destination: destination,
             schedule: schedule,
             password: password,
-            s3SecretKey: destinationType == .s3 ? s3SecretKey : nil
+            s3SecretKey: destinationType == .s3 ? s3SecretKey : nil,
+            adoptExistingRepository: adoptExistingRepository
         )
     }
 
@@ -204,6 +222,7 @@ final class WizardModel {
         password = fresh.password
         passwordConfirm = fresh.passwordConfirm
         passwordWasGenerated = fresh.passwordWasGenerated
+        adoptExistingRepository = fresh.adoptExistingRepository
         scheduleKind = fresh.scheduleKind
         dailyTime = fresh.dailyTime
         isCreating = fresh.isCreating

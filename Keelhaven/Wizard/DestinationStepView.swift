@@ -18,10 +18,23 @@ struct DestinationStepView: View {
 
             destinationForm
 
-            if model.destinationAlreadyUsed {
-                Text("Another plan already backs up to this destination. Each plan needs its own folder or bucket path.")
-                    .font(.caption)
-                    .foregroundStyle(.red)
+            Toggle("Connect to an existing repository at this destination", isOn: $model.adoptExistingRepository)
+                .toggleStyle(.checkbox)
+            Text("For a repository created earlier — by another plan, a previous install, or another Mac. Your password is verified against it; no new repository is created.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+            if !model.adoptExistingRepository {
+                if model.localDestinationHasRepository && !model.destinationAlreadyUsed {
+                    Text("This folder already contains a backup repository. Connect to it with the checkbox above, or choose an empty folder.")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
+                if model.destinationAlreadyUsed {
+                    Text("Another plan already backs up to this destination. Connect to its repository with the checkbox above, or pick a different folder or bucket path.")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
             }
 
             Divider()
@@ -29,6 +42,22 @@ struct DestinationStepView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Encryption password")
                     .font(.headline)
+                if model.adoptExistingRepository {
+                    Text("Enter the password of the existing repository. It is checked when you create the plan.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    SecureField("Existing repository password", text: $model.password)
+                        .textFieldStyle(.roundedBorder)
+                } else {
+                    newPasswordFields
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var newPasswordFields: some View {
+        Group {
                 Text("Backups are encrypted before leaving your Mac. This password is stored in your Keychain — without it, backups cannot be restored.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -70,7 +99,6 @@ struct DestinationStepView: View {
                 }
             }
         }
-    }
 
     @ViewBuilder
     private var destinationForm: some View {
