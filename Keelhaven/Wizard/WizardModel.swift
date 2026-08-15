@@ -45,6 +45,40 @@ final class WizardModel {
     /// the password is verified against it instead of running `restic init`.
     var adoptExistingRepository = false
 
+    /// While adopting, the password is checked the moment the user leaves
+    /// step 2 (issue #30) — not at final Create — so the error appears next
+    /// to the field that caused it.
+    var isVerifyingPassword = false
+    var passwordVerificationError: String?
+
+    /// Proves the entered password opens the existing repository.
+    /// Returns true on success; on failure stores the error for inline display.
+    func verifyExistingRepositoryPassword(binaryURL: URL) async -> Bool {
+        isVerifyingPassword = true
+        passwordVerificationError = nil
+        defer { isVerifyingPassword = false }
+
+        let draft = buildDraft()
+        let credentials = RepoCredentials(
+            repositoryPassword: draft.password,
+            s3SecretAccessKey: draft.s3SecretKey
+        )
+        do {
+            let runner = ResticRunner(binaryURL: binaryURL)
+            _ = try await runner.run(
+                .catConfig,
+                destination: draft.destination,
+                credentials: credentials,
+                decoding: ResticRepoConfig.self
+            )
+            return true
+        } catch {
+            let message = (error as? ResticError)?.localizedDescription ?? error.localizedDescription
+            passwordVerificationError = message
+            return false
+        }
+    }
+
     var scheduleKind: ScheduleKind = .daily
     var dailyTime = Calendar.current.date(bySettingHour: 21, minute: 0, second: 0, of: Date()) ?? Date()
 
@@ -223,6 +257,8 @@ final class WizardModel {
         passwordConfirm = fresh.passwordConfirm
         passwordWasGenerated = fresh.passwordWasGenerated
         adoptExistingRepository = fresh.adoptExistingRepository
+        isVerifyingPassword = fresh.isVerifyingPassword
+        passwordVerificationError = fresh.passwordVerificationError
         scheduleKind = fresh.scheduleKind
         dailyTime = fresh.dailyTime
         isCreating = fresh.isCreating

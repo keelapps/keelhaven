@@ -78,12 +78,17 @@ struct WizardWindowView: View {
             }
 
             if model.step < WizardModel.stepCount - 1 {
-                Button("Next") {
-                    model.step += 1
-                    model.creationError = nil
+                Button {
+                    advance()
+                } label: {
+                    if model.isVerifyingPassword {
+                        Text("Verifying Password…")
+                    } else {
+                        Text("Next")
+                    }
                 }
                 .keyboardShortcut(.defaultAction)
-                .disabled(!model.canAdvance)
+                .disabled(!model.canAdvance || model.isVerifyingPassword)
             } else {
                 Button {
                     create()
@@ -99,6 +104,26 @@ struct WizardWindowView: View {
             }
         }
         .padding(16)
+    }
+
+    /// Leaving the destination step while adopting an existing repository
+    /// verifies the password right away (issue #30), so a typo surfaces next
+    /// to the password field instead of at the final Create.
+    private func advance() {
+        model.creationError = nil
+        guard model.step == 1, model.adoptExistingRepository else {
+            model.step += 1
+            return
+        }
+        guard let binaryURL = appState.resticBinaryURL else {
+            model.passwordVerificationError = ResticError.binaryNotFound.localizedDescription
+            return
+        }
+        Task {
+            if await model.verifyExistingRepositoryPassword(binaryURL: binaryURL) {
+                model.step += 1
+            }
+        }
     }
 
     private func create() {

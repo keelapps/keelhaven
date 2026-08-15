@@ -43,11 +43,21 @@ struct DestinationStepView: View {
                 Text("Encryption password")
                     .font(.headline)
                 if model.adoptExistingRepository {
-                    Text("Enter the password of the existing repository. It is checked when you create the plan.")
+                    Text("Enter the password of the existing repository. It is checked when you click Next.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     SecureField("Existing repository password", text: $model.password)
                         .textFieldStyle(.roundedBorder)
+                        .onChange(of: model.password) { _, _ in
+                            model.passwordVerificationError = nil
+                        }
+                    if let verificationError = model.passwordVerificationError {
+                        Text(verificationError)
+                            .font(.caption)
+                            .foregroundStyle(.red)
+                            .lineLimit(3)
+                            .help(verificationError)
+                    }
                 } else {
                     newPasswordFields
                 }
