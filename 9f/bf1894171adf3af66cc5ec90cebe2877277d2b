@@ -1,0 +1,33 @@
+Keelhaven/AppState.swift
+  s_eb21fc291bb59a::t_4730759ac85089 47,50,57-60
+  s_eb21fc291bb59a::t_167f64fc9996d2 22-24
+  s_eb21fc291bb59a::t_354b342ce60cca 61
+Keelhaven/MenuBar/MenuBarView.swift
+  s_eb21fc291bb59a::t_c4c42cafdde2c4 45-56
+Keelhaven/MenuBar/MenuBarLabelView.swift
+  s_eb21fc291bb59a::t_abc8d119dc2df8 1-56
+Keelhaven/Welcome/WelcomeWindowView.swift
+  s_eb21fc291bb59a::t_d95391d17c0943 1-97
+Keelhaven/Support/AppDelegate.swift
+  s_eb21fc291bb59a::t_af8292ed3f0be5 4-5,11
+Keelhaven/KeelhavenApp.swift
+  s_eb21fc291bb59a::t_9eac39cbddf59d 8
+  s_eb21fc291bb59a::t_e9cf9644e54c47 21-22,26-31
+  s_eb21fc291bb59a::t_208307b823eba2 32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "9fbf1894171adf3af66cc5ec90cebe2877277d2b",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
