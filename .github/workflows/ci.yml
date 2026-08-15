@@ -1,9 +1,32 @@
 name: CI
 
+# macOS runners bill at 10× against the private-repo minutes quota, so this
+# workflow is deliberately stingy (the quota ran dry once — 2026-08-15):
+#   - docs/site/design-script changes skip CI entirely (the generated assets
+#     under Keelhaven/ still trigger it, so app-affecting changes are covered)
+#   - PRs run only the core tests; the two build-app jobs run on main only,
+#     which is also where Scripts/install-latest.sh downloads artifacts from
+#   - a newer push to the same branch cancels the run it supersedes
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "**.md"
+      - docs/**
+      - site/**
+      - design/**
+      - .gitignore
   pull_request:
+    paths-ignore:
+      - "**.md"
+      - docs/**
+      - site/**
+      - design/**
+      - .gitignore
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   core-tests:
@@ -39,6 +62,11 @@ jobs:
   build-app:
     name: Build app (${{ matrix.label }})
     runs-on: macos-15
+    # Artifacts are only ever installed from main (Scripts/install-latest.sh
+    # takes the newest successful main run), so PR pushes skip both build
+    # jobs — that's ~2/3 of the billed minutes per push. The app target still
+    # can't rot unreviewed: it builds on every merge, and locally via `make`.
+    if: github.event_name == 'push'
     # One artifact per architecture: bundling only the matching restic slice
     # halves the download compared to a universal build.
     strategy:
