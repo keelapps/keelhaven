@@ -6,7 +6,7 @@ public enum SchedulePolicy {
     public static func nextRun(
         for schedule: Schedule,
         after reference: Date,
-        calendar: Calendar = .current
+        calendar: Calendar
     ) -> Date {
         switch schedule {
         case .hourly:

@@ -63,4 +63,22 @@ final class SchedulePolicyTests: XCTestCase {
         XCTAssertFalse(SchedulePolicy.isDue(plan, now: utcDate(2026, 8, 14, 23, 0), calendar: calendar))
         XCTAssertTrue(SchedulePolicy.isDue(plan, now: utcDate(2026, 8, 15, 21, 30), calendar: calendar))
     }
+
+    func testDailyNextRunFallsBackWhenCalendarCannotMatch() {
+        // An unmatchable hour makes Calendar.nextDate return nil; the policy
+        // falls back to +24h rather than crashing.
+        let reference = utcDate(2026, 8, 14, 10, 0)
+        let next = SchedulePolicy.nextRun(
+            for: .daily(hour: 99, minute: 0), after: reference, calendar: calendar
+        )
+        XCTAssertEqual(next, reference.addingTimeInterval(86400))
+    }
+
+    func testDefaultCalendarParameter() {
+        // Hourly math is calendar-independent, so the `.current` default is
+        // safe to exercise regardless of the machine's timezone.
+        let reference = utcDate(2026, 8, 14, 10, 0)
+        let plan = makePlan(schedule: .hourly, lastRun: reference)
+        XCTAssertTrue(SchedulePolicy.isDue(plan, now: reference.addingTimeInterval(7200)))
+    }
 }

@@ -8,12 +8,37 @@ import Security
 public struct KeychainStore: KeychainStoring {
     public static let service = "com.keelhaven.app"
 
-    public init() {}
+    /// Seam over the raw SecItem calls so the status-handling logic is
+    /// testable without touching the real keychain. `.live` binds the actual
+    /// Security functions; tests inject stubs returning canned statuses.
+    /// `@unchecked` because the C functions carry no Sendable annotation but
+    /// are thread-safe, and test stubs are pure.
+    struct SecItemClient: @unchecked Sendable {
+        var update: (CFDictionary, CFDictionary) -> OSStatus
+        var add: (CFDictionary, UnsafeMutablePointer<CFTypeRef?>?) -> OSStatus
+        var copyMatching: (CFDictionary, UnsafeMutablePointer<CFTypeRef?>?) -> OSStatus
+        var delete: (CFDictionary) -> OSStatus
+
+        static let live = SecItemClient(
+            update: SecItemUpdate,
+            add: SecItemAdd,
+            copyMatching: SecItemCopyMatching,
+            delete: SecItemDelete
+        )
+    }
+
+    private let client: SecItemClient
+
+    public init() {
+        self.init(client: .live)
+    }
+
+    init(client: SecItemClient) {
+        self.client = client
+    }
 
     public func setSecret(_ secret: String, account: String) throws {
-        guard let data = secret.data(using: .utf8) else {
-            throw KeychainError.invalidData
-        }
+        let data = Data(secret.utf8)
 
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -25,12 +50,12 @@ public struct KeychainStore: KeychainStoring {
             kSecValueData as String: data,
         ]
 
-        let updateStatus = SecItemUpdate(query as CFDictionary, update as CFDictionary)
+        let updateStatus = client.update(query as CFDictionary, update as CFDictionary)
         if updateStatus == errSecItemNotFound {
             var addQuery = query
             addQuery[kSecValueData as String] = data
             addQuery[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
-            let addStatus = SecItemAdd(addQuery as CFDictionary, nil)
+            let addStatus = client.add(addQuery as CFDictionary, nil)
             guard addStatus == errSecSuccess else {
                 throw KeychainError.unexpectedStatus(addStatus)
             }
@@ -49,7 +74,7 @@ public struct KeychainStore: KeychainStoring {
         ]
 
         var item: CFTypeRef?
-        let status = SecItemCopyMatching(query as CFDictionary, &item)
+        let status = client.copyMatching(query as CFDictionary, &item)
         switch status {
         case errSecSuccess:
             guard let data = item as? Data, let secret = String(data: data, encoding: .utf8) else {
@@ -70,7 +95,7 @@ public struct KeychainStore: KeychainStoring {
             kSecAttrAccount as String: account,
         ]
 
-        let status = SecItemDelete(query as CFDictionary)
+        let status = client.delete(query as CFDictionary)
         guard status == errSecSuccess || status == errSecItemNotFound else {
             throw KeychainError.unexpectedStatus(status)
         }

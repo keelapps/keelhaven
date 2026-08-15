@@ -25,7 +25,14 @@ xcodegen generate
 xcodebuild -project Keelhaven.xcodeproj -scheme Keelhaven build
 ```
 
-There is no linter configured. CI (`.github/workflows/ci.yml`) runs the core tests with restic installed and uploads an ad-hoc-signed Release build.
+There is no linter configured. CI (`.github/workflows/ci.yml`) runs the core tests with restic installed, **enforces 100% line coverage on KeelhavenCore** (llvm-cov gate), and uploads ad-hoc-signed Release builds. When adding core code, add the tests that cover it in the same PR or CI goes red. Check locally with:
+
+```bash
+swift test --package-path KeelhavenCore --enable-code-coverage
+BIN=$(swift build --package-path KeelhavenCore --show-bin-path)
+xcrun llvm-cov report "$BIN/KeelhavenCorePackageTests.xctest/Contents/MacOS/KeelhavenCorePackageTests" \
+  -instr-profile="$BIN/codecov/default.profdata" -ignore-filename-regex="Tests|\.build"
+```
 
 ## Architecture in one paragraph
 

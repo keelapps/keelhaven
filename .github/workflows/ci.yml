@@ -20,7 +20,21 @@ jobs:
           brew untap aws/tap || true
           brew install restic
       - name: Run tests
-        run: swift test --package-path KeelhavenCore
+        run: swift test --package-path KeelhavenCore --enable-code-coverage
+      # KeelhavenCore is fully unit-tested and stays that way: any core code
+      # added without tests turns this red.
+      - name: Enforce 100% line coverage
+        run: |
+          BIN=$(swift build --package-path KeelhavenCore --show-bin-path)
+          XCTEST="$BIN/KeelhavenCorePackageTests.xctest/Contents/MacOS/KeelhavenCorePackageTests"
+          COVERAGE=$(xcrun llvm-cov export "$XCTEST" \
+            -instr-profile="$BIN/codecov/default.profdata" \
+            -ignore-filename-regex="Tests|\.build" \
+            -summary-only \
+            | python3 -c "import json,sys; print(json.load(sys.stdin)['data'][0]['totals']['lines']['percent'])")
+          echo "KeelhavenCore line coverage: ${COVERAGE}%"
+          python3 -c "import sys; sys.exit(0 if float('${COVERAGE}') >= 100.0 else 1)" \
+            || { echo "::error::KeelhavenCore line coverage is ${COVERAGE}%, below 100%"; exit 1; }
 
   build-app:
     name: Build app (${{ matrix.label }})

@@ -86,14 +86,12 @@ public actor ResticRunner {
 
                 async let stderrData = ResticRunner.collect(stderrPipe.fileHandleForReading)
 
-                do {
-                    for try await line in stdoutPipe.fileHandleForReading.bytes.lines {
-                        if let event = ResticJSON.decodeProgressEvent(fromLine: line) {
-                            continuation.yield(event)
-                        }
+                // A stdout read failure just ends the loop; the exit code decides.
+                var lines = stdoutPipe.fileHandleForReading.bytes.lines.makeAsyncIterator()
+                while let line = (try? await lines.next()) ?? nil {
+                    if let event = ResticJSON.decodeProgressEvent(fromLine: line) {
+                        continuation.yield(event)
                     }
-                } catch {
-                    // stdout read failure: fall through, the exit code decides
                 }
 
                 var exitCode: Int32 = -1
@@ -175,12 +173,11 @@ public actor ResticRunner {
 
     private static func collect(_ handle: FileHandle) async -> Data {
         var data = Data()
-        do {
-            for try await byte in handle.bytes {
-                data.append(byte)
-            }
-        } catch {
-            // Partial output is still useful for error reporting.
+        // A read failure just ends collection early — partial output is
+        // still useful for error reporting.
+        var bytes = handle.bytes.makeAsyncIterator()
+        while let byte = (try? await bytes.next()) ?? nil {
+            data.append(byte)
         }
         return data
     }

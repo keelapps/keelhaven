@@ -8,3 +8,4 @@ Keelhaven.xcodeproj/
 Keelhaven/Info.plist
 # Downloaded by Scripts/fetch-restic.sh — pinned binaries, never committed
 Vendor/
+build/
