@@ -12,11 +12,21 @@ Every CI run on `main` uploads ad-hoc-signed builds as workflow artifacts, one
 per architecture: [Actions](../../actions) → latest CI run → download
 `Keelhaven-<n>-apple-silicon` (M-series Macs) or `Keelhaven-<n>-intel` → then:
 
+GitHub wraps every artifact in its own zip, so the download is a **zip inside a
+zip**: `Keelhaven-<n>-<arch>.zip` contains `Keelhaven.app.zip`, which contains
+the app. Install with:
+
 ```bash
-unzip ~/Downloads/Keelhaven-*.zip -d /Applications   # or drag Keelhaven.app over
+cd ~/Downloads
+unzip -o Keelhaven-*-apple-silicon.zip      # unwraps GitHub's layer → Keelhaven.app.zip
+ditto -x -k Keelhaven.app.zip /Applications # extracts Keelhaven.app (permissions intact)
 xattr -dr com.apple.quarantine /Applications/Keelhaven.app
 open /Applications/Keelhaven.app
 ```
+
+The inner `Keelhaven.app.zip` is deliberate: GitHub's own artifact zip does not
+preserve executable permissions, so the app is ditto-zipped first — never skip
+the second extraction step.
 
 The `xattr` step is required: downloaded apps get macOS's quarantine flag, and
 ad-hoc-signed (un-notarized) apps are blocked by Gatekeeper until it's removed.

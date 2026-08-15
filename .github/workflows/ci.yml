@@ -78,10 +78,10 @@ jobs:
           ARCHS=${{ matrix.xcode_archs }}
           ONLY_ACTIVE_ARCH=NO
       - name: Zip app
-        run: ditto -c -k --keepParent build/Build/Products/Release/Keelhaven.app Keelhaven.zip
+        run: ditto -c -k --keepParent build/Build/Products/Release/Keelhaven.app Keelhaven.app.zip
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
           name: Keelhaven-${{ github.run_number }}-${{ matrix.label }}
-          path: Keelhaven.zip
+          path: Keelhaven.app.zip
           if-no-files-found: error
