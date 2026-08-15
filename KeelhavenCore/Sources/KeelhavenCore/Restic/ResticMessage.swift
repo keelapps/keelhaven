@@ -109,6 +109,47 @@ public struct ResticSnapshot: Decodable, Identifiable, Sendable {
     }
 }
 
+/// A `message_type: "status"` line from `restic restore --json`.
+public struct RestoreStatusMessage: Decodable, Sendable {
+    public let percentDone: Double
+    public let totalFiles: Int?
+    public let filesRestored: Int?
+    public let totalBytes: Int64?
+    public let bytesRestored: Int64?
+    public let secondsRemaining: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case percentDone = "percent_done"
+        case totalFiles = "total_files"
+        case filesRestored = "files_restored"
+        case totalBytes = "total_bytes"
+        case bytesRestored = "bytes_restored"
+        case secondsRemaining = "seconds_remaining"
+    }
+}
+
+/// The final `message_type: "summary"` line from `restic restore --json`.
+/// Note: `total_files` counts directories too, not just files.
+public struct RestoreSummary: Decodable, Sendable {
+    public let totalFiles: Int?
+    public let filesRestored: Int
+    public let totalBytes: Int64?
+    public let bytesRestored: Int64?
+
+    enum CodingKeys: String, CodingKey {
+        case totalFiles = "total_files"
+        case filesRestored = "files_restored"
+        case totalBytes = "total_bytes"
+        case bytesRestored = "bytes_restored"
+    }
+}
+
+/// A decoded event from the `restic restore --json` stream.
+public enum RestoreProgressEvent: Sendable {
+    case status(RestoreStatusMessage)
+    case summary(RestoreSummary)
+}
+
 /// `restic cat config --json` output — decoding it successfully proves the
 /// supplied password opens the repository.
 public struct ResticRepoConfig: Decodable, Sendable {
@@ -176,6 +217,23 @@ public enum ResticJSON {
         }
         return decoder
     }()
+
+    /// Decode one line of the `restic restore --json` stream.
+    /// Returns nil for lines that are not progress events.
+    public static func decodeRestoreEvent(fromLine line: String) -> RestoreProgressEvent? {
+        guard let data = line.data(using: .utf8),
+              let envelope = try? decoder.decode(ResticMessageEnvelope.self, from: data)
+        else { return nil }
+
+        switch envelope.messageType {
+        case "status":
+            return (try? decoder.decode(RestoreStatusMessage.self, from: data)).map { .status($0) }
+        case "summary":
+            return (try? decoder.decode(RestoreSummary.self, from: data)).map { .summary($0) }
+        default:
+            return nil
+        }
+    }
 
     /// Decode one line of the `restic backup --json` stream.
     /// Returns nil for lines that are not progress events (e.g. verbose messages).

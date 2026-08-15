@@ -4,6 +4,7 @@ import KeelhavenCore
 enum WindowID {
     static let wizard = "wizard"
     static let about = "about"
+    static let restore = "restore"
 }
 
 @main
@@ -22,6 +23,12 @@ struct KeelhavenApp: App {
 
         Window("New Backup Plan", id: WindowID.wizard) {
             WizardWindowView()
+                .environment(appState)
+        }
+        .windowResizability(.contentSize)
+
+        Window("Restore Backup", id: WindowID.restore) {
+            RestoreWindowView()
                 .environment(appState)
         }
         .windowResizability(.contentSize)

@@ -12,6 +12,8 @@ public enum ResticCommand: Equatable, Sendable {
     /// Reads the repository config — the cheapest command that proves a
     /// password opens an existing repository (used when adopting one).
     case catConfig
+    /// Restores a whole snapshot into the target folder.
+    case restore(snapshotID: String, target: String)
 
     public var arguments: [String] {
         switch self {
@@ -37,6 +39,8 @@ public enum ResticCommand: Equatable, Sendable {
             return ["check"]
         case .catConfig:
             return ["cat", "config", "--json"]
+        case .restore(let snapshotID, let target):
+            return ["restore", snapshotID, "--target", target, "--json"]
         }
     }
 }

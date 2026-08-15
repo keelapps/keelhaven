@@ -43,7 +43,7 @@ public actor ResticRunner {
         }
     }
 
-    // MARK: - Streaming backup
+    // MARK: - Streaming commands
 
     /// Runs `restic backup` and yields decoded progress events as they arrive.
     /// The stream finishes after the summary event on success, or throws a
@@ -54,6 +54,35 @@ public actor ResticRunner {
         destination: Destination,
         credentials: RepoCredentials
     ) -> AsyncThrowingStream<BackupProgressEvent, Error> {
+        eventStream(
+            command,
+            destination: destination,
+            credentials: credentials,
+            decodeLine: ResticJSON.decodeProgressEvent(fromLine:)
+        )
+    }
+
+    /// Runs `restic restore` with the same lifecycle as `backupStream`.
+    public nonisolated func restoreStream(
+        _ command: ResticCommand,
+        destination: Destination,
+        credentials: RepoCredentials
+    ) -> AsyncThrowingStream<RestoreProgressEvent, Error> {
+        eventStream(
+            command,
+            destination: destination,
+            credentials: credentials,
+            decodeLine: ResticJSON.decodeRestoreEvent(fromLine:)
+        )
+    }
+
+    /// Shared subprocess JSON-lines pipeline behind both streams.
+    private nonisolated func eventStream<Event: Sendable>(
+        _ command: ResticCommand,
+        destination: Destination,
+        credentials: RepoCredentials,
+        decodeLine: @escaping @Sendable (String) -> Event?
+    ) -> AsyncThrowingStream<Event, Error> {
         let binaryURL = self.binaryURL
         return AsyncThrowingStream { continuation in
             let process = Process()
@@ -89,7 +118,7 @@ public actor ResticRunner {
                 // A stdout read failure just ends the loop; the exit code decides.
                 var lines = stdoutPipe.fileHandleForReading.bytes.lines.makeAsyncIterator()
                 while let line = (try? await lines.next()) ?? nil {
-                    if let event = ResticJSON.decodeProgressEvent(fromLine: line) {
+                    if let event = decodeLine(line) {
                         continuation.yield(event)
                     }
                 }

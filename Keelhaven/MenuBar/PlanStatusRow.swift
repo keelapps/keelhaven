@@ -3,6 +3,7 @@ import KeelhavenCore
 
 struct PlanStatusRow: View {
     @Environment(AppState.self) private var appState
+    @Environment(\.openWindow) private var openWindow
     let plan: BackupPlan
 
     private var runState: PlanRunState {
@@ -96,6 +97,11 @@ struct PlanStatusRow: View {
 
     @ViewBuilder
     private var planActions: some View {
+        Button("Restore…") {
+            appState.restorePlanID = plan.id
+            openWindow(id: WindowID.restore)
+            NSApp.activate(ignoringOtherApps: true)
+        }
         Button("Rename…") {
             promptRename()
         }

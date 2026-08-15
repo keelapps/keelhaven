@@ -201,6 +201,15 @@ final class AppState {
         try? keychain.secret(account: KeychainAccount.repositoryPassword(planID: plan.id))
     }
 
+    // MARK: - Restore
+
+    /// The plan the restore window operates on, set before opening it.
+    var restorePlanID: UUID?
+
+    func restoreCredentials(for plan: BackupPlan) throws -> RepoCredentials {
+        try credentials(for: plan)
+    }
+
     private func credentials(for plan: BackupPlan) throws -> RepoCredentials {
         guard let password = try keychain.secret(
             account: KeychainAccount.repositoryPassword(planID: plan.id)

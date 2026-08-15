@@ -90,6 +90,28 @@ final class ResticRunnerIntegrationTests: XCTestCase {
         XCTAssertEqual(config.version, 2)
         XCTAssertEqual(config.id.count, 64)
 
+        // restore the snapshot into a fresh target and verify the files
+        let restoreTarget = workDirectory.appendingPathComponent("restored", isDirectory: true)
+        var restoreSummary: RestoreSummary?
+        let restoreEvents = runner.restoreStream(
+            .restore(snapshotID: snapshotID, target: restoreTarget.path),
+            destination: destination,
+            credentials: credentials
+        )
+        for try await event in restoreEvents {
+            if case .summary(let value) = event {
+                restoreSummary = value
+            }
+        }
+        XCTAssertGreaterThanOrEqual(try XCTUnwrap(restoreSummary).filesRestored, 20)
+        // restic recreates the absolute source path inside the target
+        let restoredFile = restoreTarget.appendingPathComponent(sourceURL.path)
+            .appendingPathComponent("file0.txt")
+        XCTAssertEqual(
+            try String(contentsOf: restoredFile, encoding: .utf8),
+            "hello keelhaven 0\n"
+        )
+
         // wrong password → typed error from the real exit code
         do {
             _ = try await runner.run(

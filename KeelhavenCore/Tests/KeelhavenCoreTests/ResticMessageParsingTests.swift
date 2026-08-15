@@ -99,6 +99,41 @@ final class ResticMessageParsingTests: XCTestCase {
         XCTAssertLessThan(snapshots[0].time, snapshots[1].time)
     }
 
+    func testDecodeEveryRestoreProgressLine() throws {
+        // Captured from a real `restic restore --json` run.
+        let lines = try fixtureLines("restore-progress.jsonl")
+        XCTAssertEqual(lines.count, 6)
+
+        var statusCount = 0
+        var summary: RestoreSummary?
+        for line in lines {
+            let event = try XCTUnwrap(
+                ResticJSON.decodeRestoreEvent(fromLine: line),
+                "Line failed to decode: \(line.prefix(120))"
+            )
+            switch event {
+            case .status(let status):
+                statusCount += 1
+                XCTAssertGreaterThanOrEqual(status.percentDone, 0)
+                XCTAssertLessThanOrEqual(status.percentDone, 1)
+            case .summary(let value):
+                XCTAssertNil(summary, "More than one summary event")
+                summary = value
+            }
+        }
+        XCTAssertEqual(statusCount, 5)
+        let final = try XCTUnwrap(summary)
+        XCTAssertEqual(final.filesRestored, 316)
+        XCTAssertEqual(final.totalFiles, 316)
+        XCTAssertEqual(final.bytesRestored, 400_614_400)
+    }
+
+    func testNonRestoreLinesAreIgnored() {
+        XCTAssertNil(ResticJSON.decodeRestoreEvent(fromLine: ""))
+        XCTAssertNil(ResticJSON.decodeRestoreEvent(fromLine: "not json"))
+        XCTAssertNil(ResticJSON.decodeRestoreEvent(fromLine: #"{"message_type":"verbose_status"}"#))
+    }
+
     func testDecodeRepoConfig() throws {
         // Captured from `restic cat config --json`; a successful decode is
         // how adopting an existing repository verifies its password.
