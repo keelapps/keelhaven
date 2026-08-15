@@ -1,0 +1,45 @@
+KeelhavenCore/Sources/KeelhavenCore/Scheduling/SchedulePolicy.swift
+  s_396bb220086e64::t_5fa4bdf972a013 9
+.github/workflows/ci.yml
+  s_396bb220086e64::t_551ff5f09897f6 23-38
+README.md
+  s_396bb220086e64::t_e0d87891a63df6 3-4
+KeelhavenCore/Tests/KeelhavenCoreTests/SchedulePolicyTests.swift
+  s_396bb220086e64::t_24e82a6967a48b 67-76
+  s_396bb220086e64::t_849db2a6366283 66,77-83
+KeelhavenCore/Tests/KeelhavenCoreTests/ResticRunnerProcessTests.swift
+  s_396bb220086e64::t_0d3c907864aaf2 136,139,159,162-163
+  s_396bb220086e64::t_364f5af1546390 168-172,175-179
+  s_396bb220086e64::t_a38f85035b5d47 1-135,137-138,140-158,160-161,164,210
+  s_396bb220086e64::t_c7a64329340879 165-167,173-174,180-209
+KeelhavenCore/Sources/KeelhavenCore/Restic/ResticRunner.swift
+  s_396bb220086e64::t_3158c0afc61fbb 89-93
+  s_396bb220086e64::t_26639ad8189a61 176-180
+KeelhavenCore/Sources/KeelhavenCore/Keychain/KeychainStore.swift
+  s_396bb220086e64::t_e8c86acc95d6c7 11-13,21-38,41,53,58,77,98
+  s_396bb220086e64::t_4b0f266b158317 14-20
+CLAUDE.md
+  s_396bb220086e64::t_70c709494e4fdd 28-35
+KeelhavenCore/Tests/KeelhavenCoreTests/KeychainTests.swift
+  s_396bb220086e64::t_849092161a5917 1-172
+.gitignore
+  s_396bb220086e64::t_bc3c70da332150 11
+KeelhavenCore/Tests/KeelhavenCoreTests/EdgeCaseTests.swift
+  s_396bb220086e64::t_ef44b21c367faa 1-91
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "e4589958408b82b729d43dd4e2587ca07f785c31",
+  "prompts": {},
+  "sessions": {
+    "s_396bb220086e64": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f5665d8c-88b7-45d5-9df9-638a25e371d2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
