@@ -1,0 +1,50 @@
+README.md
+  s_eb21fc291bb59a::t_e072c3df3ee429 7
+KeelhavenCore/Sources/KeelhavenCore/Restic/ResticMessage.swift
+  s_eb21fc291bb59a::t_32b5380f485629 112-152
+  s_eb21fc291bb59a::t_5a8a5481e9499d 221-237
+Keelhaven/Restore/RestoreModel.swift
+  s_eb21fc291bb59a::t_e4b61166a6c276 1-94
+Keelhaven/Restore/RestoreWindowView.swift
+  s_eb21fc291bb59a::t_179b9f36681a99 1-141
+KeelhavenCore/Sources/KeelhavenCore/Restic/ResticCommand.swift
+  s_eb21fc291bb59a::t_69ffa7dfd2fb50 42-43
+  s_eb21fc291bb59a::t_7927d7ed093e97 15-16
+KeelhavenCore/Tests/KeelhavenCoreTests/ResticCommandTests.swift
+  s_eb21fc291bb59a::t_d884dc3b5ad778 33-37
+Keelhaven/AppState.swift
+  s_eb21fc291bb59a::t_a82330522ddc79 204-212
+KeelhavenCore/Tests/KeelhavenCoreTests/ResticRunnerIntegrationTests.swift
+  s_eb21fc291bb59a::t_e9b121d4ed51ad 93-114
+Keelhaven/KeelhavenApp.swift
+  s_eb21fc291bb59a::t_af6aac53b6c20a 7
+  s_eb21fc291bb59a::t_e44d65587496af 30-35
+Keelhaven/MenuBar/PlanStatusRow.swift
+  s_eb21fc291bb59a::t_a21b17722d4343 100-104
+  s_eb21fc291bb59a::t_de0f33bb559cea 6
+KeelhavenCore/Sources/KeelhavenCore/Restic/ResticRunner.swift
+  s_eb21fc291bb59a::t_2daa5474ade07b 121
+  s_eb21fc291bb59a::t_9a4b83b6d45864 46,57-85
+KeelhavenCore/Tests/KeelhavenCoreTests/ResticMessageParsingTests.swift
+  s_eb21fc291bb59a::t_2174208227a28a 102-136
+docs/ARCHITECTURE.md
+  s_eb21fc291bb59a::t_097f4582f6d1e2 79-80
+KeelhavenCore/Tests/KeelhavenCoreTests/Fixtures/restore-progress.jsonl
+  s_eb21fc291bb59a::t_09c9fce0e0391a 1-6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "3a05cf9f37dbc9f089be9f4ad4caa0f1cd0ba9bf",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
