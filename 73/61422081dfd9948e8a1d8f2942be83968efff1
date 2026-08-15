@@ -1,0 +1,26 @@
+README.md
+  s_eb21fc291bb59a::t_c75369c79e46f0 54-55,58-62,65-67
+  s_eb21fc291bb59a::t_c47905f63a04ff 68
+Scripts/install-local.sh
+  s_eb21fc291bb59a::t_8c82119413a1ac 1-22
+Makefile
+  s_eb21fc291bb59a::t_e3c36c2447a7a1 1-32
+.gitignore
+  s_eb21fc291bb59a::t_6d18f64c6bfc10 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "7361422081dfd9948e8a1d8f2942be83968efff1",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
