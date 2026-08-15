@@ -9,12 +9,58 @@ struct PlanStatusRow: View {
         appState.runStates[plan.id] ?? .idle
     }
 
+    /// Docker-style health dot: blue while running, green when the last
+    /// backup succeeded, red when it failed, gray before the first run.
+    private var statusColor: Color {
+        switch runState {
+        case .running:
+            return .blue
+        case .failed:
+            return .red
+        case .succeeded:
+            return .green
+        case .idle:
+            guard let lastRun = plan.lastRun else { return .gray }
+            return lastRun.success ? .green : .red
+        }
+    }
+
+    private var statusAccessibilityLabel: String {
+        switch runState {
+        case .running: return "Backup running"
+        case .failed: return "Last backup failed"
+        case .succeeded: return "Backed up"
+        case .idle:
+            guard let lastRun = plan.lastRun else { return "Not backed up yet" }
+            return lastRun.success ? "Backed up" : "Last backup failed"
+        }
+    }
+
+    /// When the next scheduled run is due, shown as a tooltip on the status line.
+    private var nextRunText: String {
+        let next = SchedulePolicy.nextRun(
+            for: plan.schedule,
+            after: plan.lastRun?.date ?? Date(),
+            calendar: .current
+        )
+        if next <= Date() {
+            return "Next backup: as soon as possible"
+        }
+        return "Next backup: \(next.formatted(date: .abbreviated, time: .shortened))"
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             HStack {
                 VStack(alignment: .leading, spacing: 1) {
-                    Text(plan.name)
-                        .fontWeight(.medium)
+                    HStack(spacing: 6) {
+                        Circle()
+                            .fill(statusColor)
+                            .frame(width: 7, height: 7)
+                            .accessibilityLabel(statusAccessibilityLabel)
+                        Text(plan.name)
+                            .fontWeight(.medium)
+                    }
                     Text(plan.destination.displayName)
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -129,8 +175,10 @@ struct PlanStatusRow: View {
                 .controlSize(.small)
                 .accessibilityLabel("Backup in progress")
         default:
-            Button("Back Up Now") {
+            Button {
                 appState.runBackup(plan)
+            } label: {
+                Label("Back Up Now", systemImage: "arrow.triangle.2.circlepath")
             }
             .controlSize(.small)
             .disabled(appState.isBackupRunning || appState.resticBinaryURL == nil)
@@ -151,25 +199,46 @@ struct PlanStatusRow: View {
                 .lineLimit(3)
                 .help(message)
         case .succeeded(let date):
-            Text("Backed up \(date.formatted(.relative(presentation: .named)))")
+            RelativeTimeText(prefix: "Backed up", date: date)
                 .font(.caption)
                 .foregroundStyle(.secondary)
+                .help(nextRunText)
         case .idle:
             if let lastRun = plan.lastRun {
                 if lastRun.success {
-                    Text("Last backup \(lastRun.date.formatted(.relative(presentation: .named)))")
+                    RelativeTimeText(prefix: "Last backup", date: lastRun.date)
                         .font(.caption)
                         .foregroundStyle(.secondary)
+                        .help(nextRunText)
                 } else {
                     Text("Last backup failed")
                         .font(.caption)
                         .foregroundStyle(.red)
+                        .help(lastRun.errorMessage ?? "Last backup failed")
                 }
             } else {
                 Text("Not backed up yet")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .help(nextRunText)
             }
+        }
+    }
+}
+
+/// "Backed up 5 seconds ago" that keeps counting up on its own (SwiftUI's
+/// `.relative` text style live-updates), switching to an absolute date once
+/// the moment is more than a day old — exactly the progression issue #19
+/// asked for.
+struct RelativeTimeText: View {
+    let prefix: String
+    let date: Date
+
+    var body: some View {
+        if Date().timeIntervalSince(date) < 24 * 60 * 60 {
+            Text("\(prefix) ") + Text(date, style: .relative) + Text(" ago")
+        } else {
+            Text("\(prefix) on \(date.formatted(date: .abbreviated, time: .shortened))")
         }
     }
 }

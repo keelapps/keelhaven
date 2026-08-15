@@ -72,8 +72,17 @@ struct MenuBarView: View {
                     }
                 }
 
-            Button("Quit Keelhaven") {
-                NSApplication.shared.terminate(nil)
+            HStack {
+                Button {
+                    NSApplication.shared.terminate(nil)
+                } label: {
+                    Label("Quit Keelhaven", systemImage: "power")
+                }
+                .keyboardShortcut("q", modifiers: .command)
+                Spacer()
+                Text("⌘Q")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
         }
         .padding(14)
