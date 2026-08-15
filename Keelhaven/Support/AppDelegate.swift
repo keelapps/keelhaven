@@ -11,7 +11,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.activate(ignoringOtherApps: true)
         let alert = NSAlert()
         alert.messageText = "Keelhaven is already running"
-        alert.informativeText = "Look for its icon in the menu bar at the top right of your screen. Click it to manage your backups."
+        alert.informativeText = """
+        Look for its icon in the menu bar at the top right of your screen. Click it to manage your backups.
+
+        Don't see the icon? Your menu bar is probably full — on Macs with a notch, macOS hides icons that don't fit. Quit another menu bar app or ⌘-drag an icon off the bar to make room, then relaunch Keelhaven.
+        """
         alert.addButton(withTitle: "OK")
         alert.runModal()
         return false
