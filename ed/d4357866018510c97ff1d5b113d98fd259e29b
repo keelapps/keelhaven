@@ -1,0 +1,30 @@
+Keelhaven/Wizard/DestinationStepView.swift
+  s_eb21fc291bb59a::t_808bcb8498edb3 21-25
+Keelhaven/Services/PlanManager.swift
+  s_eb21fc291bb59a::t_6bb4537564b464 29
+KeelhavenCore/Tests/KeelhavenCoreTests/RepositoryProbeTests.swift
+  s_eb21fc291bb59a::t_460bbbe3a83724 1-35
+Keelhaven/Wizard/WizardModel.swift
+  s_eb21fc291bb59a::t_51836f721cd3d8 70-77,82
+KeelhavenCore/Sources/KeelhavenCore/Restic/RepositoryProbe.swift
+  s_eb21fc291bb59a::t_5c209b3e466206 1-13
+Keelhaven/Wizard/WizardWindowView.swift
+  s_eb21fc291bb59a::t_28cfd0dfd538d3 83
+  s_eb21fc291bb59a::t_d3120faaf501a4 75
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "edd4357866018510c97ff1d5b113d98fd259e29b",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
