@@ -1,0 +1,19 @@
+Keelhaven/Support/AppDelegate.swift
+  s_65fe545d4a9133::t_4acf1bd53c8cc4 7-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "573be303ac1951faf6ac93de75587ce9c58c8772",
+  "prompts": {},
+  "sessions": {
+    "s_65fe545d4a9133": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e4c7fa6b-d13c-46ea-afda-b0e293dfd1e0",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
