@@ -1,0 +1,30 @@
+Keelhaven/Localizable.xcstrings
+  s_65fe545d4a9133::t_2693f339c70164 64-73,134-143,154-173,354-363,664-673,724-753,1004-1013
+Keelhaven/Wizard/WizardWindowView.swift
+  s_65fe545d4a9133::t_e70948dab1b2d1 73-80
+Keelhaven/Wizard/DestinationStepView.swift
+  s_65fe545d4a9133::t_a91c6edbe605e5 189-193
+  s_65fe545d4a9133::t_51b3ff882b5184 134-138
+  s_65fe545d4a9133::t_d97df21a0d4724 282-285
+  s_65fe545d4a9133::t_689a5c698b6078 206-210
+Keelhaven/Wizard/WizardModel.swift
+  s_65fe545d4a9133::t_f17ddb1f8ff6e5 139-142,145,153-163
+  s_65fe545d4a9133::t_26275366d4a022 164,210-246
+  s_65fe545d4a9133::t_581242abcb099e 165
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "9e9afefaba76f4a27206dd80509ce3d34ba73713",
+  "prompts": {},
+  "sessions": {
+    "s_65fe545d4a9133": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e4c7fa6b-d13c-46ea-afda-b0e293dfd1e0",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
