@@ -1,0 +1,30 @@
+Keelhaven/Wizard/SourceStepView.swift
+  s_eb21fc291bb59a::t_d559f592715943 3-31,40
+  s_eb21fc291bb59a::t_6f18a7fe95ee44 84-109
+  s_eb21fc291bb59a::t_95d612d2564815 41
+Keelhaven/Services/ExternalDriveService.swift
+  s_eb21fc291bb59a::t_cf2024c5d61218 1-60
+Keelhaven/Wizard/DestinationStepView.swift
+  s_eb21fc291bb59a::t_421757733cf590 5-6,9-12,14-16,18-36,38-49,51,53-57,59-62,65-66,68-88,90-96,99-105,107-113,116-126,129-145,148-164,167,170,173,194,198-268
+Keelhaven/Wizard/WizardModel.swift
+  s_eb21fc291bb59a::t_7377c1808fbd9b 178-190
+Keelhaven/Wizard/WizardWindowView.swift
+  s_eb21fc291bb59a::t_4d3493f0fb02d0 32
+  s_eb21fc291bb59a::t_29ab85fb901bc2 114-116
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "6fa755042ceaafc1294196873aa0cf70cfe574d2",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
