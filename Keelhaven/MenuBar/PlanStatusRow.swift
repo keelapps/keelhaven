@@ -66,8 +66,13 @@ struct PlanStatusRow: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    // Long names truncate against the trailing button, so the
+                    // hover tooltip carries the full title (issue #39).
                     Text(plan.name)
                         .fontWeight(.semibold)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                        .help(plan.name)
                     Spacer()
                     trailingControl
                     planActionsMenu
@@ -77,6 +82,7 @@ struct PlanStatusRow: View {
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
                     .truncationMode(.middle)
+                    .help(plan.destination.displayName)
                 statusLine
             }
         }
