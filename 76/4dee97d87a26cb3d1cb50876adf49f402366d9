@@ -1,0 +1,39 @@
+Keelhaven/Support/ScheduleUI.swift
+  s_65fe545d4a9133::t_6fb556b54bea47 1-76
+Keelhaven/MenuBar/PlanStatusRow.swift
+  s_65fe545d4a9133::t_6e2b1d49abee72 127-131
+  s_65fe545d4a9133::t_62e12d2c1654e5 86-95
+Keelhaven/Wizard/WizardModel.swift
+  s_65fe545d4a9133::t_563b1e369a2ef5 247
+Keelhaven/EditPlan/EditPlanWindowView.swift
+  s_65fe545d4a9133::t_79d0228576d67e 1-171
+Keelhaven/Localizable.xcstrings
+  s_65fe545d4a9133::t_a450b1e64290fe 554-583,624-633,654-663,1274-1283,1294-1303,1384-1393,1566
+Keelhaven/Wizard/ScheduleStepView.swift
+  s_65fe545d4a9133::t_ab5d78f6e40c43 12
+  s_65fe545d4a9133::t_7421a4b0022980 34-37
+Keelhaven/KeelhavenApp.swift
+  s_65fe545d4a9133::t_da8dbf5f49ec56 9
+  s_65fe545d4a9133::t_4e358cbaaff376 46-51
+Keelhaven/AppState.swift
+  s_65fe545d4a9133::t_3086f888fb6f1c 250-252
+  s_65fe545d4a9133::t_51b850a0347c54 129-150
+Keelhaven/EditPlan/EditPlanModel.swift
+  s_65fe545d4a9133::t_7224ff979f0243 1-44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "764dee97d87a26cb3d1cb50876adf49f402366d9",
+  "prompts": {},
+  "sessions": {
+    "s_65fe545d4a9133": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e4c7fa6b-d13c-46ea-afda-b0e293dfd1e0",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
