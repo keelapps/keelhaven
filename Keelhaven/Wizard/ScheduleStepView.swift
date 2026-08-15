@@ -9,7 +9,7 @@ struct ScheduleStepView: View {
             Text("How often should it run?")
                 .font(.title3)
 
-            ScheduleEditor(kind: $model.scheduleKind, dailyTime: $model.dailyTime)
+            ScheduleEditor(kind: $model.scheduleKind, dailyTime: $model.dailyTime, weekday: $model.weekday)
 
             Text("Keelhaven also catches up automatically after your Mac was asleep or off at the scheduled time.")
                 .font(.callout)
@@ -33,7 +33,7 @@ struct ScheduleStepView: View {
             summaryRow(label: String(localized: "Destination"), value: model.buildDraft().destination.displayName)
             summaryRow(
                 label: String(localized: "Schedule"),
-                value: Schedule(kind: model.scheduleKind, dailyTime: model.dailyTime).displayText
+                value: Schedule(kind: model.scheduleKind, dailyTime: model.dailyTime, weekday: model.weekday).displayText
             )
         }
     }

@@ -21,6 +21,7 @@ enum DestinationType: String, CaseIterable, Identifiable {
 enum ScheduleKind: String, CaseIterable, Identifiable {
     case hourly
     case daily
+    case weekly
 
     var id: String { rawValue }
 
@@ -28,6 +29,7 @@ enum ScheduleKind: String, CaseIterable, Identifiable {
         switch self {
         case .hourly: return String(localized: "Every hour")
         case .daily: return String(localized: "Once a day")
+        case .weekly: return String(localized: "Once a week")
         }
     }
 }
@@ -96,6 +98,8 @@ final class WizardModel {
 
     var scheduleKind: ScheduleKind = .daily
     var dailyTime = Calendar.current.date(bySettingHour: 21, minute: 0, second: 0, of: Date()) ?? Date()
+    /// Calendar weekday (1 = Sunday); defaults to the region's first weekday.
+    var weekday = Calendar.current.firstWeekday
 
     var isCreating = false
     var creationError: String?
@@ -244,7 +248,7 @@ final class WizardModel {
     func buildDraft() -> PlanDraft {
         let destination = currentDestination
 
-        let schedule = Schedule(kind: scheduleKind, dailyTime: dailyTime)
+        let schedule = Schedule(kind: scheduleKind, dailyTime: dailyTime, weekday: weekday)
 
         let trimmedName = name.trimmingCharacters(in: .whitespaces)
         return PlanDraft(
@@ -282,6 +286,7 @@ final class WizardModel {
         passwordVerificationError = fresh.passwordVerificationError
         scheduleKind = fresh.scheduleKind
         dailyTime = fresh.dailyTime
+        weekday = fresh.weekday
         isCreating = fresh.isCreating
         creationError = fresh.creationError
         lastAutofilledName = fresh.lastAutofilledName

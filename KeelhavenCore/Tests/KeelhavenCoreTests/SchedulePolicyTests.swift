@@ -74,6 +74,53 @@ final class SchedulePolicyTests: XCTestCase {
         XCTAssertEqual(next, reference.addingTimeInterval(86400))
     }
 
+    // 2026-08-14 is a Friday; Calendar weekdays are 1 = Sunday … 7 = Saturday.
+
+    func testWeeklyNextRunLaterSameWeek() {
+        let reference = utcDate(2026, 8, 14, 10, 0)
+        let next = SchedulePolicy.nextRun(
+            for: .weekly(weekday: 7, hour: 9, minute: 0), after: reference, calendar: calendar
+        )
+        XCTAssertEqual(next, utcDate(2026, 8, 15, 9, 0))
+    }
+
+    func testWeeklyNextRunRollsToNextWeek() {
+        // Friday 10:00, scheduled Fridays 09:00 — this week's slot has passed.
+        let reference = utcDate(2026, 8, 14, 10, 0)
+        let next = SchedulePolicy.nextRun(
+            for: .weekly(weekday: 6, hour: 9, minute: 0), after: reference, calendar: calendar
+        )
+        XCTAssertEqual(next, utcDate(2026, 8, 21, 9, 0))
+    }
+
+    func testMissedWeeklyRunIsDueImmediately() {
+        // Last ran Sunday Aug 2; the Mac slept through Sunday Aug 9 — overdue.
+        let plan = makePlan(
+            schedule: .weekly(weekday: 1, hour: 21, minute: 0),
+            lastRun: utcDate(2026, 8, 2, 21, 0)
+        )
+        XCTAssertTrue(SchedulePolicy.isDue(plan, now: utcDate(2026, 8, 11, 9, 0), calendar: calendar))
+    }
+
+    func testWeeklyRunNotDueTwiceInSameWeek() {
+        let plan = makePlan(
+            schedule: .weekly(weekday: 1, hour: 21, minute: 0),
+            lastRun: utcDate(2026, 8, 9, 21, 0)
+        )
+        XCTAssertFalse(SchedulePolicy.isDue(plan, now: utcDate(2026, 8, 12, 9, 0), calendar: calendar))
+        XCTAssertTrue(SchedulePolicy.isDue(plan, now: utcDate(2026, 8, 16, 21, 0), calendar: calendar))
+    }
+
+    func testWeeklyNextRunFallsBackWhenCalendarCannotMatch() {
+        // Same guard as the daily variant: an unmatchable weekday must fall
+        // back to +7 days rather than crash.
+        let reference = utcDate(2026, 8, 14, 10, 0)
+        let next = SchedulePolicy.nextRun(
+            for: .weekly(weekday: 99, hour: 9, minute: 0), after: reference, calendar: calendar
+        )
+        XCTAssertEqual(next, reference.addingTimeInterval(7 * 86400))
+    }
+
     func testDefaultCalendarParameter() {
         // Hourly math is calendar-independent, so the `.current` default is
         // safe to exercise regardless of the machine's timezone.

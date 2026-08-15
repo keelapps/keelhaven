@@ -12,6 +12,7 @@ final class EditPlanModel {
     var excludePatterns: [String] = []
     var scheduleKind: ScheduleKind = .daily
     var dailyTime = Schedule.defaultDailyTime
+    var weekday = Calendar.current.firstWeekday
     /// Scratch field for the exclude-pattern TextField.
     var newExcludePattern = ""
 
@@ -19,7 +20,7 @@ final class EditPlanModel {
         name = plan.name
         sourcePaths = plan.sourcePaths
         excludePatterns = plan.excludePatterns
-        (scheduleKind, dailyTime) = plan.schedule.editorComponents
+        (scheduleKind, dailyTime, weekday) = plan.schedule.editorComponents
         newExcludePattern = ""
     }
 
@@ -28,7 +29,7 @@ final class EditPlanModel {
     }
 
     func builtSchedule() -> Schedule {
-        Schedule(kind: scheduleKind, dailyTime: dailyTime)
+        Schedule(kind: scheduleKind, dailyTime: dailyTime, weekday: weekday)
     }
 
     func addExcludePattern() {

@@ -43,6 +43,10 @@ final class ModelRoundTripTests: XCTestCase {
     func testScheduleRoundTrip() throws {
         XCTAssertEqual(try roundTrip(Schedule.hourly), .hourly)
         XCTAssertEqual(try roundTrip(Schedule.daily(hour: 3, minute: 15)), .daily(hour: 3, minute: 15))
+        XCTAssertEqual(
+            try roundTrip(Schedule.weekly(weekday: 6, hour: 8, minute: 30)),
+            .weekly(weekday: 6, hour: 8, minute: 30)
+        )
     }
 
     func testFailedRunRecordRoundTrip() throws {

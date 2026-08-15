@@ -43,7 +43,7 @@ struct EditPlanWindowView: View {
 
             Text("Schedule")
                 .font(.headline)
-            ScheduleEditor(kind: $model.scheduleKind, dailyTime: $model.dailyTime)
+            ScheduleEditor(kind: $model.scheduleKind, dailyTime: $model.dailyTime, weekday: $model.weekday)
 
             destinationRow(for: plan)
 

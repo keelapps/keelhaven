@@ -21,6 +21,17 @@ public enum SchedulePolicy {
                 matching: components,
                 matchingPolicy: .nextTime
             ) ?? reference.addingTimeInterval(86400)
+        case .weekly(let weekday, let hour, let minute):
+            var components = DateComponents()
+            components.weekday = weekday
+            components.hour = hour
+            components.minute = minute
+            components.second = 0
+            return calendar.nextDate(
+                after: reference,
+                matching: components,
+                matchingPolicy: .nextTime
+            ) ?? reference.addingTimeInterval(7 * 86400)
         }
     }
 
