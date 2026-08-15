@@ -1,0 +1,21 @@
+CLAUDE.md
+  s_396bb220086e64::t_231ed57af3277d 28
+.github/workflows/ci.yml
+  s_396bb220086e64::t_c2767349fa3636 24-25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "e50dc397a489019994011279f6f902b343e3d8f5",
+  "prompts": {},
+  "sessions": {
+    "s_396bb220086e64": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f5665d8c-88b7-45d5-9df9-638a25e371d2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
