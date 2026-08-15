@@ -1,0 +1,25 @@
+Keelhaven/Wizard/WizardWindowView.swift
+  s_eb21fc291bb59a::t_1430a47e066526 109-128
+  s_eb21fc291bb59a::t_8293dc3eb33b09 81-88,91
+Keelhaven/Wizard/DestinationStepView.swift
+  s_eb21fc291bb59a::t_b626404c666e27 46,51-60
+Keelhaven/Wizard/WizardModel.swift
+  s_eb21fc291bb59a::t_17e15d1207b8b4 260-261
+  s_eb21fc291bb59a::t_b1109560c38804 48-81
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "a9b1b74075684814c1933c797ffd360a3a65ffbc",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
