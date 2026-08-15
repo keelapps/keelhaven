@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/banner.png" alt="Keelhaven — privacy-first Mac backup to storage you own" width="820">
+</p>
+
 # Keelhaven
 
 Privacy-first Mac backup to your own storage. One-time purchase, no subscription, no telemetry.
@@ -85,6 +89,8 @@ anything. A user-set path override and Homebrew locations remain as fallbacks.
 | `KeelhavenCore/Tests/…/Fixtures/` | Unmodified `restic --json` output captured from restic 0.19.1 — parsers are written against real data, not docs. |
 | `Keelhaven/` | SwiftUI app: menu bar, wizard, services (scheduler, notifications, login item, Keychain wiring). |
 | `project.yml` | XcodeGen spec — the `.xcodeproj` is generated, never committed. |
+| `design/` | Icon and brand kit. `icon.mjs` holds the geometry; `build.mjs` renders the asset catalog, `.icns` and favicons. See `design/README.md`. |
+| `site/` | Landing page — one self-contained `index.html`, no build step. |
 | `docs/ARCHITECTURE.md` | Module boundaries, data flow, and upgrade paths. |
 
 ## Security model (v1)

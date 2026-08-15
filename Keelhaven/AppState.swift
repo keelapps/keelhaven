@@ -83,15 +83,24 @@ final class AppState {
 
     // MARK: - Menu bar
 
-    var menuBarSymbolName: String {
+    /// What the menu bar shows. Idle is the Keelhaven mark (a template image in
+    /// the asset catalog, so macOS tints it for light/dark and for the
+    /// highlighted menu); the two transient states borrow SF Symbols, which
+    /// already read as "working" and "something went wrong".
+    enum MenuBarIcon: Equatable {
+        case idle
+        case symbol(String)
+    }
+
+    var menuBarIcon: MenuBarIcon {
         let states = runStates.values
         if states.contains(where: { if case .running = $0 { return true }; return false }) {
-            return "arrow.triangle.2.circlepath"
+            return .symbol("arrow.triangle.2.circlepath")
         }
         if states.contains(where: { if case .failed = $0 { return true }; return false }) {
-            return "exclamationmark.triangle"
+            return .symbol("exclamationmark.triangle")
         }
-        return "shippingbox"
+        return .idle
     }
 
     // MARK: - Plan lifecycle

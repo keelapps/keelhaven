@@ -53,30 +53,33 @@ struct PlanStatusRow: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            HStack {
-                VStack(alignment: .leading, spacing: 1) {
-                    HStack(spacing: 6) {
-                        Circle()
-                            .fill(statusColor)
-                            .frame(width: 10, height: 10)
-                            .accessibilityLabel(statusAccessibilityLabel)
-                        Text(plan.name)
-                            .fontWeight(.medium)
-                    }
-                    Text(plan.destination.displayName)
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                        .truncationMode(.middle)
+        // The dot hangs in its own column so the name, path and status line
+        // share one left edge — the layout the landing-page mockup settled on.
+        // Sizes stay at the elder-friendly values from #33 (10px dot, callout
+        // secondary text), only the arrangement changes.
+        HStack(alignment: .top, spacing: 9) {
+            Circle()
+                .fill(statusColor)
+                .frame(width: 10, height: 10)
+                .padding(.top, 4)
+                .accessibilityLabel(statusAccessibilityLabel)
+
+            VStack(alignment: .leading, spacing: 3) {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text(plan.name)
+                        .fontWeight(.semibold)
+                    Spacer()
+                    trailingControl
+                    planActionsMenu
                 }
-                Spacer()
-                trailingControl
-                planActionsMenu
+                Text(plan.destination.displayName)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                statusLine
             }
-            statusLine
         }
-        .padding(.vertical, 2)
         .contentShape(Rectangle())
         .contextMenu {
             planActions
@@ -90,6 +93,7 @@ struct PlanStatusRow: View {
             planActions
         } label: {
             Image(systemName: "ellipsis.circle")
+                .foregroundStyle(.secondary)
         }
         .menuStyle(.borderlessButton)
         .menuIndicator(.hidden)
@@ -179,15 +183,14 @@ struct PlanStatusRow: View {
     private var trailingControl: some View {
         switch runState {
         case .running:
-            ProgressView()
-                .controlSize(.small)
-                .accessibilityLabel("Backup in progress")
+            // The linear progress bar below already says "running" —
+            // a second spinner up here is noise.
+            EmptyView()
         default:
-            Button {
+            Button("Back Up Now") {
                 appState.runBackup(plan)
-            } label: {
-                Label("Back Up Now", systemImage: "arrow.triangle.2.circlepath")
             }
+            .buttonStyle(.bordered)
             .controlSize(.regular)
             .disabled(appState.isBackupRunning || appState.resticBinaryURL == nil)
         }
@@ -199,6 +202,7 @@ struct PlanStatusRow: View {
         case .running(let progress):
             ProgressView(value: progress)
                 .controlSize(.small)
+                .padding(.top, 2)
                 .accessibilityLabel(String(localized: "Backup \(Int(progress * 100)) percent done"))
         case .failed(let message):
             Text(message)

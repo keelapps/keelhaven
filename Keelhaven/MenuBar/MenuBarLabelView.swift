@@ -15,7 +15,7 @@ struct MenuBarLabelView: View {
     @Environment(\.openWindow) private var openWindow
 
     var body: some View {
-        Image(systemName: appState.menuBarSymbolName)
+        icon
             .accessibilityLabel("Keelhaven backup status")
             .onChange(of: appState.shouldOfferWelcome) { _, offer in
                 // First launch with zero plans: open the welcome window,
@@ -34,6 +34,24 @@ struct MenuBarLabelView: View {
                     showAlreadyRunningAlert()
                 }
             }
+    }
+
+    /// Idle shows the Keelhaven mark (a template image, so macOS tints it per
+    /// theme); the transient states borrow SF Symbols, which already read as
+    /// "working" and "something went wrong".
+    @ViewBuilder
+    private var icon: some View {
+        switch appState.menuBarIcon {
+        case .idle:
+            // Sized in points so it matches the metrics of the SF Symbols
+            // used for the other states.
+            Image("MenuBarIcon")
+                .renderingMode(.template)
+                .resizable()
+                .frame(width: 18, height: 18)
+        case .symbol(let name):
+            Image(systemName: name)
+        }
     }
 
     private func openWelcome() {

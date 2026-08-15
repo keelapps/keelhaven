@@ -7,16 +7,17 @@ struct MenuBarView: View {
     @State private var startAtLogin = LoginItemService.isEnabled
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("Keelhaven")
-                    .font(.headline)
+                    .font(.system(size: 15, weight: .semibold))
                 Spacer()
                 Button {
                     openWindow(id: WindowID.about)
                     NSApp.activate(ignoringOtherApps: true)
                 } label: {
                     Image(systemName: "info.circle")
+                        .font(.system(size: 14))
                         .foregroundStyle(.secondary)
                 }
                 .buttonStyle(.plain)
@@ -55,8 +56,10 @@ struct MenuBarView: View {
                     .disabled(appState.resticBinaryURL == nil)
                 }
             } else {
-                ForEach(appState.plans) { plan in
-                    PlanStatusRow(plan: plan)
+                VStack(alignment: .leading, spacing: 12) {
+                    ForEach(appState.plans) { plan in
+                        PlanStatusRow(plan: plan)
+                    }
                 }
             }
 
@@ -66,36 +69,47 @@ struct MenuBarView: View {
                 openWizard()
             } label: {
                 Label("Add Backup Plan…", systemImage: "plus")
+                    .contentShape(Rectangle())
             }
+            .buttonStyle(.plain)
             .disabled(appState.resticBinaryURL == nil)
 
             Divider()
 
-            // Settings live below the last divider, grouped with Quit —
-            // the section above is for actions, this one is app-level.
-            Toggle("Start at Login", isOn: $startAtLogin)
-                .onChange(of: startAtLogin) { _, newValue in
-                    do {
-                        try LoginItemService.setEnabled(newValue)
-                    } catch {
-                        startAtLogin = LoginItemService.isEnabled
-                    }
-                }
-
+            // App-level controls share the last section, like a system menu:
+            // the toggle and Quit belong together, actions live above.
             HStack {
-                Button {
-                    NSApplication.shared.terminate(nil)
-                } label: {
-                    Label("Quit Keelhaven", systemImage: "power")
-                }
-                .keyboardShortcut("q", modifiers: .command)
+                Text("Start at Login")
                 Spacer()
-                Text("⌘Q")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                Toggle("Start at Login", isOn: $startAtLogin)
+                    .labelsHidden()
+                    .toggleStyle(.switch)
+                    .controlSize(.small)
+                    .tint(.green)
+                    .onChange(of: startAtLogin) { _, newValue in
+                        do {
+                            try LoginItemService.setEnabled(newValue)
+                        } catch {
+                            startAtLogin = LoginItemService.isEnabled
+                        }
+                    }
             }
+
+            Button {
+                NSApplication.shared.terminate(nil)
+            } label: {
+                HStack {
+                    Text("Quit Keelhaven")
+                    Spacer()
+                    Text("⌘Q")
+                        .foregroundStyle(.tertiary)
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .keyboardShortcut("q", modifiers: .command)
         }
-        .padding(14)
+        .padding(16)
         .frame(width: 340)
     }
 

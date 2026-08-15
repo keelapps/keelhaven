@@ -10,3 +10,5 @@ Keelhaven/Info.plist
 # Downloaded by Scripts/fetch-restic.sh — pinned binaries, never committed
 Vendor/
 build/
+design/node_modules/
+design/package-lock.json
