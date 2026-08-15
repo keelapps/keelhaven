@@ -8,9 +8,20 @@ Keelhaven wraps the battle-tested [restic](https://restic.net) engine in a nativ
 
 ## Install from CI (personal use)
 
+**Use the install script** — it downloads the newest successful build for your
+Mac's architecture, replaces /Applications/Keelhaven.app, strips quarantine,
+quits any running copy, and launches the new one:
+
+```bash
+./Scripts/install-latest.sh        # needs: brew install gh (authenticated)
+```
+
+<details>
+<summary>Manual fallback (what the script automates)</summary>
+
 Every CI run on `main` uploads ad-hoc-signed builds as workflow artifacts, one
 per architecture: [Actions](../../actions) → latest CI run → download
-`Keelhaven-<n>-apple-silicon` (M-series Macs) or `Keelhaven-<n>-intel` → then:
+`Keelhaven-<n>-apple-silicon` (M-series Macs) or `Keelhaven-<n>-intel`.
 
 GitHub wraps every artifact in its own zip, so the download is a **zip inside a
 zip**: `Keelhaven-<n>-<arch>.zip` contains `Keelhaven.app.zip`, which contains
@@ -23,6 +34,11 @@ ditto -x -k Keelhaven.app.zip /Applications # extracts Keelhaven.app (permission
 xattr -dr com.apple.quarantine /Applications/Keelhaven.app
 open /Applications/Keelhaven.app
 ```
+
+Quit the old copy first (menu bar → Quit Keelhaven); a menu-bar app that is
+already running shows nothing when you double-click it again.
+
+</details>
 
 The inner `Keelhaven.app.zip` is deliberate: GitHub's own artifact zip does not
 preserve executable permissions, so the app is ditto-zipped first — never skip
