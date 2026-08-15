@@ -26,6 +26,11 @@ targets:
         CFBundleDisplayName: Keelhaven
         # Menu-bar-only app: no Dock icon, no app switcher entry
         LSUIElement: true
+        # Without these, xcodegen writes literal defaults (1.0 / 1) and the
+        # MARKETING_VERSION / CURRENT_PROJECT_VERSION build settings — incl.
+        # CI's run-number override — never reach the built app's Info.plist.
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
     settings:
       base:
         SWIFT_VERSION: "5.0"
@@ -57,5 +62,9 @@ targets:
         script: |
           INFO="$TARGET_BUILD_DIR/$INFOPLIST_PATH"
           COMMIT=$(cd "$SRCROOT" && git rev-parse --short HEAD 2>/dev/null || echo unknown)
+          # Uncommitted changes make the bare commit hash a lie — mark them.
+          if ! (cd "$SRCROOT" && git diff --quiet HEAD 2>/dev/null); then
+            COMMIT="${COMMIT}-dirty"
+          fi
           /usr/libexec/PlistBuddy -c "Delete :GitCommit" "$INFO" 2>/dev/null || true
           /usr/libexec/PlistBuddy -c "Add :GitCommit string $COMMIT" "$INFO"
