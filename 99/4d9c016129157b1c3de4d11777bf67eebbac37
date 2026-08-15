@@ -1,0 +1,56 @@
+Keelhaven/MenuBar/MenuBarLabelView.swift
+  s_65fe545d4a9133::t_8e5c5976ee449f 18
+  s_65fe545d4a9133::t_60b01b82327900 39-56
+Keelhaven/Assets.xcassets/Contents.json
+  s_65fe545d4a9133::t_dab8dff1d54728 1-6
+design/package.json
+  s_65fe545d4a9133::t_dab8dff1d54728 1-14
+Keelhaven/Assets.xcassets/MenuBarIcon.imageset/Contents.json
+  s_65fe545d4a9133::t_dab8dff1d54728 1-26
+Keelhaven/AppState.swift
+  s_65fe545d4a9133::t_dab8dff1d54728 86-95,98,101,103
+design/svg/mono-lantern.svg
+  s_65fe545d4a9133::t_dab8dff1d54728 1-4
+design/svg/mono.svg
+  s_65fe545d4a9133::t_dab8dff1d54728 1-4
+design/svg/mark.svg
+  s_65fe545d4a9133::t_dab8dff1d54728 1-93
+design/svg/mono-navy.svg
+  s_65fe545d4a9133::t_dab8dff1d54728 1-4
+design/svg/menubar.svg
+  s_65fe545d4a9133::t_dab8dff1d54728 1-10
+.gitignore
+  s_65fe545d4a9133::t_dab8dff1d54728 13-14
+design/build.mjs
+  s_65fe545d4a9133::t_dab8dff1d54728 1-136
+design/svg/mark-flat.svg
+  s_65fe545d4a9133::t_dab8dff1d54728 1-93
+Keelhaven/Assets.xcassets/AppIcon.appiconset/Contents.json
+  s_65fe545d4a9133::t_dab8dff1d54728 1-68
+design/svg/icon-small.svg
+  s_65fe545d4a9133::t_dab8dff1d54728 1-107
+docs/assets/favicon.svg
+  s_65fe545d4a9133::t_dab8dff1d54728 1-107
+project.yml
+  s_65fe545d4a9133::t_dab8dff1d54728 41-42
+design/svg/icon.svg
+  s_65fe545d4a9133::t_dab8dff1d54728 1-117
+design/icon.mjs
+  s_65fe545d4a9133::t_dab8dff1d54728 1-279
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "994d9c016129157b1c3de4d11777bf67eebbac37",
+  "prompts": {},
+  "sessions": {
+    "s_65fe545d4a9133": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e4c7fa6b-d13c-46ea-afda-b0e293dfd1e0",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
