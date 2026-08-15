@@ -1,0 +1,24 @@
+Keelhaven/Wizard/ScheduleStepView.swift
+  s_eb21fc291bb59a::t_a6d055e5d0d653 30
+Keelhaven/MenuBar/PlanStatusRow.swift
+  s_eb21fc291bb59a::t_a6d055e5d0d653 60,66,203,209,216,221,227
+  s_eb21fc291bb59a::t_4aff476e92aeee 189
+Keelhaven/MenuBar/MenuBarView.swift
+  s_eb21fc291bb59a::t_a6d055e5d0d653 99
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "aa55cd988ba23f4c50d34736ab322d2218929b83",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
