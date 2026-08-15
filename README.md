@@ -51,21 +51,20 @@ Developer-ID-signed and notarized instead.
 
 ## Development setup
 
+Common tasks are wrapped in a thin Makefile — run `make` to list them:
+
 ```bash
-brew install restic xcodegen        # restic here is for the integration tests
 git clone git@github.com:keelapps/keelhaven.git && cd keelhaven
-
-# Core engine: compiles + 34 tests against real restic fixtures
-cd KeelhavenCore && swift test && cd ..
-
-# Vendor the universal restic binary that gets bundled into the app
-./Scripts/fetch-restic.sh
-
-# App: generate the Xcode project (never committed), then build
-xcodegen generate
-xcodebuild -project Keelhaven.xcodeproj -scheme Keelhaven build
-# …or: open Keelhaven.xcodeproj and hit Run
+make bootstrap   # brew install restic xcodegen gh
+make test        # KeelhavenCore tests, incl. the real-restic integration suite
+make build       # vendor restic + xcodegen generate + Release xcodebuild
+make install     # build from source and install to /Applications
+make update      # install the latest CI build instead (no local build)
 ```
+
+The Makefile is a task index only — logic lives in `Scripts/*.sh` and the
+standard tools, so `xcodegen generate` + opening `Keelhaven.xcodeproj` in
+Xcode works exactly the same.
 
 The app ships with its own copy of restic (universal binary, checksum-verified
 against the official release) in `Contents/MacOS/` — end users never install
