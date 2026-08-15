@@ -1,0 +1,71 @@
+Keelhaven/AppState.swift
+  s_eb21fc291bb59a::t_6e4edd68f4df4b 52
+  s_eb21fc291bb59a::t_5796ccaa15c3a3 43
+Keelhaven/Services/NotificationService.swift
+  s_eb21fc291bb59a::t_344f8e9c7acad7 13,19,21,28
+Keelhaven/MenuBar/PlanStatusRow.swift
+  s_eb21fc291bb59a::t_a4a940041fccb0 210,217,225
+  s_eb21fc291bb59a::t_4bc50b88d3f259 129,134-135
+  s_eb21fc291bb59a::t_84039a62162bcd 172
+  s_eb21fc291bb59a::t_551522e44a1f7f 240-241,243-248,253-258,260-265
+  s_eb21fc291bb59a::t_bea09b6fd6ce02 159
+  s_eb21fc291bb59a::t_f9e14ba26f85f8 50,52
+  s_eb21fc291bb59a::t_b3a8e20f680d04 97
+  s_eb21fc291bb59a::t_680458f1f45756 31-33,35-38
+  s_eb21fc291bb59a::t_765a63d5f67b0a 143-144,146-147
+  s_eb21fc291bb59a::t_277b910f52dffa 202
+project.yml
+  s_eb21fc291bb59a::t_c655f019e306c1 35-36
+  s_eb21fc291bb59a::t_651b341dc281e9 4
+  s_eb21fc291bb59a::t_460e1ea0c73761 44
+Keelhaven/MenuBar/MenuBarLabelView.swift
+  s_eb21fc291bb59a::t_fc650ff2e4d1f3 47-49
+Keelhaven/Wizard/WizardWindowView.swift
+  s_eb21fc291bb59a::t_85eb78e23c9160 9-13
+Keelhaven/Wizard/WizardModel.swift
+  s_eb21fc291bb59a::t_522247547133f6 222
+  s_eb21fc291bb59a::t_4408a769dd8b6c 6-8,11-18,22-23,26-32
+Keelhaven/Welcome/WelcomeWindowView.swift
+  s_eb21fc291bb59a::t_ad6e36256f9ad1 31,33,35
+Keelhaven/Wizard/FolderPicker.swift
+  s_eb21fc291bb59a::t_642e3996e098ca 11
+  s_eb21fc291bb59a::t_d6700284b6dd86 24
+KeelhavenCore/Sources/KeelhavenCore/Restic/ResticError.swift
+  s_eb21fc291bb59a::t_3249a0eb4dbf5c 53-54,58,60,62,64,66,68,70
+Keelhaven/Wizard/SourceStepView.swift
+  s_eb21fc291bb59a::t_caf8191222eaef 13,19,25
+  s_eb21fc291bb59a::t_6cc980cfd0eced 104-106
+Keelhaven/Restore/RestoreWindowView.swift
+  s_eb21fc291bb59a::t_e09bea48e60299 135-136
+Keelhaven/Wizard/ScheduleStepView.swift
+  s_eb21fc291bb59a::t_a785241b70508b 14
+  s_eb21fc291bb59a::t_db67cf909f2492 43,45,48-49,56,58
+KeelhavenCore/Package.swift
+  s_eb21fc291bb59a::t_e69b3d29d7cdf9 6
+  s_eb21fc291bb59a::t_b586d15a4c748d 12-15
+Keelhaven/Wizard/DestinationStepView.swift
+  s_eb21fc291bb59a::t_4bf1356748c767 111-112
+  s_eb21fc291bb59a::t_a785241b70508b 145
+KeelhavenCore/Sources/KeelhavenCore/Resources/Localizable.xcstrings
+  s_eb21fc291bb59a::t_a3f5493a052784 1-41
+Keelhaven/MenuBar/AboutView.swift
+  s_eb21fc291bb59a::t_e09bea48e60299 19
+Keelhaven/Localizable.xcstrings
+  s_eb21fc291bb59a::t_e3170532740487 1-1486
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "ebc72b4453aafbd926c986f21631c87643c36f43",
+  "prompts": {},
+  "sessions": {
+    "s_eb21fc291bb59a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9ae94259-1994-4e80-835c-18c09ffbceb2",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
