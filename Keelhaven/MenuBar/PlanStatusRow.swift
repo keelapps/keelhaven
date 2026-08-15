@@ -28,12 +28,14 @@ struct PlanStatusRow: View {
 
     private var statusAccessibilityLabel: String {
         switch runState {
-        case .running: return "Backup running"
-        case .failed: return "Last backup failed"
-        case .succeeded: return "Backed up"
+        case .running: return String(localized: "Backup running")
+        case .failed: return String(localized: "Last backup failed")
+        case .succeeded: return String(localized: "Backed up")
         case .idle:
-            guard let lastRun = plan.lastRun else { return "Not backed up yet" }
-            return lastRun.success ? "Backed up" : "Last backup failed"
+            guard let lastRun = plan.lastRun else { return String(localized: "Not backed up yet") }
+            return lastRun.success
+                ? String(localized: "Backed up")
+                : String(localized: "Last backup failed")
         }
     }
 
@@ -45,9 +47,9 @@ struct PlanStatusRow: View {
             calendar: .current
         )
         if next <= Date() {
-            return "Next backup: as soon as possible"
+            return String(localized: "Next backup: as soon as possible")
         }
-        return "Next backup: \(next.formatted(date: .abbreviated, time: .shortened))"
+        return String(localized: "Next backup: \(next.formatted(date: .abbreviated, time: .shortened))")
     }
 
     var body: some View {
@@ -57,13 +59,13 @@ struct PlanStatusRow: View {
                     HStack(spacing: 6) {
                         Circle()
                             .fill(statusColor)
-                            .frame(width: 7, height: 7)
+                            .frame(width: 10, height: 10)
                             .accessibilityLabel(statusAccessibilityLabel)
                         Text(plan.name)
                             .fontWeight(.medium)
                     }
                     Text(plan.destination.displayName)
-                        .font(.caption)
+                        .font(.callout)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                         .truncationMode(.middle)
@@ -92,7 +94,7 @@ struct PlanStatusRow: View {
         .menuStyle(.borderlessButton)
         .menuIndicator(.hidden)
         .fixedSize()
-        .accessibilityLabel("Actions for \(plan.name)")
+        .accessibilityLabel(String(localized: "Actions for \(plan.name)"))
     }
 
     @ViewBuilder
@@ -124,13 +126,13 @@ struct PlanStatusRow: View {
     private func promptRename() {
         NSApp.activate(ignoringOtherApps: true)
         let alert = NSAlert()
-        alert.messageText = "Rename “\(plan.name)”"
+        alert.messageText = String(localized: "Rename “\(plan.name)”")
         let field = NSTextField(string: plan.name)
         field.frame = NSRect(x: 0, y: 0, width: 220, height: 24)
         alert.accessoryView = field
         alert.window.initialFirstResponder = field
-        alert.addButton(withTitle: "Rename")
-        alert.addButton(withTitle: "Cancel")
+        alert.addButton(withTitle: String(localized: "Rename"))
+        alert.addButton(withTitle: String(localized: "Cancel"))
         guard alert.runModal() == .alertFirstButtonReturn else { return }
         appState.renamePlan(plan, to: field.stringValue)
     }
@@ -138,11 +140,11 @@ struct PlanStatusRow: View {
     private func confirmAndDelete() {
         NSApp.activate(ignoringOtherApps: true)
         let alert = NSAlert()
-        alert.messageText = "Delete “\(plan.name)”?"
-        alert.informativeText = "Removes the plan and its saved password from this Mac. Already backed-up data at the destination is not deleted."
+        alert.messageText = String(localized: "Delete “\(plan.name)”?")
+        alert.informativeText = String(localized: "Removes the plan and its saved password from this Mac. Already backed-up data at the destination is not deleted.")
         alert.alertStyle = .warning
-        alert.addButton(withTitle: "Delete").hasDestructiveAction = true
-        alert.addButton(withTitle: "Cancel")
+        alert.addButton(withTitle: String(localized: "Delete")).hasDestructiveAction = true
+        alert.addButton(withTitle: String(localized: "Cancel"))
         guard alert.runModal() == .alertFirstButtonReturn else { return }
         deletePlan()
     }
@@ -154,7 +156,7 @@ struct PlanStatusRow: View {
         NSApp.activate(ignoringOtherApps: true)
         Task {
             guard await BiometricAuthService.authenticate(
-                reason: "copy the backup password for “\(plan.name)”"
+                reason: String(localized: "copy the backup password for “\(plan.name)”")
             ) else { return }
             guard let password = appState.repositoryPassword(for: plan) else { return }
             let pasteboard = NSPasteboard.general
@@ -167,7 +169,7 @@ struct PlanStatusRow: View {
         NSApp.activate(ignoringOtherApps: true)
         Task {
             guard await BiometricAuthService.authenticate(
-                reason: "delete the backup plan “\(plan.name)”"
+                reason: String(localized: "delete the backup plan “\(plan.name)”")
             ) else { return }
             appState.deletePlan(plan)
         }
@@ -186,7 +188,7 @@ struct PlanStatusRow: View {
             } label: {
                 Label("Back Up Now", systemImage: "arrow.triangle.2.circlepath")
             }
-            .controlSize(.small)
+            .controlSize(.regular)
             .disabled(appState.isBackupRunning || appState.resticBinaryURL == nil)
         }
     }
@@ -197,34 +199,34 @@ struct PlanStatusRow: View {
         case .running(let progress):
             ProgressView(value: progress)
                 .controlSize(.small)
-                .accessibilityLabel("Backup \(Int(progress * 100)) percent done")
+                .accessibilityLabel(String(localized: "Backup \(Int(progress * 100)) percent done"))
         case .failed(let message):
             Text(message)
-                .font(.caption)
+                .font(.callout)
                 .foregroundStyle(.red)
                 .lineLimit(3)
                 .help(message)
         case .succeeded(let date):
-            RelativeTimeText(prefix: "Backed up", date: date)
-                .font(.caption)
+            RelativeTimeText(kind: .backedUp, date: date)
+                .font(.callout)
                 .foregroundStyle(.secondary)
                 .help(nextRunText)
         case .idle:
             if let lastRun = plan.lastRun {
                 if lastRun.success {
-                    RelativeTimeText(prefix: "Last backup", date: lastRun.date)
-                        .font(.caption)
+                    RelativeTimeText(kind: .lastBackup, date: lastRun.date)
+                        .font(.callout)
                         .foregroundStyle(.secondary)
                         .help(nextRunText)
                 } else {
                     Text("Last backup failed")
-                        .font(.caption)
+                        .font(.callout)
                         .foregroundStyle(.red)
-                        .help(lastRun.errorMessage ?? "Last backup failed")
+                        .help(lastRun.errorMessage ?? String(localized: "Last backup failed"))
                 }
             } else {
                 Text("Not backed up yet")
-                    .font(.caption)
+                    .font(.callout)
                     .foregroundStyle(.secondary)
                     .help(nextRunText)
             }
@@ -235,16 +237,32 @@ struct PlanStatusRow: View {
 /// "Backed up 5 seconds ago" that keeps counting up on its own (SwiftUI's
 /// `.relative` text style live-updates), switching to an absolute date once
 /// the moment is more than a day old — exactly the progression issue #19
-/// asked for.
+/// asked for. Whole-sentence keys (not concatenation) so translations can
+/// reorder the time fragment freely.
 struct RelativeTimeText: View {
-    let prefix: String
+    enum Kind {
+        case backedUp
+        case lastBackup
+    }
+
+    let kind: Kind
     let date: Date
 
     var body: some View {
         if Date().timeIntervalSince(date) < 24 * 60 * 60 {
-            Text("\(prefix) ") + Text(date, style: .relative) + Text(" ago")
+            switch kind {
+            case .backedUp:
+                Text("Backed up \(Text(date, style: .relative)) ago")
+            case .lastBackup:
+                Text("Last backup \(Text(date, style: .relative)) ago")
+            }
         } else {
-            Text("\(prefix) on \(date.formatted(date: .abbreviated, time: .shortened))")
+            switch kind {
+            case .backedUp:
+                Text("Backed up on \(date.formatted(date: .abbreviated, time: .shortened))")
+            case .lastBackup:
+                Text("Last backup on \(date.formatted(date: .abbreviated, time: .shortened))")
+            }
         }
     }
 }

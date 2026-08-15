@@ -132,8 +132,8 @@ struct RestoreWindowView: View {
         panel.canChooseFiles = false
         panel.canCreateDirectories = true
         panel.allowsMultipleSelection = false
-        panel.prompt = "Restore Here"
-        panel.message = "Choose where to put the restored files. Keelhaven creates a new subfolder — existing files are never touched."
+        panel.prompt = String(localized: "Restore Here")
+        panel.message = String(localized: "Choose where to put the restored files. Keelhaven creates a new subfolder — existing files are never touched.")
         NSApp.activate(ignoringOtherApps: true)
         guard panel.runModal() == .OK, let parentURL = panel.urls.first else { return }
         model.restore(appState: appState, plan: plan, into: parentURL)

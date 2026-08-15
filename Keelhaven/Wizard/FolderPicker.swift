@@ -8,7 +8,7 @@ enum FolderPicker {
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
         panel.allowsMultipleSelection = true
-        panel.prompt = "Add"
+        panel.prompt = String(localized: "Add")
         NSApp.activate(ignoringOtherApps: true)
         guard panel.runModal() == .OK else { return [] }
         return panel.urls
@@ -21,7 +21,7 @@ enum FolderPicker {
         panel.canChooseFiles = false
         panel.canCreateDirectories = true
         panel.allowsMultipleSelection = false
-        panel.prompt = "Choose"
+        panel.prompt = String(localized: "Choose")
         NSApp.activate(ignoringOtherApps: true)
         guard panel.runModal() == .OK else { return nil }
         return panel.urls.first

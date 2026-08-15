@@ -1,6 +1,7 @@
 name: Keelhaven
 options:
   bundleIdPrefix: com.keelhaven
+  developmentLanguage: en
   deploymentTarget:
     macOS: "14.0"
 packages:
@@ -31,6 +32,8 @@ targets:
         # CI's run-number override — never reach the built app's Info.plist.
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleDevelopmentRegion: en
+        CFBundleLocalizations: [en, zh-Hans]
     settings:
       base:
         SWIFT_VERSION: "5.0"
@@ -38,6 +41,7 @@ targets:
         CODE_SIGN_STYLE: Automatic
         MARKETING_VERSION: 0.1.0
         CURRENT_PROJECT_VERSION: 1
+        SWIFT_EMIT_LOC_STRINGS: YES
     postBuildScripts:
       # Nested executables must carry their own signature before the outer
       # app bundle is signed (Xcode signs the app last, but does not sign

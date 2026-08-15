@@ -11,7 +11,7 @@ struct ScheduleStepView: View {
 
             Picker("Frequency", selection: $model.scheduleKind) {
                 ForEach(ScheduleKind.allCases) { kind in
-                    Text(kind.rawValue).tag(kind)
+                    Text(kind.localizedTitle).tag(kind)
                 }
             }
             .pickerStyle(.radioGroup)
@@ -27,7 +27,7 @@ struct ScheduleStepView: View {
             }
 
             Text("Keelhaven also catches up automatically after your Mac was asleep or off at the scheduled time.")
-                .font(.caption)
+                .font(.callout)
                 .foregroundStyle(.secondary)
 
             Divider()
@@ -40,22 +40,22 @@ struct ScheduleStepView: View {
         VStack(alignment: .leading, spacing: 6) {
             Text("Summary")
                 .font(.headline)
-            summaryRow(label: "Name", value: model.name.isEmpty ? model.defaultName : model.name)
+            summaryRow(label: String(localized: "Name"), value: model.name.isEmpty ? model.defaultName : model.name)
             summaryRow(
-                label: "Folders",
+                label: String(localized: "Folders"),
                 value: model.sourcePaths.map { URL(fileURLWithPath: $0).lastPathComponent }.joined(separator: ", ")
             )
-            summaryRow(label: "Destination", value: model.buildDraft().destination.displayName)
-            summaryRow(label: "Schedule", value: scheduleText)
+            summaryRow(label: String(localized: "Destination"), value: model.buildDraft().destination.displayName)
+            summaryRow(label: String(localized: "Schedule"), value: scheduleText)
         }
     }
 
     private var scheduleText: String {
         switch model.scheduleKind {
         case .hourly:
-            return "Every hour"
+            return String(localized: "Every hour")
         case .daily:
-            return "Daily at \(model.dailyTime.formatted(date: .omitted, time: .shortened))"
+            return String(localized: "Daily at \(model.dailyTime.formatted(date: .omitted, time: .shortened))")
         }
     }
 

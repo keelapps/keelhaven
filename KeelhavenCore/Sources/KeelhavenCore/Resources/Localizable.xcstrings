@@ -1,0 +1,41 @@
+{
+  "sourceLanguage" : "en",
+  "version" : "1.0",
+  "strings" : {
+    "The restic command-line tool could not be found. Install it with: brew install restic" : {
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "找不到 restic 备份引擎。请用以下命令安装：brew install restic" } }
+      }
+    },
+    "The backup repository was not found. %@" : {
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "找不到备份仓库。%@" } }
+      }
+    },
+    "This destination already contains a backup repository. Each plan needs its own empty destination folder." : {
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "该位置已经有一个备份仓库了。每个备份计划需要一个自己的空文件夹。" } }
+      }
+    },
+    "The backup repository is locked by another process. %@" : {
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "备份仓库正被其他程序占用。%@" } }
+      }
+    },
+    "The repository password is incorrect. %@" : {
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "备份密码不正确。%@" } }
+      }
+    },
+    "Backup command failed (exit code %lld). %@" : {
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "备份命令执行失败（错误码 %1$lld）。%2$@" } }
+      }
+    },
+    "Could not understand restic's output. %@" : {
+      "localizations" : {
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "无法解析 restic 的输出。%@" } }
+      }
+    }
+  }
+}

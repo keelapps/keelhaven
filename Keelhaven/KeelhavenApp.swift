@@ -5,6 +5,7 @@ enum WindowID {
     static let wizard = "wizard"
     static let about = "about"
     static let restore = "restore"
+    static let welcome = "welcome"
 }
 
 @main
@@ -17,10 +18,17 @@ struct KeelhavenApp: App {
             MenuBarView()
                 .environment(appState)
         } label: {
-            Image(systemName: appState.menuBarSymbolName)
-                .accessibilityLabel("Keelhaven backup status")
+            MenuBarLabelView()
+                .environment(appState)
         }
         .menuBarExtraStyle(.window)
+
+        Window("Welcome to Keelhaven", id: WindowID.welcome) {
+            WelcomeWindowView()
+                .environment(appState)
+        }
+        .windowResizability(.contentSize)
+        .defaultPosition(.center)
 
         Window("New Backup Plan", id: WindowID.wizard) {
             WizardWindowView()

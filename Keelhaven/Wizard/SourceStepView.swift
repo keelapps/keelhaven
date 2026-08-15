@@ -1,5 +1,34 @@
 import SwiftUI
 
+/// A common folder offered as a one-click chip on the source step.
+private struct PresetFolder: Identifiable {
+    let id: String
+    let title: String
+    let symbol: String
+    let url: URL?
+
+    static let all: [PresetFolder] = [
+        PresetFolder(
+            id: "documents",
+            title: String(localized: "Documents"),
+            symbol: "doc",
+            url: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+        ),
+        PresetFolder(
+            id: "desktop",
+            title: String(localized: "Desktop"),
+            symbol: "desktopcomputer",
+            url: FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first
+        ),
+        PresetFolder(
+            id: "pictures",
+            title: String(localized: "Pictures"),
+            symbol: "photo",
+            url: FileManager.default.urls(for: .picturesDirectory, in: .userDomainMask).first
+        ),
+    ]
+}
+
 struct SourceStepView: View {
     @Bindable var model: WizardModel
 
@@ -7,6 +36,8 @@ struct SourceStepView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Choose the folders to back up.")
                 .font(.title3)
+
+            presetChips
 
             TextField("Plan name (optional)", text: $model.name, prompt: Text(model.defaultName))
                 .textFieldStyle(.roundedBorder)
@@ -47,6 +78,34 @@ struct SourceStepView: View {
                 model.syncAutofilledName()
             } label: {
                 Label("Add Folders…", systemImage: "plus")
+            }
+        }
+    }
+
+    /// One-click toggles for the folders most people want backed up.
+    private var presetChips: some View {
+        HStack(spacing: 8) {
+            ForEach(PresetFolder.all) { preset in
+                if let url = preset.url {
+                    let selected = model.sourcePaths.contains(url.path)
+                    Button {
+                        if selected {
+                            model.sourcePaths.removeAll { $0 == url.path }
+                        } else {
+                            model.sourcePaths.append(url.path)
+                        }
+                        model.syncAutofilledName()
+                    } label: {
+                        Label(preset.title, systemImage: selected ? "checkmark.circle.fill" : preset.symbol)
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(selected ? Color.accentColor : nil)
+                    .accessibilityLabel(
+                        selected
+                            ? String(localized: "\(preset.title), selected for backup")
+                            : String(localized: "Back up \(preset.title)")
+                    )
+                }
             }
         }
     }

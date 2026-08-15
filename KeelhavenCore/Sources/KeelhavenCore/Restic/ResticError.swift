@@ -50,22 +50,24 @@ public enum ResticError: Error, Equatable, Sendable {
 }
 
 extension ResticError: LocalizedError {
+    // Note: the interpolated `message` payloads are raw restic output and
+    // stay English; only Keelhaven's framing sentences localize.
     public var errorDescription: String? {
         switch self {
         case .binaryNotFound:
-            return "The restic command-line tool could not be found. Install it with: brew install restic"
+            return String(localized: "The restic command-line tool could not be found. Install it with: brew install restic", bundle: .module)
         case .repositoryDoesNotExist(let message):
-            return "The backup repository was not found. \(message)"
+            return String(localized: "The backup repository was not found. \(message)", bundle: .module)
         case .repositoryAlreadyExists:
-            return "This destination already contains a backup repository. Each plan needs its own empty destination folder."
+            return String(localized: "This destination already contains a backup repository. Each plan needs its own empty destination folder.", bundle: .module)
         case .repositoryLocked(let message):
-            return "The backup repository is locked by another process. \(message)"
+            return String(localized: "The backup repository is locked by another process. \(message)", bundle: .module)
         case .wrongPassword(let message):
-            return "The repository password is incorrect. \(message)"
+            return String(localized: "The repository password is incorrect. \(message)", bundle: .module)
         case .commandFailed(let exitCode, let message):
-            return "Backup command failed (exit code \(exitCode)). \(message)"
+            return String(localized: "Backup command failed (exit code \(exitCode)). \(message)", bundle: .module)
         case .outputDecodingFailed(let message):
-            return "Could not understand restic's output. \(message)"
+            return String(localized: "Could not understand restic's output. \(message)", bundle: .module)
         }
     }
 }

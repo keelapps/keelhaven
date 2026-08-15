@@ -19,6 +19,9 @@ final class AppState {
     var runStates: [UUID: PlanRunState] = [:]
     var resticBinaryURL: URL?
     var startupError: String?
+    /// True once bootstrap confirmed there are no plans — the trigger for the
+    /// first-run welcome window.
+    var shouldOfferWelcome = false
 
     @ObservationIgnored private let keychain: KeychainStoring = KeychainStore()
     @ObservationIgnored private let planStore = PlanStore()
@@ -37,17 +40,24 @@ final class AppState {
         if let binaryURL = resticBinaryURL {
             let meetsMinimum = await ResticLocator.meetsMinimumVersion(at: binaryURL)
             if !meetsMinimum {
-                startupError = "Keelhaven needs restic \(ResticLocator.minimumVersionText) or newer. Update it with: brew upgrade restic"
+                startupError = String(localized: "Keelhaven needs restic \(ResticLocator.minimumVersionText) or newer. Update it with: brew upgrade restic")
             }
         }
 
+        var plansLoadedCleanly = false
         do {
             plans = try await planStore.load()
+            plansLoadedCleanly = true
         } catch {
-            startupError = "Could not load backup plans: \(error.localizedDescription)"
+            startupError = String(localized: "Could not load backup plans: \(error.localizedDescription)")
         }
         for plan in plans {
             runStates[plan.id] = .idle
+        }
+        // Offer the welcome window only when we know for sure there are no
+        // plans — never on a load failure, where plans might exist on disk.
+        if plansLoadedCleanly && plans.isEmpty {
+            shouldOfferWelcome = true
         }
 
         await NotificationService.requestAuthorization()

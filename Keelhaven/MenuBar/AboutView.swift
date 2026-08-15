@@ -16,7 +16,7 @@ struct AboutView: View {
     }
 
     private var versionLine: String {
-        "Version \(version) (build \(build), \(commit))"
+        String(localized: "Version \(version) (build \(build), \(commit))")
     }
 
     var body: some View {

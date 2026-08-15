@@ -3,18 +3,33 @@ import Observation
 import KeelhavenCore
 
 enum DestinationType: String, CaseIterable, Identifiable {
-    case local = "Local / External Drive"
-    case s3 = "S3-Compatible"
-    case sftp = "SFTP / NAS"
+    case local
+    case s3
+    case sftp
 
     var id: String { rawValue }
+
+    var localizedTitle: String {
+        switch self {
+        case .local: return String(localized: "Local / External Drive")
+        case .s3: return String(localized: "S3-Compatible")
+        case .sftp: return String(localized: "SFTP / NAS")
+        }
+    }
 }
 
 enum ScheduleKind: String, CaseIterable, Identifiable {
-    case hourly = "Every hour"
-    case daily = "Once a day"
+    case hourly
+    case daily
 
     var id: String { rawValue }
+
+    var localizedTitle: String {
+        switch self {
+        case .hourly: return String(localized: "Every hour")
+        case .daily: return String(localized: "Once a day")
+        }
+    }
 }
 
 /// Draft state for the 3-step wizard, with per-step validation.
@@ -175,6 +190,19 @@ final class WizardModel {
         }
     }
 
+    /// Simple-mode default: entering the destination step with untouched
+    /// password fields auto-generates a strong password so nobody has to
+    /// invent one. Never fires when connecting to an existing repository or
+    /// after the user typed anything.
+    func autoGeneratePasswordIfNeeded() {
+        guard !adoptExistingRepository,
+              password.isEmpty,
+              passwordConfirm.isEmpty,
+              !passwordWasGenerated
+        else { return }
+        generatePassword()
+    }
+
     /// Fills both password fields with a generated passphrase. Ambiguous
     /// characters (0/O, 1/l/I) are excluded since users may need to type it
     /// during a future restore.
@@ -191,7 +219,7 @@ final class WizardModel {
         if let first = sourcePaths.first {
             return URL(fileURLWithPath: first).lastPathComponent
         }
-        return "My Backup"
+        return String(localized: "My Backup")
     }
 
     /// The name this model last wrote into `name` itself. Lets

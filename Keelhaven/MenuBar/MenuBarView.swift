@@ -42,8 +42,18 @@ struct MenuBarView: View {
             Divider()
 
             if appState.plans.isEmpty {
-                Text("No backup plans yet.")
-                    .foregroundStyle(.secondary)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Nothing is backed up yet.")
+                        .foregroundStyle(.secondary)
+                    Button {
+                        openWizard()
+                    } label: {
+                        Label("Set Up a Backup", systemImage: "plus")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(appState.resticBinaryURL == nil)
+                }
             } else {
                 ForEach(appState.plans) { plan in
                     PlanStatusRow(plan: plan)
@@ -86,7 +96,7 @@ struct MenuBarView: View {
             }
         }
         .padding(14)
-        .frame(width: 300)
+        .frame(width: 340)
     }
 
     private func openWizard() {

@@ -6,7 +6,11 @@ struct WizardWindowView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var model = WizardModel()
 
-    private let stepTitles = ["What to back up", "Where to", "When"]
+    private let stepTitles = [
+        String(localized: "What to back up"),
+        String(localized: "Where to"),
+        String(localized: "When"),
+    ]
 
     var body: some View {
         VStack(spacing: 0) {
@@ -29,7 +33,7 @@ struct WizardWindowView: View {
             Divider()
             footer
         }
-        .frame(width: 560, height: 500)
+        .frame(width: 560, height: 560)
         .onAppear {
             model.existingRepositoryLocations = appState.plans.map { $0.destination.repositoryLocation }
         }
@@ -111,6 +115,9 @@ struct WizardWindowView: View {
     /// to the password field instead of at the final Create.
     private func advance() {
         model.creationError = nil
+        if model.step == 0 {
+            model.autoGeneratePasswordIfNeeded()
+        }
         guard model.step == 1, model.adoptExistingRepository else {
             model.step += 1
             return
