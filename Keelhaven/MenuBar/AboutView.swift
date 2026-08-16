@@ -69,30 +69,22 @@ struct AboutView: View {
         .frame(width: 320)
     }
 
-    /// The attribution line stays visible unconditionally — collapsing it
-    /// behind the disclosure would leave the notice technically shipped but
-    /// practically hidden. Only the full text is opt-in.
+    /// BSD-2-Clause clause 2 only requires the notice to travel with the
+    /// distribution — the bundled restic-LICENSE.txt plus this disclosure
+    /// satisfies it; no always-visible credit line is needed (issue #51).
     private var acknowledgements: some View {
-        VStack(spacing: 6) {
-            Text("Backups are made by restic, © 2014 Alexander Neumann, used under the BSD 2-Clause License.")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-
-            DisclosureGroup(isExpanded: $showingLicense) {
-                ScrollView {
-                    // Never localized: this is the licence text verbatim.
-                    Text(resticLicense ?? "License text unavailable.")
-                        .font(.caption2.monospaced())
-                        .textSelection(.enabled)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .frame(height: 150)
-            } label: {
-                Text("Full license text")
-                    .font(.caption)
+        DisclosureGroup(isExpanded: $showingLicense) {
+            ScrollView {
+                // Never localized: this is the licence text verbatim.
+                Text(resticLicense ?? "License text unavailable.")
+                    .font(.caption2.monospaced())
+                    .textSelection(.enabled)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .frame(height: 150)
+        } label: {
+            Text("restic license (BSD 2-Clause)")
+                .font(.caption)
         }
     }
 }

@@ -1691,6 +1691,16 @@
         }
       }
     },
+    "restic license (BSD 2-Clause)": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "restic 许可证（BSD 2-Clause）"
+          }
+        }
+      }
+    },
     "restic was not found. Install it with: brew install restic": {
       "localizations": {
         "zh-Hans": {
