@@ -53,14 +53,6 @@ struct ScheduleStepView: View {
                 label: String(localized: "Schedule"),
                 value: Schedule(kind: model.scheduleKind, dailyTime: model.dailyTime, weekday: model.weekday).displayText
             )
-            // New plans silently get the default excludes (PlanManager applies
-            // them at creation; the wizard offers no excludes UI on purpose) —
-            // showing them here keeps the wizard honest about what is NOT
-            // backed up. Editing stays in the Edit Plan window.
-            summaryRow(
-                label: String(localized: "Excludes"),
-                value: BackupPlan.defaultExcludePatterns.joined(separator: ", ")
-            )
         }
     }
 
