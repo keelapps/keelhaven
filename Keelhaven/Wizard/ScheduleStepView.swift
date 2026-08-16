@@ -13,14 +13,13 @@ struct ScheduleStepView: View {
 
             // Surprise-proofing, not decoration: the first run starts on
             // creation (SchedulePolicy treats a never-run plan as due), and
-            // users who set an evening time expect silence until then.
-            Text("The first backup starts right after you create the plan; after that, it runs on this schedule.")
-                .font(.callout)
+            // users who set an evening time expect silence until then. One
+            // footnote-sized block, System Settings style — not two callout
+            // paragraphs competing with the summary.
+            Text("The first backup starts as soon as you create the plan. After that, backups run on this schedule, catching up automatically if your Mac was asleep or off.")
+                .font(.footnote)
                 .foregroundStyle(.secondary)
-
-            Text("Keelhaven also catches up automatically after your Mac was asleep or off at the scheduled time.")
-                .font(.callout)
-                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
 
             Divider()
 

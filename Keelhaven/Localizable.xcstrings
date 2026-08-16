@@ -831,16 +831,6 @@
         }
       }
     },
-    "Keelhaven also catches up automatically after your Mac was asleep or off at the scheduled time.": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "如果到点时 Mac 正在睡眠或关机，Keelhaven 之后会自动补上这次备份。"
-          }
-        }
-      }
-    },
     "Keelhaven automatically copies your important folders to a backup drive, so nothing is lost if your Mac ever breaks or goes missing.": {
       "localizations": {
         "zh-Hans": {
@@ -1551,12 +1541,12 @@
         }
       }
     },
-    "The first backup starts right after you create the plan; after that, it runs on this schedule.": {
+    "The first backup starts as soon as you create the plan. After that, backups run on this schedule, catching up automatically if your Mac was asleep or off.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "首次备份会在创建计划后立即开始；之后按此计划运行。"
+            "value": "首次备份会在创建计划后立即开始；之后按此计划运行，睡眠或关机错过的时间点会自动补跑。"
           }
         }
       }
