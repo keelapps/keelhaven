@@ -4,14 +4,55 @@ import { defineConfig } from 'vitepress'
 // static output pushed to the public keelapps/keelhaven-site repo and served
 // by GitHub Pages at https://keelapps.github.io/keelhaven-site/.
 // When a custom domain is attached to that repo, change `base` to '/'.
+// Raw HTML in `footer.message` below does not get `base` prepended the way
+// markdown links do, so the two share this constant. Changing it here is
+// enough when a custom domain lands.
+const base = '/keelhaven-site/'
+// og:image must be an absolute URL — relative paths are ignored by every
+// scraper. Split from `base` so a custom domain is a two-line change.
+const origin = 'https://keelapps.github.io'
+const siteUrl = origin + base
+
+const description =
+  'Privacy-first backups for your Mac. A menu bar app powered by restic.'
+
 export default defineConfig({
-  base: '/keelhaven-site/',
+  base,
   title: 'Keelhaven',
-  description:
-    'Privacy-first backups for your Mac. A menu bar app powered by restic.',
+  description,
   lastUpdated: false,
 
+  // Assets live in site/public/ and are written there by design/build.mjs and
+  // design/materials.mjs — don't hand-copy them, they will go stale.
+  //
+  // Unlike markdown links and themeConfig.logo, nothing here is passed through
+  // withBase(): these are raw attributes, so every local path needs `base`
+  // spelled out or it 404s under the /keelhaven-site/ prefix.
+  head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: `${base}favicon.svg` }],
+    ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: `${base}favicon-32.png` }],
+    ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: `${base}favicon-180.png` }],
+    // `hull` from the brand palette — see design/README.md.
+    ['meta', { name: 'theme-color', content: '#0B2540' }],
+
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:site_name', content: 'Keelhaven' }],
+    ['meta', { property: 'og:title', content: 'Keelhaven — privacy-first Mac backup' }],
+    ['meta', { property: 'og:description', content: description }],
+    ['meta', { property: 'og:url', content: siteUrl }],
+    ['meta', { property: 'og:image', content: `${siteUrl}og.png` }],
+    ['meta', { property: 'og:image:width', content: '1200' }],
+    ['meta', { property: 'og:image:height', content: '630' }],
+
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:title', content: 'Keelhaven — privacy-first Mac backup' }],
+    ['meta', { name: 'twitter:description', content: description }],
+    ['meta', { name: 'twitter:image', content: `${siteUrl}og.png` }],
+  ],
+
   themeConfig: {
+    // Passed through withBase() by the default theme, so no `base` here.
+    logo: '/icon-128.png',
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Guide', link: '/guide/getting-started' },
@@ -29,6 +70,11 @@ export default defineConfig({
       ],
     },
     footer: {
+      // restic ships inside the app bundle, so its BSD-2-Clause notice has to
+      // travel with the product — hence a site-wide credit, not a buried page.
+      message:
+        `Includes <a href="https://restic.net">restic</a>, © 2014 Alexander Neumann, ` +
+        `under the BSD 2-Clause License. <a href="${base}licenses">Open source licenses</a>`,
       copyright: '© Keelapps. All rights reserved.',
     },
   },

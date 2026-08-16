@@ -78,5 +78,5 @@ exercises the real binary end-to-end when it's installed.
 
 File-level browsing inside snapshots (whole-snapshot restore shipped:
 plan actions → Restore… lists snapshots and restores into a fresh subfolder),
-retention/prune policies, additional backends (rclone family), bundled restic,
+retention/prune policies, additional backends (rclone family),
 launchd scheduling, sandboxing.

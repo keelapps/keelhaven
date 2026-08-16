@@ -3,6 +3,13 @@
 # verifying the official SHA256 checksums. The app build copies that binary
 # into Keelhaven.app/Contents/MacOS/.
 #
+# Also fetches restic's licence from the same tag into
+# Vendor/restic/restic-LICENSE.txt. We redistribute the restic binary inside
+# the app bundle, so BSD-2-Clause clause 2 obliges us to ship its copyright
+# notice — the app build copies that file into Contents/Resources/. It is
+# fetched from the pinned tag so the text can never drift from the binary it
+# covers, and named for restic so it is not mistaken for Keelhaven's own.
+#
 # Usage: fetch-restic.sh [universal|arm64|amd64]   (default: universal)
 #   universal — lipo-merge of both architectures (local dev default)
 #   arm64     — Apple Silicon only (CI per-arch artifact, half the size)
@@ -27,9 +34,11 @@ esac
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 VENDOR_DIR="$REPO_ROOT/Vendor/restic"
 BINARY="$VENDOR_DIR/restic"
+LICENSE="$VENDOR_DIR/restic-LICENSE.txt"
 MARKER="$VENDOR_DIR/.variant"
 
 if [ -x "$BINARY" ] \
+    && [ -s "$LICENSE" ] \
     && [ "$(cat "$MARKER" 2>/dev/null)" = "$VERSION-$MODE" ] \
     && "$BINARY" version 2>/dev/null | grep -q "restic $VERSION"; then
     echo "restic $VERSION ($MODE) already vendored at $BINARY"
@@ -38,7 +47,7 @@ fi
 
 mkdir -p "$VENDOR_DIR"
 cd "$VENDOR_DIR"
-rm -f restic "$MARKER"
+rm -f restic restic-LICENSE.txt "$MARKER"
 
 for arch in $ARCHES; do
     file="restic_${VERSION}_darwin_${arch}.bz2"
@@ -62,6 +71,19 @@ else
 fi
 chmod +x restic
 rm -f restic_${VERSION}_darwin_*
+
+# Copyright notice for the binary we just vendored (see header comment).
+echo "Downloading restic-LICENSE.txt..."
+curl -fsSL -o restic-LICENSE.txt \
+    "https://raw.githubusercontent.com/restic/restic/v${VERSION}/LICENSE"
+# A silent CDN error page would be worse than a hard failure: the build would
+# happily ship a bundle whose "license" is HTML.
+grep -q "BSD 2-Clause" restic-LICENSE.txt || {
+    echo "Fetched LICENSE does not look like restic's BSD 2-Clause text" >&2
+    rm -f restic-LICENSE.txt
+    exit 1
+}
+
 echo "$VERSION-$MODE" > "$MARKER"
 
 echo "Vendored restic ($MODE):"

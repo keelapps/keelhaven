@@ -87,9 +87,16 @@ npm run build       # icon, asset catalog, .icns, favicons
 npm run materials   # banner, og:image, social preview, wordmark  (needs Chromium)
 ```
 
-`build.mjs` writes into `Keelhaven/Assets.xcassets/` and `docs/assets/`. Those
-PNGs are committed on purpose: CI's macOS runner has no image toolchain, so the
-build must not depend on this script having run.
+`build.mjs` writes into `Keelhaven/Assets.xcassets/`, `docs/assets/` and
+`site/public/`; `materials.mjs` writes into `docs/assets/` and `site/public/`.
+Those PNGs are committed on purpose: CI's macOS runner has no image toolchain,
+so the build must not depend on this script having run.
+
+`site/public/` holds a small duplicate of `docs/assets/` — the favicons, nav
+logo and `og.png` — because VitePress serves static files only from there. It is
+written by these scripts rather than copied by hand: the hand-copied version
+(`site/assets/`) drifted out of use and was left behind. Anything the website
+needs should be added to the `SITE` writes, not copied across.
 
 After adding the asset catalog for the first time, run `xcodegen generate` so
 the new resource lands in the project.

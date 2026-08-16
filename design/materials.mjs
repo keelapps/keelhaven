@@ -10,7 +10,7 @@
 
 import { chromium } from 'playwright'
 import sharp from 'sharp'
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { C } from './icon.mjs'
@@ -18,7 +18,11 @@ import { C } from './icon.mjs'
 const HERE = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(HERE, '..')
 const ASSETS = join(ROOT, 'docs/assets')
-mkdirSync(ASSETS, { recursive: true })
+// VitePress serves static files only from site/public/, so the og:image needs
+// a copy there. See the note in build.mjs about why this is generated, not
+// hand-copied.
+const SITE = join(ROOT, 'site/public')
+for (const d of [ASSETS, SITE]) mkdirSync(d, { recursive: true })
 
 const font = readFileSync(join(HERE, 'fonts/Inter-latin.woff2')).toString('base64')
 const iconData = readFileSync(join(ASSETS, 'icon-512.png')).toString('base64')
@@ -129,6 +133,10 @@ await shoot(card({ w: 1200, h: 400, icon: 104, title: 54, tag: 21, chip: 14 }),
 // Link previews. og:image wants 1200×630; GitHub's social preview is 1280×640.
 await shoot(card({ w: 1200, h: 630, icon: 168, title: 82, tag: 30, chip: 19 }),
   { w: 1200, h: 630, scale: 1, out: join(ASSETS, 'og.png') })
+// Copied rather than re-shot: an identical second screenshot would cost
+// another Chromium page for a byte-identical result.
+copyFileSync(join(ASSETS, 'og.png'), join(SITE, 'og.png'))
+console.log('· site/public/og.png')
 await shoot(card({ w: 1280, h: 640, icon: 172, title: 86, tag: 31, chip: 19 }),
   { w: 1280, h: 640, scale: 1, out: join(ASSETS, 'social-preview.png') })
 

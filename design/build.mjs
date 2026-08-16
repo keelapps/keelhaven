@@ -7,6 +7,11 @@
 //   design/svg/                          vector masters
 //   Keelhaven/Assets.xcassets/           app icon + menu-bar template
 //   docs/assets/                         README banner art, favicons, .icns
+//   site/public/                         the subset VitePress serves
+//
+// site/public/ is a duplicate of a few docs/assets/ files on purpose: VitePress
+// only serves static files from there. It is written here rather than copied by
+// hand, because the hand-copied version of it went stale and unused.
 //
 // Nothing here is wired into xcodebuild — run it by hand when the mark changes.
 
@@ -21,8 +26,9 @@ const SVG_DIR = join(ROOT, 'design/svg')
 const ICONSET = join(ROOT, 'Keelhaven/Assets.xcassets/AppIcon.appiconset')
 const MENUSET = join(ROOT, 'Keelhaven/Assets.xcassets/MenuBarIcon.imageset')
 const ASSETS = join(ROOT, 'docs/assets')
+const SITE = join(ROOT, 'site/public')
 
-for (const d of [SVG_DIR, ICONSET, MENUSET, ASSETS]) mkdirSync(d, { recursive: true })
+for (const d of [SVG_DIR, ICONSET, MENUSET, ASSETS, SITE]) mkdirSync(d, { recursive: true })
 
 const png = (svg, size, out, { fit = 'contain' } = {}) =>
   sharp(Buffer.from(svg), { density: 400 })
@@ -125,6 +131,15 @@ writeFileSync(join(ASSETS, 'favicon.svg'), iconSmallSvg)
 for (const px of [16, 32, 180, 192, 512]) {
   await png(px <= 64 ? iconSmallSvg : iconSvg, px, join(ASSETS, `favicon-${px}.png`))
 }
+
+// The slice VitePress serves. Sizes match site/.vitepress/config.mts `head`:
+// favicon.svg, a 32 px bitmap fallback, a 180 px apple-touch-icon, and the
+// 128 px mark used as the nav logo. og.png is written by materials.mjs.
+writeFileSync(join(SITE, 'favicon.svg'), iconSmallSvg)
+await png(iconSmallSvg, 32, join(SITE, 'favicon-32.png'))
+await png(iconSvg, 180, join(SITE, 'favicon-180.png'))
+await png(iconSvg, 128, join(SITE, 'icon-128.png'))
+console.log('· site/public — favicons + nav logo')
 
 // Flat single-colour mark, for stickers/print/anywhere gradients can't go.
 writeFileSync(join(SVG_DIR, 'mono-navy.svg'), monoMark(C.hull))

@@ -19,6 +19,14 @@ targets:
         buildPhase:
           copyFiles:
             destination: executables
+      # We redistribute that binary, so BSD-2-Clause obliges us to ship its
+      # copyright notice. Goes to Contents/Resources (never Contents/MacOS —
+      # that directory is for executables and a stray file there upsets
+      # signature validation). Surfaced by the About window.
+      - path: Vendor/restic/restic-LICENSE.txt
+        buildPhase:
+          copyFiles:
+            destination: resources
     dependencies:
       - package: KeelhavenCore
     info:

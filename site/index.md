@@ -22,11 +22,27 @@ features:
     details: Lives in the menu bar — no Dock icon, no windows to manage. Set a schedule once and forget it.
   - icon: ⚓️
     title: Built on restic
-    details: Backups are standard restic repositories. Your data is never locked in — restore it with the open-source restic CLI from any machine.
+    details: Backups are standard restic repositories, and restic comes bundled — nothing else to install. Your data is never locked in — restore it with the open-source restic CLI from any machine.
   - icon: 🗓️
     title: Real schedules
     details: Hourly, daily, or weekly — pick a weekday and a time, and Keelhaven keeps your backups current.
 ---
 
 <!-- TODO before launch: product screenshot (assets go in site/public/),
-     real download link, pricing section. -->
+     real download link, and the 1.0 price in the Pricing section below. -->
+
+## Pricing
+
+**Pay once. That's the entire model.**
+
+Keelhaven is in early development and **free while in beta**. When 1.0 ships it
+becomes a one-time purchase — bought once, updates forever, never a
+subscription.
+
+- Unlimited backup plans and destinations
+- Universal build — Apple silicon and Intel
+- restic bundled; nothing else to install
+- No account, no telemetry, no server of ours in the path
+
+Not sure it's worth paying for when [restic](https://restic.net) is free? That's
+a fair question, and there's [an honest answer to it](/guide/faq#why-pay-for-this-if-restic-is-free).
