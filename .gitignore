@@ -12,3 +12,6 @@ Vendor/
 build/
 design/node_modules/
 design/package-lock.json
+site/node_modules/
+site/.vitepress/dist/
+site/.vitepress/cache/

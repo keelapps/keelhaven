@@ -1,0 +1,46 @@
+name: Website
+
+# Builds the public website (site/, VitePress) and pushes the static output to
+# the public keelapps/keelhaven-site repo, which GitHub Pages serves at
+# https://keelapps.github.io/keelhaven-site/. This keeps the doc sources in
+# this private repo without needing a paid GitHub plan for Pages.
+#
+# Runs on ubuntu (bills at 1×, unlike the 10× macOS jobs in ci.yml) and only
+# when site content actually changes, so it barely touches the minutes quota.
+on:
+  push:
+    branches: [main]
+    paths:
+      - site/**
+      - .github/workflows/website.yml
+  workflow_dispatch:
+
+concurrency:
+  group: website-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - name: Build site
+        run: |
+          npm ci --prefix site
+          npm run build --prefix site
+      # SITE_DEPLOY_KEY is the private half of a deploy key whose public half
+      # is registered (write-enabled) on keelapps/keelhaven-site.
+      - name: Publish to keelapps/keelhaven-site
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          deploy_key: ${{ secrets.SITE_DEPLOY_KEY }}
+          external_repository: keelapps/keelhaven-site
+          publish_branch: gh-pages
+          publish_dir: site/.vitepress/dist
+          force_orphan: true

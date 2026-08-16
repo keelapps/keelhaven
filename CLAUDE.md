@@ -38,6 +38,10 @@ xcrun llvm-cov report "$BIN/KeelhavenCorePackageTests.xctest/Contents/MacOS/Keel
 
 Two layers with a hard boundary: **`KeelhavenCore/`** is a UI-free SwiftPM package holding everything unit-testable (models, restic process runner + JSON parsing, JSON-file persistence, Keychain protocol + impls, pure schedule math); **`Keelhaven/`** is the SwiftUI app target holding only views (`MenuBar/`, `Wizard/`) and thin service wrappers around system frameworks (`Services/`: scheduler timer, notifications, login item; `Support/`: restic discovery). All state flows through a single `@MainActor @Observable` root, `Keelhaven/AppState.swift`, which owns the services and serializes backups (one at a time, app-wide). Anything that can be tested without a UI belongs in KeelhavenCore, not the app target.
 
+## Website (`site/`)
+
+The public website + docs (VitePress, English default, Chinese planned) live in `site/`. Preview locally with `npm --prefix site run dev`. On pushes to main that touch `site/**`, `.github/workflows/website.yml` builds the static output and pushes it to the public `keelapps/keelhaven-site` repo, served by GitHub Pages — doc *sources* stay in this private repo, and the published content is copyrighted, not open source. Site changes are ignored by the expensive macOS CI.
+
 ## Non-obvious rules
 
 - **restic parsing is fixture-driven.** All JSON parsing is written against real captured restic 0.19.1 output in `KeelhavenCore/Tests/KeelhavenCoreTests/Fixtures/` — not restic docs. When changing parsers or bumping the supported restic version, re-capture fixtures from the real binary and keep them unmodified. `ResticRunnerIntegrationTests` additionally runs the real restic binary end-to-end and self-skips when restic isn't installed.
