@@ -1,0 +1,37 @@
+Keelhaven/Wizard/SourceStepView.swift
+  s_4f2128955ef03b::t_55ab36f83c01c0 36-42,44-48,50,57
+  s_4f2128955ef03b::t_79a00a20d94775 102-104
+Keelhaven/Localizable.xcstrings
+  s_4f2128955ef03b::t_f048cd5d10bcf9 1374-1383
+Keelhaven/Support/HintCallout.swift
+  s_4f2128955ef03b::t_b3c88d4afa7788 1-61
+Keelhaven/Wizard/DestinationStepView.swift
+  s_4f2128955ef03b::t_86417b59d7366e 23,26,30-34,36-38,41
+  s_4f2128955ef03b::t_81b8e165beca7d 188-190
+  s_4f2128955ef03b::t_bf774077458bed 187,191-197,199
+  s_4f2128955ef03b::t_ab7e63815011d1 287
+  s_4f2128955ef03b::t_9fa7b0009fa44c 198,200-201
+  s_4f2128955ef03b::t_fa114d6aaa1841 262
+  s_4f2128955ef03b::t_723e7f5bc0b992 304-306
+  s_4f2128955ef03b::t_20200ac132bb46 146-147,149-163,165,167-170,172-173,176,185-186
+  s_4f2128955ef03b::t_9c1fffbf0adccb 203
+  s_4f2128955ef03b::t_6e0d770c391950 134
+  s_4f2128955ef03b::t_d8b419f22ea795 202
+  s_4f2128955ef03b::t_54fab3422bb00d 204-205
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "6201203db1539f9fc5b4d4cfc3f4f24fc8ae1d9c",
+  "prompts": {},
+  "sessions": {
+    "s_4f2128955ef03b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "62d843b3-c7ab-4f01-9291-3c9657afece5",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
