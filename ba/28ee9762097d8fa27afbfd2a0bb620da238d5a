@@ -1,0 +1,23 @@
+Keelhaven/Localizable.xcstrings
+  s_4f2128955ef03b::t_4f99df40426d53 1544-1553
+Keelhaven/Wizard/ScheduleStepView.swift
+  s_4f2128955ef03b::t_e2b6201afa2769 14-20
+Keelhaven/AppState.swift
+  s_4f2128955ef03b::t_792d6d32e04dab 117-119
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "ba28ee9762097d8fa27afbfd2a0bb620da238d5a",
+  "prompts": {},
+  "sessions": {
+    "s_4f2128955ef03b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "62d843b3-c7ab-4f01-9291-3c9657afece5",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
