@@ -60,7 +60,27 @@ final class WizardModel {
     var passwordWasGenerated = false
     /// Connect to a repository that already exists at the destination:
     /// the password is verified against it instead of running `restic init`.
-    var adoptExistingRepository = false
+    var adoptExistingRepository = false {
+        didSet {
+            guard adoptExistingRepository != oldValue else { return }
+            if adoptExistingRepository {
+                // The auto-generated password (created on entering step 2,
+                // before this toggle existed to veto it) can't be the existing
+                // repository's — clear it so the field starts empty. A password
+                // the user actually typed is left alone.
+                if passwordWasGenerated {
+                    password = ""
+                    passwordConfirm = ""
+                    passwordWasGenerated = false
+                }
+                passwordVerificationError = nil
+            } else {
+                // Back to the new-repository flow: regenerate (guards inside
+                // ensure it never overwrites anything the user typed).
+                autoGeneratePasswordIfNeeded()
+            }
+        }
+    }
 
     /// While adopting, the password is checked the moment the user leaves
     /// step 2 (issue #30) — not at final Create — so the error appears next
