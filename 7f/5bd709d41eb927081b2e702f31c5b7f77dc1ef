@@ -1,0 +1,19 @@
+Keelhaven/Wizard/WizardModel.swift
+  s_4f2128955ef03b::t_2ee69b5d2ab0c3 63-83
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "7f5bd709d41eb927081b2e702f31c5b7f77dc1ef",
+  "prompts": {},
+  "sessions": {
+    "s_4f2128955ef03b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "62d843b3-c7ab-4f01-9291-3c9657afece5",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
