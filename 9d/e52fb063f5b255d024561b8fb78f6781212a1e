@@ -1,0 +1,26 @@
+Keelhaven/Wizard/SourceStepView.swift
+  s_4f2128955ef03b::t_e1820cd4c818e7 40-52,54-60
+  s_4f2128955ef03b::t_23590736b43aa0 81
+Keelhaven/Wizard/ScheduleStepView.swift
+  s_4f2128955ef03b::t_93f71bd70e7bc2 28-40
+Keelhaven/Localizable.xcstrings
+  s_4f2128955ef03b::t_3eea26b5e9e6c9 1494-1503
+Keelhaven/EditPlan/EditPlanWindowView.swift
+  s_4f2128955ef03b::t_dc2c997e5ba2bd 75-77,80-94
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "9de52fb063f5b255d024561b8fb78f6781212a1e",
+  "prompts": {},
+  "sessions": {
+    "s_4f2128955ef03b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "62d843b3-c7ab-4f01-9291-3c9657afece5",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
