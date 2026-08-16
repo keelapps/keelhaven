@@ -43,6 +43,3 @@ subscription.
 - Universal build — Apple silicon and Intel
 - restic bundled; nothing else to install
 - No account, no telemetry, no server of ours in the path
-
-Not sure it's worth paying for when [restic](https://restic.net) is free? That's
-a fair question, and there's [an honest answer to it](/guide/faq#why-pay-for-this-if-restic-is-free).

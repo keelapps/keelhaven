@@ -70,11 +70,11 @@ export default defineConfig({
       ],
     },
     footer: {
-      // restic ships inside the app bundle, so its BSD-2-Clause notice has to
-      // travel with the product — hence a site-wide credit, not a buried page.
-      message:
-        `Includes <a href="https://restic.net">restic</a>, © 2014 Alexander Neumann, ` +
-        `under the BSD 2-Clause License. <a href="${base}licenses">Open source licenses</a>`,
+      // The BSD-2-Clause notice travels with the app bundle (restic-LICENSE.txt
+      // + the About window) — the website distributes nothing, so a discreet
+      // licenses link is plenty here. Full credit lives on /licenses and in
+      // the FAQ.
+      message: `<a href="${base}licenses">Open source licenses</a>`,
       copyright: '© Keelapps. All rights reserved.',
     },
   },
