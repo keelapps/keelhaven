@@ -691,6 +691,16 @@
         }
       }
     },
+    "Excludes": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "排除"
+          }
+        }
+      }
+    },
     "Existing repository password": {
       "localizations": {
         "zh-Hans": {
