@@ -5,6 +5,12 @@ struct MenuBarView: View {
     @Environment(AppState.self) private var appState
     @Environment(\.openWindow) private var openWindow
     @State private var startAtLogin = LoginItemService.isEnabled
+    @State private var plansHeight: CGFloat = 0
+
+    /// About four plan rows; the fifth peeks out to hint at scrollability,
+    /// and the fixed header/footer keep the panel well under even a small
+    /// screen's visible height.
+    private static let plansMaxHeight: CGFloat = 440
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -56,11 +62,25 @@ struct MenuBarView: View {
                     .disabled(appState.resticBinaryURL == nil)
                 }
             } else {
-                VStack(alignment: .leading, spacing: 12) {
-                    ForEach(appState.plans) { plan in
-                        PlanStatusRow(plan: plan)
+                // The .window-style MenuBarExtra panel sizes itself to its
+                // content with no screen clamp, so an unbounded plan list
+                // pushes Add/Login/Quit below the screen edge. Cap the list
+                // at ~4 rows and scroll inside it; the measured height keeps
+                // short lists hugging their content instead of reserving the
+                // full cap.
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 12) {
+                        ForEach(appState.plans) { plan in
+                            PlanStatusRow(plan: plan)
+                        }
+                    }
+                    .onGeometryChange(for: CGFloat.self) { proxy in
+                        proxy.size.height
+                    } action: { height in
+                        plansHeight = height
                     }
                 }
+                .frame(height: min(plansHeight, Self.plansMaxHeight))
             }
 
             Divider()
