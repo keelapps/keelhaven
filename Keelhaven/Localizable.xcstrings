@@ -1541,6 +1541,16 @@
         }
       }
     },
+    "The first backup starts right after you create the plan; after that, it runs on this schedule.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "首次备份会在创建计划后立即开始；之后按此计划运行。"
+          }
+        }
+      }
+    },
     "This backup plan no longer exists.": {
       "localizations": {
         "zh-Hans": {

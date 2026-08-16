@@ -114,6 +114,9 @@ final class AppState {
         plans.append(plan)
         runStates[plan.id] = .idle
         try await planStore.save(plans)
+        // The wizard promises the first backup starts right after creation —
+        // kick the scheduler now instead of waiting up to 60s for its tick.
+        runDuePlans()
     }
 
     func renamePlan(_ plan: BackupPlan, to newName: String) {

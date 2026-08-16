@@ -11,6 +11,13 @@ struct ScheduleStepView: View {
 
             ScheduleEditor(kind: $model.scheduleKind, dailyTime: $model.dailyTime, weekday: $model.weekday)
 
+            // Surprise-proofing, not decoration: the first run starts on
+            // creation (SchedulePolicy treats a never-run plan as due), and
+            // users who set an evening time expect silence until then.
+            Text("The first backup starts right after you create the plan; after that, it runs on this schedule.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+
             Text("Keelhaven also catches up automatically after your Mac was asleep or off at the scheduled time.")
                 .font(.callout)
                 .foregroundStyle(.secondary)
