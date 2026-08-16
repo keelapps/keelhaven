@@ -1,0 +1,21 @@
+site/.vitepress/config.mts
+  s_4f2128955ef03b::t_d24d0c54e906d7 73-77
+CLAUDE.md
+  s_4f2128955ef03b::t_14f82642ad3f68 51
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "755f1dfd063170ca1d21f8edc269b3020e09f26c",
+  "prompts": {},
+  "sessions": {
+    "s_4f2128955ef03b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "62d843b3-c7ab-4f01-9291-3c9657afece5",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
