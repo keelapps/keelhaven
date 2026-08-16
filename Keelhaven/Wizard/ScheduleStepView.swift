@@ -25,7 +25,19 @@ struct ScheduleStepView: View {
         VStack(alignment: .leading, spacing: 6) {
             Text("Summary")
                 .font(.headline)
-            summaryRow(label: String(localized: "Name"), value: model.name.isEmpty ? model.defaultName : model.name)
+            // The name is editable here, not on the source step: step one is
+            // purely about picking folders, and the autofilled default (first
+            // folder's name) only settles once those are chosen.
+            HStack(alignment: .firstTextBaseline) {
+                Text("Name")
+                    .foregroundStyle(.secondary)
+                    .frame(width: 90, alignment: .leading)
+                TextField("Plan name (optional)", text: $model.name, prompt: Text(model.defaultName))
+                    .textFieldStyle(.roundedBorder)
+                    .labelsHidden()
+                    .frame(maxWidth: 300)
+            }
+            .font(.callout)
             summaryRow(
                 label: String(localized: "Folders"),
                 value: model.sourcePaths.map { URL(fileURLWithPath: $0).lastPathComponent }.joined(separator: ", ")

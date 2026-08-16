@@ -37,11 +37,27 @@ struct SourceStepView: View {
             Text("Choose the folders to back up.")
                 .font(.title3)
 
-            presetChips
+            // Add-action and suggestions sit together, directly on top of the
+            // list they feed — the list then takes all remaining height.
+            HStack(spacing: 8) {
+                Button {
+                    let urls = FolderPicker.pickFolders()
+                    for url in urls where !model.sourcePaths.contains(url.path) {
+                        model.sourcePaths.append(url.path)
+                    }
+                    model.syncAutofilledName()
+                } label: {
+                    Label("Add Folders…", systemImage: "plus")
+                }
+                .buttonStyle(.bordered)
 
-            TextField("Plan name (optional)", text: $model.name, prompt: Text(model.defaultName))
-                .textFieldStyle(.roundedBorder)
-                .frame(maxWidth: 300)
+                Text("Suggested:")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .padding(.leading, 8)
+
+                presetChips
+            }
 
             List {
                 ForEach(model.sourcePaths, id: \.self) { path in
@@ -62,22 +78,12 @@ struct SourceStepView: View {
                     }
                 }
             }
-            .frame(minHeight: 160)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay {
                 if model.sourcePaths.isEmpty {
                     Text("No folders yet — add at least one.")
                         .foregroundStyle(.secondary)
                 }
-            }
-
-            Button {
-                let urls = FolderPicker.pickFolders()
-                for url in urls where !model.sourcePaths.contains(url.path) {
-                    model.sourcePaths.append(url.path)
-                }
-                model.syncAutofilledName()
-            } label: {
-                Label("Add Folders…", systemImage: "plus")
             }
         }
     }

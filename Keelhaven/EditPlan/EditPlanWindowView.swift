@@ -72,12 +72,26 @@ struct EditPlanWindowView: View {
         }
     }
 
-    // Same list-row pattern as the wizard's source step, minus the preset
-    // chips and the name autofill — editing must never silently rename.
+    // Same list-row pattern as the wizard's source step (add button above the
+    // list), minus the preset chips and the name autofill — editing must never
+    // silently rename.
     private var folderList: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Folders")
-                .font(.headline)
+            HStack {
+                Text("Folders")
+                    .font(.headline)
+                Spacer()
+                Button {
+                    let urls = FolderPicker.pickFolders()
+                    for url in urls where !model.sourcePaths.contains(url.path) {
+                        model.sourcePaths.append(url.path)
+                    }
+                } label: {
+                    Label("Add Folders…", systemImage: "plus")
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+            }
             List {
                 ForEach(model.sourcePaths, id: \.self) { path in
                     HStack {
@@ -102,14 +116,6 @@ struct EditPlanWindowView: View {
                     Text("No folders yet — add at least one.")
                         .foregroundStyle(.secondary)
                 }
-            }
-            Button {
-                let urls = FolderPicker.pickFolders()
-                for url in urls where !model.sourcePaths.contains(url.path) {
-                    model.sourcePaths.append(url.path)
-                }
-            } label: {
-                Label("Add Folders…", systemImage: "plus")
             }
         }
     }
