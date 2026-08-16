@@ -20,22 +20,25 @@ struct DestinationStepView: View {
 
                 if !model.adoptExistingRepository {
                     if model.localDestinationHasRepository && !model.destinationAlreadyUsed {
-                        Text("This folder already contains a backup repository. Connect to it under Advanced options, or choose an empty folder.")
-                            .font(.callout)
-                            .foregroundStyle(.red)
+                        HintCallout(.error, "This folder already contains a backup repository. Connect to it under Advanced options, or choose an empty folder.")
                     }
                     if model.destinationAlreadyUsed {
-                        Text("Another plan already backs up to this destination. Connect to its repository under Advanced options, or pick a different folder or bucket path.")
-                            .font(.callout)
-                            .foregroundStyle(.red)
+                        HintCallout(.error, "Another plan already backs up to this destination. Connect to its repository under Advanced options, or pick a different folder or bucket path.")
                     }
                 }
 
-                Divider()
+                // The password block only appears once there is a valid
+                // destination: one decision at a time, and a conflict callout
+                // above keeps the page focused on fixing it (issue #50).
+                if model.destinationFieldsValid {
+                    Divider()
 
-                passwordSection
+                    passwordSection
+                        .transition(.opacity.combined(with: .move(edge: .bottom)))
+                }
             }
             .padding(.bottom, 4)
+            .animation(.default, value: model.destinationFieldsValid)
         }
         .onAppear {
             drives = ExternalDriveService.detect()
@@ -128,9 +131,7 @@ struct DestinationStepView: View {
                 }
             }
             if model.localDestinationInsideSource {
-                Text("The destination can't be inside a folder you're backing up.")
-                    .font(.callout)
-                    .foregroundStyle(.red)
+                HintCallout(.error, "The destination can't be inside a folder you're backing up.")
             } else if model.destinationType == .local, model.localPath.isEmpty {
                 // Gray guidance, not red: nothing is wrong yet (issue #38).
                 Text("No destination chosen yet.")
@@ -142,33 +143,64 @@ struct DestinationStepView: View {
 
     // MARK: - Advanced options
 
+    // Hand-rolled disclosure instead of DisclosureGroup: the whole two-line
+    // row is one large click target, not just the tiny chevron (issue #50).
     private var advancedOptions: some View {
-        DisclosureGroup("Advanced options", isExpanded: $advancedExpanded) {
-            VStack(alignment: .leading, spacing: 12) {
-                Picker("Destination type", selection: $model.destinationType) {
-                    ForEach(DestinationType.allCases) { type in
-                        Text(type.localizedTitle).tag(type)
+        VStack(alignment: .leading, spacing: 0) {
+            Button {
+                advancedExpanded.toggle()
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "chevron.right")
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                        .rotationEffect(.degrees(advancedExpanded ? 90 : 0))
+                        .accessibilityHidden(true)
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text("Advanced options")
+                        Text("S3, SFTP, or an existing repository")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                     }
+                    Spacer()
                 }
-                .pickerStyle(.segmented)
-                .labelsHidden()
-
-                remoteForms
-
-                Toggle("Connect to an existing repository at this destination", isOn: $model.adoptExistingRepository)
-                    .toggleStyle(.checkbox)
-                Text("For a repository created earlier — by another plan, a previous install, or another Mac. Your password is verified against it; no new repository is created.")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
+                .contentShape(Rectangle())
             }
-            .padding(.top, 8)
+            .buttonStyle(.plain)
+            .accessibilityAddTraits(advancedExpanded ? [.isSelected] : [])
+
+            if advancedExpanded {
+                advancedContent
+            }
         }
+        .animation(.default, value: advancedExpanded)
         .onChange(of: advancedExpanded) { _, expanded in
             // Collapsing must not leave a hidden half-filled S3/SFTP form active.
             if !expanded && model.destinationType != .local {
                 model.destinationType = .local
             }
         }
+    }
+
+    private var advancedContent: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Picker("Destination type", selection: $model.destinationType) {
+                ForEach(DestinationType.allCases) { type in
+                    Text(type.localizedTitle).tag(type)
+                }
+            }
+            .pickerStyle(.segmented)
+            .labelsHidden()
+
+            remoteForms
+
+            Toggle("Connect to an existing repository at this destination", isOn: $model.adoptExistingRepository)
+                .toggleStyle(.checkbox)
+            Text("For a repository created earlier — by another plan, a previous install, or another Mac. Your password is verified against it; no new repository is created.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+        }
+        .padding(.top, 8)
     }
 
     @ViewBuilder
@@ -227,10 +259,7 @@ struct DestinationStepView: View {
                         model.passwordVerificationError = nil
                     }
                 if let verificationError = model.passwordVerificationError {
-                    Text(verificationError)
-                        .font(.callout)
-                        .foregroundStyle(.red)
-                        .lineLimit(3)
+                    HintCallout(.error, verbatim: verificationError, lineLimit: 3)
                         .help(verificationError)
                 }
             } else {
@@ -255,9 +284,7 @@ struct DestinationStepView: View {
                     pasteboard.setString(model.password, forType: .string)
                 }
             }
-            Text("Write this down or store it in a password manager now — without it, your backups cannot be restored.")
-                .font(.callout)
-                .foregroundStyle(.orange)
+            HintCallout(.warning, "Write this down or store it in a password manager now — without it, your backups cannot be restored.")
         } else {
             SecureField("Password (at least 8 characters)", text: $model.password)
                 .textFieldStyle(.roundedBorder)
@@ -274,11 +301,9 @@ struct DestinationStepView: View {
             }
         }
         if !model.password.isEmpty && !model.passwordValid {
-            Text(model.password.count < 8
-                 ? "Password must be at least 8 characters."
-                 : "Passwords don't match.")
-                .font(.callout)
-                .foregroundStyle(.red)
+            HintCallout(.error, model.password.count < 8
+                ? "Password must be at least 8 characters."
+                : "Passwords don't match.")
         } else if model.password.isEmpty {
             Text("A password is required to encrypt the backup.")
                 .font(.callout)

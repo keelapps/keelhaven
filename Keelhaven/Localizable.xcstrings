@@ -1371,6 +1371,16 @@
         }
       }
     },
+    "S3, SFTP, or an existing repository": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S3、SFTP 或连接已有仓库"
+          }
+        }
+      }
+    },
     "S3-Compatible": {
       "localizations": {
         "zh-Hans": {
