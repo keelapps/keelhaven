@@ -74,6 +74,9 @@ struct MenuBarView: View {
                             PlanStatusRow(plan: plan)
                         }
                     }
+                    // Gutter for the overlay scroll indicator: without it the
+                    // bar materializes right on top of each row's "…" button.
+                    .padding(.trailing, 12)
                     .onGeometryChange(for: CGFloat.self) { proxy in
                         proxy.size.height
                     } action: { height in
