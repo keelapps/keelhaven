@@ -1,0 +1,37 @@
+site/guide/getting-started.md
+  s_4f2128955ef03b::t_ffd2a8b835edc6 1-18
+site/.vitepress/config.mts
+  s_4f2128955ef03b::t_4199c9c1911c97 1-42
+.github/workflows/website.yml
+  s_4f2128955ef03b::t_44c0ade4ddbd80 1-46
+CLAUDE.md
+  s_4f2128955ef03b::t_45f96b4612cd50 41-44
+site/package.json
+  s_4f2128955ef03b::t_0abe41244c04fc 1-13
+.gitignore
+  s_4f2128955ef03b::t_f2243eee4514c3 15-17
+site/guide/faq.md
+  s_4f2128955ef03b::t_e608aa4b6a995e 1-22
+site/index.md
+  s_4f2128955ef03b::t_fc2219fb68d1a4 1-32
+site/guide/installation.md
+  s_4f2128955ef03b::t_c38efb6681ef19 1-11
+site/package-lock.json
+  s_4f2128955ef03b::t_9d34d5346ad42c 1-2577
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "a4d0b862414e2857f9dbfe133ee10e01a888652a",
+  "prompts": {},
+  "sessions": {
+    "s_4f2128955ef03b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "62d843b3-c7ab-4f01-9291-3c9657afece5",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
