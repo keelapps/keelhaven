@@ -46,6 +46,16 @@ struct MenuBarView: View {
                 .foregroundStyle(.orange)
             }
 
+            // Only shown when something is actually wrong — a healthy panel
+            // stays quiet rather than announcing "all good" every time
+            // (issue #65: an always-on summary line fit that app's dashboard,
+            // not this one's "quiet until needed" menu bar).
+            if attentionCount > 0 {
+                Label(attentionSummaryText, systemImage: "exclamationmark.triangle.fill")
+                    .font(.callout)
+                    .foregroundStyle(.red)
+            }
+
             Divider()
 
             if appState.plans.isEmpty {
@@ -74,6 +84,7 @@ struct MenuBarView: View {
                             PlanStatusRow(plan: plan)
                         }
                     }
+                    .background(ScrollerSuppressor())
                     .onGeometryChange(for: CGFloat.self) { proxy in
                         proxy.size.height
                     } action: { height in
@@ -134,9 +145,42 @@ struct MenuBarView: View {
         .frame(width: 340)
     }
 
+    private var attentionCount: Int {
+        appState.plans.filter { plan in
+            plan.health(runState: appState.runStates[plan.id] ?? .idle) == .needsAttention
+        }.count
+    }
+
+    private var attentionSummaryText: String {
+        attentionCount == 1
+            ? String(localized: "1 backup needs attention")
+            : String(localized: "\(attentionCount) backups need attention")
+    }
+
     private func openWizard() {
         openWindow(id: WindowID.wizard)
         // LSUIElement apps don't come forward on their own.
         NSApp.activate(ignoringOtherApps: true)
     }
+}
+
+/// `.scrollIndicators(.hidden)` above stops SwiftUI's own indicator, but
+/// macOS still flashes the underlying NSScrollView's system scroller on an
+/// active scroll gesture in this MenuBarExtra popover — and it can get
+/// stuck visible instead of fading (#71 follow-up). Reaching into the real
+/// NSScrollView and disabling its scroller is the only fix that sticks.
+private struct ScrollerSuppressor: NSViewRepresentable {
+    func makeNSView(context: Context) -> NSView {
+        let probe = NSView(frame: .zero)
+        DispatchQueue.main.async {
+            var view: NSView? = probe
+            while let current = view, !(current is NSScrollView) {
+                view = current.superview
+            }
+            (view as? NSScrollView)?.hasVerticalScroller = false
+        }
+        return probe
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {}
 }

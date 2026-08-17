@@ -32,7 +32,7 @@ extension KeychainError: LocalizedError {
         // Keychain access prompt (common after replacing the app binary, which
         // changes the code signature the Keychain item was granted to).
         case .unexpectedStatus(errSecUserCanceled), .unexpectedStatus(errSecAuthFailed):
-            return String(localized: "macOS did not let Keelhaven read this plan's password from the Keychain. When macOS asks for Keychain access, enter your Mac login password and click Always Allow.", bundle: .module)
+            return String(localized: "Couldn't read the Keychain password — click Always Allow next time macOS asks.", bundle: .module)
         case .unexpectedStatus(let status):
             // Interpolate as a string so the OSStatus prints as "-34018",
             // not the locale-grouped "-34,018".

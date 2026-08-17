@@ -13,29 +13,20 @@ struct PlanStatusRow: View {
     /// Docker-style health dot: blue while running, green when the last
     /// backup succeeded, red when it failed, gray before the first run.
     private var statusColor: Color {
-        switch runState {
-        case .running:
-            return .blue
-        case .failed:
-            return .red
-        case .succeeded:
-            return .green
-        case .idle:
-            guard let lastRun = plan.lastRun else { return .gray }
-            return lastRun.success ? .green : .red
+        switch plan.health(runState: runState) {
+        case .running: return .blue
+        case .ok: return .green
+        case .neverBackedUp: return .gray
+        case .needsAttention: return .red
         }
     }
 
     private var statusAccessibilityLabel: String {
-        switch runState {
+        switch plan.health(runState: runState) {
         case .running: return String(localized: "Backup running")
-        case .failed: return String(localized: "Last backup failed")
-        case .succeeded: return String(localized: "Backed up")
-        case .idle:
-            guard let lastRun = plan.lastRun else { return String(localized: "Not backed up yet") }
-            return lastRun.success
-                ? String(localized: "Backed up")
-                : String(localized: "Last backup failed")
+        case .ok: return String(localized: "Backed up")
+        case .neverBackedUp: return String(localized: "Not backed up yet")
+        case .needsAttention: return String(localized: "Last backup failed")
         }
     }
 

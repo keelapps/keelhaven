@@ -37,9 +37,9 @@
         "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "无法解析 restic 的输出。%@" } }
       }
     },
-    "macOS did not let Keelhaven read this plan's password from the Keychain. When macOS asks for Keychain access, enter your Mac login password and click Always Allow." : {
+    "Couldn't read the Keychain password — click Always Allow next time macOS asks." : {
       "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "macOS 没有允许 Keelhaven 读取该计划保存在钥匙串中的密码。当 macOS 弹出钥匙串访问请求时，请输入 Mac 的登录密码并点按“始终允许”。" } }
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "无法读取钥匙串密码——下次 macOS 弹出请求时，请点按“始终允许”。" } }
       }
     },
     "Could not read this plan's password from the Keychain (error %@)." : {
