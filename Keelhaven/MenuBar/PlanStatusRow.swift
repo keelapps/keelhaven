@@ -229,7 +229,6 @@ struct PlanStatusRow: View {
             Text(message)
                 .font(.callout)
                 .foregroundStyle(.red)
-                .lineLimit(3)
                 .help(message)
         case .succeeded(let date):
             RelativeTimeText(kind: .backedUp, date: date)
@@ -244,7 +243,7 @@ struct PlanStatusRow: View {
                         .foregroundStyle(.secondary)
                         .help(nextRunText)
                 } else {
-                    Text("Last backup failed")
+                    Text(lastRun.errorMessage ?? String(localized: "Last backup failed"))
                         .font(.callout)
                         .foregroundStyle(.red)
                         .help(lastRun.errorMessage ?? String(localized: "Last backup failed"))
