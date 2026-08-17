@@ -1,4 +1,15 @@
 import { defineConfig } from 'vitepress'
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+
+// The app's marketing version, read from the single source of truth so the
+// landing-page footer can never go stale. project.yml sits at the repo root,
+// two levels up from this file.
+const appVersion =
+  readFileSync(
+    fileURLToPath(new URL('../../project.yml', import.meta.url)),
+    'utf8'
+  ).match(/MARKETING_VERSION:\s*"?([\d.]+)/)?.[1] ?? '0.0.0'
 
 // Published via .github/workflows/website.yml: built here (private repo),
 // static output pushed to the public keelapps/keelhaven-site repo and served
@@ -14,7 +25,7 @@ const origin = 'https://keelapps.github.io'
 const siteUrl = origin + base
 
 const description =
-  'Privacy-first backups for your Mac. A menu bar app powered by restic.'
+  'Privacy-first backups for your Mac. A quiet menu bar app.'
 
 export default defineConfig({
   base,
@@ -51,6 +62,8 @@ export default defineConfig({
   ],
 
   themeConfig: {
+    // Custom field, read by LandingFooter via useData().theme.
+    appVersion,
     // Passed through withBase() by the default theme, so no `base` here.
     logo: '/icon-128.png',
     nav: [
@@ -74,7 +87,7 @@ export default defineConfig({
       // + the About window) — the website distributes nothing, so a discreet
       // licenses link is plenty here. Full credit lives on /licenses and in
       // the FAQ.
-      message: `<a href="${base}licenses">Open source licenses</a>`,
+      message: `<a href="${base}privacy">Privacy</a> · <a href="${base}licenses">Open source licenses</a>`,
       copyright: '© Keelapps. All rights reserved.',
     },
   },

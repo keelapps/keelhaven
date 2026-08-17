@@ -1,45 +1,201 @@
 ---
-layout: home
+layout: page
+navbar: false
+footer: false
 
-hero:
-  name: Keelhaven
-  text: Privacy-first backups for your Mac
-  tagline: A quiet menu bar app that backs up the folders you care about — encrypted, scheduled, powered by restic.
-  actions:
-    - theme: brand
-      text: Coming soon
-      link: /guide/getting-started
-    - theme: alt
-      text: Read the guide
-      link: /guide/getting-started
-
-features:
-  - icon: 🔒
-    title: Private by design
-    details: Your data is encrypted before it leaves your Mac. Passwords live in the macOS Keychain and are never written to disk or logs.
-  - icon: 🫥
-    title: Out of your way
-    details: Lives in the menu bar — no Dock icon, no windows to manage. Set a schedule once and forget it.
-  - icon: ⚓️
-    title: Built on restic
-    details: Backups are standard restic repositories, and restic comes bundled — nothing else to install. Your data is never locked in — restore it with the open-source restic CLI from any machine.
-  - icon: 🗓️
-    title: Real schedules
-    details: Hourly, daily, or weekly — pick a weekday and a time, and Keelhaven keeps your backups current.
+# All landing copy that components render lives here (not inside the
+# components) so a future zh/index.md can localize everything in one file.
+landing:
+  # Change the support address in this one place when a domain inbox exists.
+  contact: xianpeng.shen@gmail.com
+  cta: Get early access
+  ctaSubject: Keelhaven early access
+  nav:
+    - { text: Features, anchor: features }
+    - { text: Pricing, anchor: pricing }
+    - { text: FAQ, anchor: faq }
+    - { text: Guide, link: /guide/getting-started }
+  footer:
+    tagline: Privacy-first backups for your Mac.
+    versionNote: pre-release
+    copyright: © Keelapps. All rights reserved.
+    groups:
+      - title: Support
+        links:
+          - { text: Email support, mailto: true }
+          - { text: FAQ, link: /guide/faq }
+      - title: Product
+        links:
+          - { text: Getting started, link: /guide/getting-started }
+          - { text: Installation, link: /guide/installation }
+      - title: Legal
+        links:
+          - { text: Privacy, link: /privacy }
+          - { text: Open source licenses, link: /licenses }
 ---
 
-<!-- TODO before launch: product screenshot (assets go in site/public/),
-     real download link, and the 1.0 price in the Pricing section below. -->
+<script setup>
+import { computed } from 'vue'
+import { useData, withBase } from 'vitepress'
 
-## Pricing
+const { frontmatter } = useData()
+const mailto = computed(() => {
+  const landing = frontmatter.value.landing
+  return `mailto:${landing.contact}?subject=${encodeURIComponent(landing.ctaSubject)}`
+})
+</script>
 
-**Pay once. That's the entire model.**
+<!-- TODO before launch: real product screenshot in the ShotFrame below
+     (added via design/build.mjs into site/public/), real download link
+     replacing the mailto CTA, and the 1.0 price in the Pricing section. -->
 
-Keelhaven is in early development and **free while in beta**. When 1.0 ships it
-becomes a one-time purchase — bought once, updates forever, never a
-subscription.
+<div class="kh-landing">
+
+<LandingNav />
+
+<section id="top" class="kh-hero">
+  <h1 class="kh-hero-title">Privacy-first backups for your&nbsp;Mac</h1>
+  <p class="kh-hero-tagline">A quiet menu bar app that backs up the folders you care about — encrypted on your Mac, on your schedule, to storage you own.</p>
+  <p class="kh-hero-facts">
+    <span>macOS 14+</span>
+    <span>No subscription</span>
+    <span>No telemetry</span>
+    <span>Restores with open tools</span>
+  </p>
+  <p class="kh-hero-actions">
+    <a class="kh-btn kh-btn-primary" :href="mailto">Get early access</a>
+    <a class="kh-btn kh-btn-ghost" :href="withBase('/guide/getting-started')">Read the guide</a>
+  </p>
+</section>
+
+<LandingSection id="tour" eyebrow="00 · See it" title="One menu bar item. That's the whole app.">
+  <ShotFrame>
+    <div class="kh-shot-placeholder">
+      <img :src="withBase('/icon-128.png')" alt="Keelhaven app icon" width="72" height="72" />
+      <p>First public beta on the way — screenshot to follow.</p>
+    </div>
+  </ShotFrame>
+</LandingSection>
+
+<LandingSection id="features" eyebrow="01 · Features" title="Built to be forgotten">
+
+<div class="kh-feature-grid">
+<div class="kh-feature">
+
+### Private by design
+
+Your data is encrypted before it leaves your Mac. Passwords live in the macOS Keychain and are never written to disk or logs.
+
+</div>
+<div class="kh-feature">
+
+### Out of your way
+
+Lives in the menu bar — no Dock icon, no windows to manage. Set a schedule once and forget it.
+
+</div>
+<div class="kh-feature">
+
+### No lock-in
+
+Backups are written in a standard, open format — restorable with free open-source tools on any machine, with or without Keelhaven.
+
+</div>
+<div class="kh-feature">
+
+### Real schedules
+
+Hourly, daily, or weekly — pick a weekday and a time, and Keelhaven keeps your backups current.
+
+</div>
+</div>
+
+</LandingSection>
+
+<LandingSection id="how" eyebrow="02 · How it works" title="Three decisions, then silence">
+
+<ol class="kh-steps">
+<li>
+
+### Pick your folders
+
+Choose the folders you can't lose — documents, photos, projects.
+
+</li>
+<li>
+
+### Choose a destination you own
+
+An external drive, a NAS, or any S3-compatible bucket. There is no Keelhaven server in the path.
+
+</li>
+<li>
+
+### Set the schedule
+
+Hourly, daily, or weekly. Keelhaven runs in the background and only speaks up when something needs attention.
+
+</li>
+</ol>
+
+</LandingSection>
+
+<LandingSection id="pricing" eyebrow="03 · Pricing" title="Pay once. That's the entire model.">
+
+<PricingCard>
+<template #price><span class="kh-badge">Free while in beta</span></template>
+<template #note>One-time purchase at 1.0 — bought once, updates forever, never a subscription.</template>
 
 - Unlimited backup plans and destinations
 - Universal build — Apple silicon and Intel
-- restic bundled; nothing else to install
+- Backup engine built in — nothing else to install
 - No account, no telemetry, no server of ours in the path
+
+</PricingCard>
+
+</LandingSection>
+
+<LandingSection id="faq" eyebrow="04 · Questions" title="Straight answers">
+
+<FaqItem question="Does this replace Time Machine?">
+
+No — run both. Time Machine is excellent at putting a whole Mac back the way it was, from a drive on your desk. Keelhaven is for the second copy: the folders you can't lose, encrypted, somewhere that isn't your desk.
+
+</FaqItem>
+<FaqItem question="Am I locked into Keelhaven?">
+
+No. Every plan writes an ordinary restic repository, so you can list, verify, and restore your backups with the open-source restic CLI on any Mac or Linux box — with or without Keelhaven installed. If Keelhaven disappears tomorrow, your backups don't.
+
+</FaqItem>
+<FaqItem question="Is my data readable by anyone else?">
+
+No. Backups are encrypted on your Mac before anything is uploaded, and the repository password is stored only in your macOS Keychain. There is no Keelhaven server, no account system, and no telemetry — the app has nowhere else to send anything.
+
+</FaqItem>
+<FaqItem question="Which destinations are supported?">
+
+An external or network drive mounted on your Mac, any S3-compatible bucket (AWS, Backblaze B2, Wasabi, Cloudflare R2, MinIO), and SFTP to your own server or NAS.
+
+</FaqItem>
+<FaqItem question="What happens if I forget the repository password?">
+
+The backup is unrecoverable, by design — repositories are encrypted end to end, and nobody, not us and not your storage provider, holds a spare key. Keelhaven keeps the password in your macOS Keychain and can copy it back out after a Touch ID check; put it in your password manager too.
+
+</FaqItem>
+<FaqItem question="Why isn't it on the Mac App Store?">
+
+App Store apps must run in the sandbox, and the backup engine needs to read the folders you point it at and open network and SSH connections. Keelhaven ships with the hardened runtime enabled and signed builds, just not through the store.
+
+</FaqItem>
+
+<p class="kh-faq-more">
+
+[All questions →](/guide/faq)
+
+</p>
+
+</LandingSection>
+
+<LandingFooter />
+
+</div>

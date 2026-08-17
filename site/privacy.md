@@ -1,0 +1,21 @@
+# Privacy
+
+Keelhaven is built so that there is nothing to have a policy about.
+
+- **No account.** There is nothing to sign up for and no identity attached to
+  your use of the app.
+- **No telemetry.** The app does not phone home — no analytics, no crash
+  reporting, no usage statistics.
+- **No server of ours.** Your backups travel directly from your Mac to the
+  destination you configured — a local drive, your NAS, or your own
+  S3-compatible bucket. Keelhaven operates no server that could see them.
+- **Encrypted before it leaves.** Everything is encrypted on your Mac before a
+  single byte is uploaded. The repository password stays in your macOS Keychain
+  and is never sent anywhere.
+
+The website you are reading is a static site served by GitHub Pages; we run no
+trackers on it. If you email us for support, we see your email address and use
+it only to reply.
+
+Questions? See the [FAQ](/guide/faq) or email us — the address is in the site
+footer.
