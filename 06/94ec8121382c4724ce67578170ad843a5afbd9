@@ -1,0 +1,32 @@
+Makefile
+  s_d91bc606dfbb42::t_3483e526a552ff 25-27
+  s_d91bc606dfbb42::t_b210247194df0f 6
+.gitignore
+  s_d91bc606dfbb42::t_51ff1d136c45c5 12-13
+CLAUDE.md
+  s_d91bc606dfbb42::t_ad7b0839d42cc5 50
+project.yml
+  s_d91bc606dfbb42::t_defac1e959e8e3 67
+Scripts/make-dmg.sh
+  s_d91bc606dfbb42::t_1c7ae4a7f290b8 1-37
+.github/workflows/release.yml
+  s_d91bc606dfbb42::t_d08c14c276018f 1-156
+docs/RELEASING.md
+  s_d91bc606dfbb42::t_3c56897b29e8e4 1-79
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "0694ec8121382c4724ce67578170ad843a5afbd9",
+  "prompts": {},
+  "sessions": {
+    "s_d91bc606dfbb42": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e3f803a7-5321-4e70-b24f-64a923f667ed",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
