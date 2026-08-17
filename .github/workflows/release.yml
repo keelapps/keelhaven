@@ -1,0 +1,156 @@
+name: Release
+
+# Builds a Developer-ID-signed, notarized, universal Keelhaven.dmg and
+# attaches it to a GitHub Release. Separate from ci.yml's ad-hoc build-app
+# jobs, which exist only for Scripts/install-latest.sh (personal installs,
+# not public distribution) — see docs/RELEASING.md before the first run.
+#
+# Requires repo secrets that aren't set up yet as of this writing:
+#   DEVELOPER_ID_CERT_P12_BASE64, DEVELOPER_ID_CERT_PASSWORD,
+#   CI_KEYCHAIN_PASSWORD, APPLE_TEAM_ID,
+#   AC_API_KEY_ID, AC_API_ISSUER_ID, AC_API_KEY_P8_BASE64
+# Until they exist this workflow will fail at the "Import signing
+# certificate" step — that's expected, not a bug.
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Marketing version (e.g. 1.0.0) — only used for a manual run, a tag push derives it from the tag"
+        required: false
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build, sign, notarize, publish
+    runs-on: macos-15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Resolve version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ inputs.version }}"
+            if [ -z "$VERSION" ]; then
+              echo "::error::version input is required for a manual run" >&2
+              exit 1
+            fi
+          else
+            VERSION="${GITHUB_REF_NAME#v}"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Install XcodeGen
+        run: |
+          brew untap aws/tap || true
+          brew install xcodegen
+
+      # Universal binary for public distribution — one DMG for both
+      # architectures, unlike ci.yml's per-arch artifacts.
+      - name: Vendor restic (checksum-verified, universal)
+        run: ./Scripts/fetch-restic.sh universal
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      # Standard GitHub Actions pattern: import the Developer ID cert into a
+      # throwaway keychain scoped to this job, never the runner's default.
+      - name: Import signing certificate
+        env:
+          CERT_P12_BASE64: ${{ secrets.DEVELOPER_ID_CERT_P12_BASE64 }}
+          CERT_PASSWORD: ${{ secrets.DEVELOPER_ID_CERT_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.CI_KEYCHAIN_PASSWORD }}
+        run: |
+          KEYCHAIN="$RUNNER_TEMP/release.keychain-db"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          echo "$CERT_P12_BASE64" | base64 --decode -o "$RUNNER_TEMP/cert.p12"
+          security import "$RUNNER_TEMP/cert.p12" -k "$KEYCHAIN" -P "$CERT_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
+          security list-keychains -d user -s "$KEYCHAIN" $(security list-keychains -d user | tr -d '"')
+          rm -f "$RUNNER_TEMP/cert.p12"
+
+      - name: Build Release (Developer ID signed)
+        run: >
+          xcodebuild
+          -project Keelhaven.xcodeproj
+          -scheme Keelhaven
+          -configuration Release
+          -derivedDataPath build
+          build
+          CODE_SIGN_STYLE=Manual
+          CODE_SIGN_IDENTITY="Developer ID Application"
+          DEVELOPMENT_TEAM=${{ secrets.APPLE_TEAM_ID }}
+          OTHER_CODE_SIGN_FLAGS=--timestamp
+          MARKETING_VERSION=${{ steps.version.outputs.version }}
+          CURRENT_PROJECT_VERSION=${{ github.run_number }}
+          ARCHS="arm64 x86_64"
+          ONLY_ACTIVE_ARCH=NO
+
+      # Apple notarizes a zip/dmg, not a bare .app — the .app is what gets
+      # stapled afterward so Gatekeeper can check it offline.
+      - name: Notarize app
+        env:
+          AC_API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
+          AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
+          AC_API_KEY_P8_BASE64: ${{ secrets.AC_API_KEY_P8_BASE64 }}
+        run: |
+          echo "$AC_API_KEY_P8_BASE64" | base64 --decode -o "$RUNNER_TEMP/AuthKey.p8"
+          ditto -c -k --keepParent \
+            build/Build/Products/Release/Keelhaven.app \
+            "$RUNNER_TEMP/Keelhaven-notarize.zip"
+          xcrun notarytool submit "$RUNNER_TEMP/Keelhaven-notarize.zip" \
+            --key "$RUNNER_TEMP/AuthKey.p8" \
+            --key-id "$AC_API_KEY_ID" \
+            --issuer "$AC_API_ISSUER_ID" \
+            --wait
+          xcrun stapler staple build/Build/Products/Release/Keelhaven.app
+          rm -f "$RUNNER_TEMP/AuthKey.p8" "$RUNNER_TEMP/Keelhaven-notarize.zip"
+
+      - name: Create DMG
+        run: ./Scripts/make-dmg.sh build/Build/Products/Release/Keelhaven.app "Keelhaven-${{ steps.version.outputs.version }}.dmg"
+
+      # Notarize the DMG too — the .app inside is already stapled, but the
+      # DMG itself gets Gatekeeper-checked on first mount as well.
+      - name: Notarize and staple DMG
+        env:
+          AC_API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
+          AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
+          AC_API_KEY_P8_BASE64: ${{ secrets.AC_API_KEY_P8_BASE64 }}
+        run: |
+          echo "$AC_API_KEY_P8_BASE64" | base64 --decode -o "$RUNNER_TEMP/AuthKey.p8"
+          xcrun notarytool submit "Keelhaven-${{ steps.version.outputs.version }}.dmg" \
+            --key "$RUNNER_TEMP/AuthKey.p8" \
+            --key-id "$AC_API_KEY_ID" \
+            --issuer "$AC_API_ISSUER_ID" \
+            --wait
+          xcrun stapler staple "Keelhaven-${{ steps.version.outputs.version }}.dmg"
+          rm -f "$RUNNER_TEMP/AuthKey.p8"
+
+      - name: Delete signing keychain
+        if: always()
+        run: security delete-keychain "$RUNNER_TEMP/release.keychain-db" || true
+
+      - name: Publish GitHub Release
+        if: github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Keelhaven-${{ steps.version.outputs.version }}.dmg
+          generate_release_notes: true
+
+      - name: Upload DMG artifact
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v7
+        with:
+          name: Keelhaven-${{ steps.version.outputs.version }}
+          path: Keelhaven-${{ steps.version.outputs.version }}.dmg
+          if-no-files-found: error

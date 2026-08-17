@@ -64,7 +64,7 @@ targets:
           BINARY="$TARGET_BUILD_DIR/$EXECUTABLE_FOLDER_PATH/restic"
           IDENTITY="${EXPANDED_CODE_SIGN_IDENTITY:--}"
           if [ -z "$IDENTITY" ]; then IDENTITY="-"; fi
-          codesign --force --options runtime --sign "$IDENTITY" "$BINARY"
+          codesign --force --options runtime --timestamp --sign "$IDENTITY" "$BINARY"
       # Stamp the current git commit into Info.plist for the About window.
       # Runs before code signing, so the signature stays valid.
       - name: Embed git commit

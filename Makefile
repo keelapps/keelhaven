@@ -3,7 +3,7 @@
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap test restic build install update dev-site deploy-site clean
+.PHONY: help bootstrap test restic build dmg install update dev-site deploy-site clean
 
 help: ## List available targets
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "  make %-12s %s\n", $$1, $$2}'
@@ -21,6 +21,9 @@ build: restic ## Build a Release Keelhaven.app from the working tree
 	xcodegen generate
 	xcodebuild -project Keelhaven.xcodeproj -scheme Keelhaven \
 		-configuration Release -derivedDataPath build build
+
+dmg: build ## Package the Release build into Keelhaven.dmg (ad-hoc signed locally — see docs/RELEASING.md for notarized releases)
+	./Scripts/make-dmg.sh
 
 install: build ## Build from source and install to /Applications
 	./Scripts/install-local.sh
