@@ -1,0 +1,39 @@
+site/index.md
+  s_691f73ee7eb3d1::t_5915fa372b6bd6 172-175
+  s_691f73ee7eb3d1::t_707ce7dfca14ee 68
+  s_691f73ee7eb3d1::t_2f0c45c2c2703b 26,29-31
+  s_691f73ee7eb3d1::t_f845bfb4a8451d 116
+  s_691f73ee7eb3d1::t_ca6959cfd5c01a 15
+  s_691f73ee7eb3d1::t_2e857b830da630 142-147
+  s_691f73ee7eb3d1::t_b97cc00ec4d8ab 182-185
+  s_691f73ee7eb3d1::t_3a3715ce5e5de0 197-200
+  s_691f73ee7eb3d1::t_e137298d7524af 171
+  s_691f73ee7eb3d1::t_9b26aad3037009 181
+  s_691f73ee7eb3d1::t_47ab8860240070 196
+site/.vitepress/theme/components/LandingFooter.vue
+  s_691f73ee7eb3d1::t_e874a9304f5739 14-19,21
+site/.vitepress/theme/index.ts
+  s_691f73ee7eb3d1::t_86da2c86f7be6d 2
+site/.vitepress/config.mts
+  s_691f73ee7eb3d1::t_00cff40a040ddc 69-71
+site/privacy.md
+  s_691f73ee7eb3d1::t_3775c9bfa8d403 20
+site/.vitepress/theme/landing.css
+  s_691f73ee7eb3d1::t_e78936190d088c 503-509,511,513-514
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "6913308511b804926ffc2e6531d9db59bc3ec80b",
+  "prompts": {},
+  "sessions": {
+    "s_691f73ee7eb3d1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b3ad7c4-9744-45c1-bb1f-4eea2b89b24b",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
