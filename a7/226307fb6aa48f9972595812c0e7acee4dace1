@@ -1,0 +1,21 @@
+Keelhaven/MenuBar/PlanStatusRow.swift
+  s_e88ac15e44a0ff::t_f04b88ab69b62f 246
+Keelhaven/MenuBar/MenuBarView.swift
+  s_e88ac15e44a0ff::t_a5edea3b0b7747 83
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "a7226307fb6aa48f9972595812c0e7acee4dace1",
+  "prompts": {},
+  "sessions": {
+    "s_e88ac15e44a0ff": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec658d51-28b5-4d76-b50d-ec08303db839",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
