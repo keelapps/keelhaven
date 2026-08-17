@@ -32,6 +32,24 @@ final class InMemoryKeychainTests: XCTestCase {
     }
 }
 
+final class KeychainErrorDescriptionTests: XCTestCase {
+    func testEveryCaseHasAnActionableDescription() {
+        let cases: [(KeychainError, String)] = [
+            (.unexpectedStatus(errSecUserCanceled), "Always Allow"),
+            (.unexpectedStatus(errSecAuthFailed), "Always Allow"),
+            (.unexpectedStatus(errSecMissingEntitlement), "error \(errSecMissingEntitlement)"),
+            (.invalidData, "set it up again"),
+        ]
+        for (error, expectedFragment) in cases {
+            let description = error.localizedDescription
+            XCTAssertTrue(
+                description.contains(expectedFragment),
+                "\(error) description missing “\(expectedFragment)”: \(description)"
+            )
+        }
+    }
+}
+
 /// Exercises `KeychainStore`'s status handling through an injected
 /// `SecItemClient` — the real keychain is never touched, so these run
 /// deterministically everywhere (including CI).
