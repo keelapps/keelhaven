@@ -1,0 +1,20 @@
+Makefile
+  s_691f73ee7eb3d1::t_185eca46021c77 31-34
+  s_691f73ee7eb3d1::t_f67edeae9a9f39 6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "598a5de57accf716b5a2fbd47d8f6fdb35c2e240",
+  "prompts": {},
+  "sessions": {
+    "s_691f73ee7eb3d1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b3ad7c4-9744-45c1-bb1f-4eea2b89b24b",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
