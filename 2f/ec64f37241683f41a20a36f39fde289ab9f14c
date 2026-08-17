@@ -1,0 +1,42 @@
+Keelhaven/MenuBar/PlanHealth.swift
+  s_d91bc606dfbb42::t_f663d12d2c6e8d 1-27
+KeelhavenCore/Sources/KeelhavenCore/Keychain/KeychainStoring.swift
+  s_e18c2e7bcbe980::t_5a7678c8ff76ee 35
+Keelhaven/MenuBar/MenuBarView.swift
+  s_d91bc606dfbb42::t_09f69a4063c5ec 149,151
+  s_d91bc606dfbb42::t_3b0ff5a6e806e9 49-58
+  s_e18c2e7bcbe980::t_20c1da78fbd121 166-186
+  s_e18c2e7bcbe980::t_393faad8e7243c 87
+  s_d91bc606dfbb42::t_4f5f05fe392171 148,150,152-159
+KeelhavenCore/Sources/KeelhavenCore/Resources/Localizable.xcstrings
+  s_e18c2e7bcbe980::t_8c220c0644083f 40,42
+Keelhaven/MenuBar/PlanStatusRow.swift
+  s_d91bc606dfbb42::t_f7cdc6e7be030c 16-20,25,27-29
+Keelhaven/Localizable.xcstrings
+  s_d91bc606dfbb42::t_6818c4ea417428 54-70
+  s_d91bc606dfbb42::t_c436b65c1c0dbf 81-97,1760
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "2fec64f37241683f41a20a36f39fde289ab9f14c",
+  "prompts": {},
+  "sessions": {
+    "s_d91bc606dfbb42": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e3f803a7-5321-4e70-b24f-64a923f667ed",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    },
+    "s_e18c2e7bcbe980": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "38cb3d7a-c969-446c-b814-3d4877e278bb",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
