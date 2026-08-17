@@ -66,22 +66,9 @@ export default defineConfig({
     appVersion,
     // Passed through withBase() by the default theme, so no `base` here.
     logo: '/icon-128.png',
-    nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Guide', link: '/guide/getting-started' },
-    ],
-    sidebar: {
-      '/guide/': [
-        {
-          text: 'Guide',
-          items: [
-            { text: 'Getting Started', link: '/guide/getting-started' },
-            { text: 'Installation', link: '/guide/installation' },
-            { text: 'FAQ', link: '/guide/faq' },
-          ],
-        },
-      ],
-    },
+    // The site is a single landing page; only /privacy and /licenses use
+    // this default-theme chrome.
+    nav: [{ text: 'Home', link: '/' }],
     footer: {
       // The BSD-2-Clause notice travels with the app bundle (restic-LICENSE.txt
       // + the About window) — the website distributes nothing, so a discreet

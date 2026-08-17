@@ -1,5 +1,5 @@
 // Extends the default theme with the landing-page components used by
-// site/index.md. Docs pages (/guide, /licenses, /privacy) are untouched —
+// site/index.md. Standalone pages (/licenses, /privacy) are untouched —
 // every landing style in landing.css is scoped under .kh-landing.
 import DefaultTheme from 'vitepress/theme'
 import type { Theme } from 'vitepress'

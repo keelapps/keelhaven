@@ -12,9 +12,9 @@ landing:
   ctaSubject: Keelhaven early access
   nav:
     - { text: Features, anchor: features }
+    - { text: Guide, anchor: guide }
     - { text: Pricing, anchor: pricing }
     - { text: FAQ, anchor: faq }
-    - { text: Guide, link: /guide/getting-started }
   footer:
     tagline: Privacy-first backups for your Mac.
     versionNote: pre-release
@@ -23,11 +23,12 @@ landing:
       - title: Support
         links:
           - { text: Email support, mailto: true }
-          - { text: FAQ, link: /guide/faq }
+          - { text: FAQ, anchor: faq }
       - title: Product
         links:
-          - { text: Getting started, link: /guide/getting-started }
-          - { text: Installation, link: /guide/installation }
+          - { text: Features, anchor: features }
+          - { text: Getting started, anchor: guide }
+          - { text: Pricing, anchor: pricing }
       - title: Legal
         links:
           - { text: Privacy, link: /privacy }
@@ -64,7 +65,7 @@ const mailto = computed(() => {
   </p>
   <p class="kh-hero-actions">
     <a class="kh-btn kh-btn-primary" :href="mailto">Get early access</a>
-    <a class="kh-btn kh-btn-ghost" :href="withBase('/guide/getting-started')">Read the guide</a>
+    <a class="kh-btn kh-btn-ghost" href="#guide">Read the guide</a>
   </p>
 </section>
 
@@ -112,7 +113,7 @@ Hourly, daily, or weekly — pick a weekday and a time, and Keelhaven keeps your
 
 </LandingSection>
 
-<LandingSection id="how" eyebrow="02 · How it works" title="Three decisions, then silence">
+<LandingSection id="guide" eyebrow="02 · Guide" title="Three decisions, then silence">
 
 <ol class="kh-steps">
 <li>
@@ -138,6 +139,12 @@ Hourly, daily, or weekly. Keelhaven runs in the background and only speaks up wh
 </li>
 </ol>
 
+<div class="kh-guide-note">
+
+Runs on macOS 14 or later, Apple silicon and Intel, with everything it needs bundled. Download links will land here with the first public beta — beta builds aren't notarised yet, so macOS will ask you to allow the app once in **System Settings › Privacy & Security**.
+
+</div>
+
 </LandingSection>
 
 <LandingSection id="pricing" eyebrow="03 · Pricing" title="Pay once. That's the entire model.">
@@ -162,9 +169,19 @@ Hourly, daily, or weekly. Keelhaven runs in the background and only speaks up wh
 No — run both. Time Machine is excellent at putting a whole Mac back the way it was, from a drive on your desk. Keelhaven is for the second copy: the folders you can't lose, encrypted, somewhere that isn't your desk.
 
 </FaqItem>
+<FaqItem question="Why pay for this when open-source tools are free?">
+
+Because the engine isn't the part that's missing. Keelhaven's backup engine is [restic](https://restic.net) — free, open source, and excellent; you are not paying us for it. The price covers everything a command-line tool deliberately leaves to you: a schedule that actually runs, passwords held in the macOS Keychain and never written to disk or logs, a menu bar that stays quiet until something needs you, and setup that doesn't start with reading documentation. Our lock-in is zero by design, so we have to be worth paying for — that's the intended trade.
+
+</FaqItem>
 <FaqItem question="Am I locked into Keelhaven?">
 
 No. Every plan writes an ordinary restic repository, so you can list, verify, and restore your backups with the open-source restic CLI on any Mac or Linux box — with or without Keelhaven installed. If Keelhaven disappears tomorrow, your backups don't.
+
+</FaqItem>
+<FaqItem question="Is Keelhaven open source?">
+
+The app itself is a paid, closed-source product. Its backup engine is not: Keelhaven bundles and redistributes restic, which is open source under the BSD 2-Clause License — see [Open source licenses](/licenses) for the full notice. So while you can't read Keelhaven's source, you are never dependent on it to reach your data.
 
 </FaqItem>
 <FaqItem question="Is my data readable by anyone else?">
@@ -177,6 +194,11 @@ No. Backups are encrypted on your Mac before anything is uploaded, and the repos
 An external or network drive mounted on your Mac, any S3-compatible bucket (AWS, Backblaze B2, Wasabi, Cloudflare R2, MinIO), and SFTP to your own server or NAS.
 
 </FaqItem>
+<FaqItem question="Do I need to install anything else?">
+
+No. Everything Keelhaven needs ships inside the app bundle, including its backup engine — no separate install step, no Homebrew requirement, nothing to keep up to date.
+
+</FaqItem>
 <FaqItem question="What happens if I forget the repository password?">
 
 The backup is unrecoverable, by design — repositories are encrypted end to end, and nobody, not us and not your storage provider, holds a spare key. Keelhaven keeps the password in your macOS Keychain and can copy it back out after a Touch ID check; put it in your password manager too.
@@ -187,12 +209,6 @@ The backup is unrecoverable, by design — repositories are encrypted end to end
 App Store apps must run in the sandbox, and the backup engine needs to read the folders you point it at and open network and SSH connections. Keelhaven ships with the hardened runtime enabled and signed builds, just not through the store.
 
 </FaqItem>
-
-<p class="kh-faq-more">
-
-[All questions →](/guide/faq)
-
-</p>
 
 </LandingSection>
 

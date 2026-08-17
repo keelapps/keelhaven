@@ -500,16 +500,18 @@ body:has(.kh-landing) .VPLocalNav {
   color: var(--kh-foam);
 }
 
-.kh-landing .kh-faq-more {
-  margin: 24px 0 0;
+/* ---------- guide install note ---------- */
+
+.kh-landing .kh-guide-note {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--kh-line);
+  color: var(--kh-ink-soft);
   font-size: 15.5px;
+  max-width: 72ch;
 }
-.kh-landing .kh-faq-more a {
-  color: var(--kh-sea);
-  font-weight: 600;
-}
-.dark .kh-landing .kh-faq-more a {
-  color: var(--kh-foam);
+.kh-landing .kh-guide-note p {
+  margin: 0;
 }
 
 /* ---------- footer ---------- */

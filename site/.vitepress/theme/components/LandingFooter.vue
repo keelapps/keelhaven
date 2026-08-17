@@ -11,8 +11,14 @@ const landing = computed(() => frontmatter.value.landing ?? {})
 const footer = computed(() => landing.value.footer ?? {})
 const version = computed(() => (theme.value as any).appVersion ?? '')
 
-const href = (link: { link?: string; href?: string; mailto?: boolean }) => {
+const href = (link: {
+  link?: string
+  href?: string
+  anchor?: string
+  mailto?: boolean
+}) => {
   if (link.mailto) return `mailto:${landing.value.contact}`
+  if (link.anchor) return `#${link.anchor}`
   if (link.href) return link.href
   return withBase(link.link ?? '/')
 }

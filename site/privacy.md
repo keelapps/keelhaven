@@ -17,5 +17,5 @@ The website you are reading is a static site served by GitHub Pages; we run no
 trackers on it. If you email us for support, we see your email address and use
 it only to reply.
 
-Questions? See the [FAQ](/guide/faq) or email us — the address is in the site
+Questions? See the [FAQ](/#faq) or email us — the address is in the site
 footer.
