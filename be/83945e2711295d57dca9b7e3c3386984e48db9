@@ -1,0 +1,26 @@
+KeelhavenCore/Sources/KeelhavenCore/Keychain/KeychainStoring.swift
+  s_691f73ee7eb3d1::t_1be8ca4344ab83 2
+  s_691f73ee7eb3d1::t_88b00c0fd3da4e 27-36,40-44
+  s_691f73ee7eb3d1::t_7c7567dd61c794 37-39
+KeelhavenCore/Sources/KeelhavenCore/Resources/Localizable.xcstrings
+  s_691f73ee7eb3d1::t_732fba665f983c 45,47
+  s_691f73ee7eb3d1::t_578fe279c67b66 39-44,46,48-53
+KeelhavenCore/Tests/KeelhavenCoreTests/KeychainTests.swift
+  s_691f73ee7eb3d1::t_39d9b57bc97435 35-52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "be83945e2711295d57dca9b7e3c3386984e48db9",
+  "prompts": {},
+  "sessions": {
+    "s_691f73ee7eb3d1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b3ad7c4-9744-45c1-bb1f-4eea2b89b24b",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
