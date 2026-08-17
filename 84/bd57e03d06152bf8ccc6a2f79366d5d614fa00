@@ -1,0 +1,25 @@
+site/.vitepress/config.mts
+  s_691f73ee7eb3d1::t_6455c6bde94a32 28
+site/index.md
+  s_691f73ee7eb3d1::t_01321ccfe31b92 101
+  s_691f73ee7eb3d1::t_8790edaa20e2f1 151
+  s_691f73ee7eb3d1::t_b4eac62dc25b45 180,182
+site/privacy.md
+  s_691f73ee7eb3d1::t_ce6ba17dd48728 12-14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "84bd57e03d06152bf8ccc6a2f79366d5d614fa00",
+  "prompts": {},
+  "sessions": {
+    "s_691f73ee7eb3d1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b3ad7c4-9744-45c1-bb1f-4eea2b89b24b",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
