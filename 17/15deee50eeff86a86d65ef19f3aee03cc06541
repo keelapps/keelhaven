@@ -1,0 +1,44 @@
+site/.vitepress/theme/index.ts
+  s_691f73ee7eb3d1::t_3ddeca3ee2f5a6 1-24
+site/.vitepress/theme/components/PricingCard.vue
+  s_691f73ee7eb3d1::t_f0203e3938b53c 1-12
+site/.vitepress/theme/components/LandingNav.vue
+  s_691f73ee7eb3d1::t_623d5c7c7ed5a0 1-71
+site/.vitepress/theme/components/ShotFrame.vue
+  s_691f73ee7eb3d1::t_ab307b9edbf3f6 1-10
+site/.vitepress/theme/components/FaqItem.vue
+  s_691f73ee7eb3d1::t_572ead0f643afd 1-18
+site/.vitepress/theme/landing.css
+  s_691f73ee7eb3d1::t_2500264b546343 1-51,57-296,299-388,390-616
+  s_691f73ee7eb3d1::t_9ba65f4d890b3b 52-56
+  s_691f73ee7eb3d1::t_4f4a8f084eade1 297-298
+  s_691f73ee7eb3d1::t_b4290763331a8b 389
+site/privacy.md
+  s_691f73ee7eb3d1::t_ddcdcae60d3ea6 1-21
+site/.vitepress/theme/components/LandingSection.vue
+  s_691f73ee7eb3d1::t_752c7d5a3a6939 1-17
+site/.vitepress/theme/components/LandingFooter.vue
+  s_691f73ee7eb3d1::t_e22ebcdaaa043e 1-50
+site/.vitepress/config.mts
+  s_691f73ee7eb3d1::t_864d98c5031d69 65-66
+  s_691f73ee7eb3d1::t_a61e6ecef774b6 2-12
+  s_691f73ee7eb3d1::t_04bd718210c77d 90
+site/index.md
+  s_691f73ee7eb3d1::t_a3dbf36158ef70 2-35,38-128,130,132-133,135-148,154-202
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "1715deee50eeff86a86d65ef19f3aee03cc06541",
+  "prompts": {},
+  "sessions": {
+    "s_691f73ee7eb3d1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b3ad7c4-9744-45c1-bb1f-4eea2b89b24b",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
