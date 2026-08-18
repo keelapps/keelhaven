@@ -13,15 +13,18 @@ const appVersion =
 
 // Published via .github/workflows/website.yml: built here (private repo),
 // static output pushed to the public keelapps/keelhaven-site repo and served
-// by GitHub Pages at https://keelapps.github.io/keelhaven-site/.
-// When a custom domain is attached to that repo, change `base` to '/'.
+// by GitHub Pages at https://keelhaven.app/ — the custom domain lives in
+// site/public/CNAME, which is the only thing keeping it attached (the deploy
+// force-pushes an orphan branch, so a CNAME added anywhere else is wiped on
+// the next run). Cloudflare only answers DNS for the domain; traffic goes
+// straight to GitHub Pages. See docs/WEBSITE.md.
+//
 // Raw HTML in `footer.message` below does not get `base` prepended the way
-// markdown links do, so the two share this constant. Changing it here is
-// enough when a custom domain lands.
-const base = '/keelhaven-site/'
+// markdown links do, so the two share this constant.
+const base = '/'
 // og:image must be an absolute URL — relative paths are ignored by every
-// scraper. Split from `base` so a custom domain is a two-line change.
-const origin = 'https://keelapps.github.io'
+// scraper. Split from `base` so the host and the path prefix stay separable.
+const origin = 'https://keelhaven.app'
 const siteUrl = origin + base
 
 const description =
@@ -33,12 +36,17 @@ export default defineConfig({
   description,
   lastUpdated: false,
 
+  // Needs an absolute origin to emit useful <loc>s, which is why it only
+  // arrived with the custom domain. site/public/robots.txt points at it.
+  sitemap: { hostname: siteUrl },
+
   // Assets live in site/public/ and are written there by design/build.mjs and
   // design/materials.mjs — don't hand-copy them, they will go stale.
   //
   // Unlike markdown links and themeConfig.logo, nothing here is passed through
   // withBase(): these are raw attributes, so every local path needs `base`
-  // spelled out or it 404s under the /keelhaven-site/ prefix.
+  // spelled out, or they break the day the site moves under a path prefix
+  // again.
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: `${base}favicon.svg` }],
     ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: `${base}favicon-32.png` }],

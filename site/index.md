@@ -6,8 +6,10 @@ footer: false
 # All landing copy that components render lives here (not inside the
 # components) so a future zh/index.md can localize everything in one file.
 landing:
-  # Change the support address in this one place when a domain inbox exists.
-  contact: xianpeng.shen@gmail.com
+  # The one place the support address is written. It is a Cloudflare Email
+  # Routing alias on keelhaven.app that forwards to a real inbox, so it can be
+  # re-pointed without touching the site.
+  contact: support@keelhaven.app
   cta: Get early access
   ctaSubject: Keelhaven early access
   nav:

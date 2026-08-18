@@ -31,7 +31,7 @@ install: build ## Build from source and install to /Applications
 update: ## Install the latest CI build from main (no local build)
 	./Scripts/install-latest.sh
 
-dev-site: ## Preview the website locally with live reload (serves under /keelhaven-site/)
+dev-site: ## Preview the website locally with live reload (http://localhost:5173/)
 	@[ -d site/node_modules ] || npm --prefix site install
 	npm --prefix site run dev
 

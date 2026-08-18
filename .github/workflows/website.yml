@@ -2,8 +2,9 @@ name: Website
 
 # Builds the public website (site/, VitePress) and pushes the static output to
 # the public keelapps/keelhaven-site repo, which GitHub Pages serves at
-# https://keelapps.github.io/keelhaven-site/. This keeps the doc sources in
-# this private repo without needing a paid GitHub plan for Pages.
+# https://keelhaven.app/. This keeps the doc sources in this private repo
+# without needing a paid GitHub plan for Pages. See docs/WEBSITE.md for how
+# the domain is wired up.
 #
 # Runs on ubuntu (bills at 1×, unlike the 10× macOS jobs in ci.yml) and only
 # when site content actually changes, so it barely touches the minutes quota.
@@ -43,4 +44,9 @@ jobs:
           external_repository: keelapps/keelhaven-site
           publish_branch: gh-pages
           publish_dir: site/.vitepress/dist
+          # force_orphan replaces gh-pages wholesale, so anything not in
+          # `dist` is gone after every deploy — including the CNAME file that
+          # keeps keelhaven.app attached. That file therefore lives in
+          # site/public/CNAME and rides along in the build output; deleting it
+          # takes the custom domain offline on the next push.
           force_orphan: true
