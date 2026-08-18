@@ -22,7 +22,7 @@ build: restic ## Build a Release Keelhaven.app from the working tree
 	xcodebuild -project Keelhaven.xcodeproj -scheme Keelhaven \
 		-configuration Release -derivedDataPath build build
 
-dmg: build ## Package the Release build into Keelhaven.dmg (ad-hoc signed locally — see docs/RELEASING.md for notarized releases)
+dmg: build ## Package the Release build into Keelhaven.dmg (ad-hoc signed locally)
 	./Scripts/make-dmg.sh
 
 install: build ## Build from source and install to /Applications

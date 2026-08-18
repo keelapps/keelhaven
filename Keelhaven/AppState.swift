@@ -22,6 +22,7 @@ final class AppState {
     /// True once bootstrap confirmed there are no plans — the trigger for the
     /// first-run welcome window.
     var shouldOfferWelcome = false
+    var availableUpdate: UpdateInfo?
 
     @ObservationIgnored private let keychain: KeychainStoring = KeychainStore()
     @ObservationIgnored private let planStore = PlanStore()
@@ -79,6 +80,24 @@ final class AppState {
 
         // Missed-run catch-up at launch.
         runDuePlans()
+
+        await checkForUpdatesIfNeeded()
+    }
+
+    // MARK: - Updates
+
+    private static let lastUpdateCheckDefaultsKey = "lastUpdateCheckDate"
+    private static let updateCheckInterval: TimeInterval = 24 * 60 * 60
+
+    /// At most once a day, so a launch doesn't hit keelhaven.app every time.
+    private func checkForUpdatesIfNeeded() async {
+        let defaults = UserDefaults.standard
+        if let lastCheck = defaults.object(forKey: Self.lastUpdateCheckDefaultsKey) as? Date,
+           Date().timeIntervalSince(lastCheck) < Self.updateCheckInterval {
+            return
+        }
+        defaults.set(Date(), forKey: Self.lastUpdateCheckDefaultsKey)
+        availableUpdate = await UpdateChecker.checkForUpdate()
     }
 
     // MARK: - Menu bar

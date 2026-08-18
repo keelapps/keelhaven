@@ -56,6 +56,17 @@ struct MenuBarView: View {
                     .foregroundStyle(.red)
             }
 
+            if let update = appState.availableUpdate {
+                Button {
+                    NSWorkspace.shared.open(update.dmgURL)
+                } label: {
+                    Label(String(localized: "New version \(update.version) available"), systemImage: "arrow.down.circle.fill")
+                        .font(.callout)
+                        .foregroundStyle(.blue)
+                }
+                .buttonStyle(.plain)
+            }
+
             Divider()
 
             if appState.plans.isEmpty {

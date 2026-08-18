@@ -14,6 +14,12 @@ on:
     paths:
       - site/**
       - .github/workflows/website.yml
+  # release.yml's tag-push path publishes a GitHub Release on the private
+  # keelapps/keelhaven repo — this is the only trigger that fires right
+  # after one lands, so the mirror step below gets a chance to run before
+  # anyone notices the download is stale.
+  release:
+    types: [published]
   workflow_dispatch:
 
 concurrency:
@@ -31,6 +37,29 @@ jobs:
           node-version: 24
           cache: npm
           cache-dependency-path: site/package-lock.json
+      # Runs on every deploy, not just the release trigger above — force_orphan
+      # below replaces gh-pages wholesale each time, so a docs-only push would
+      # otherwise wipe out whatever DMG a prior release run had mirrored here.
+      # Keelhaven has no public releases yet, so this no-ops until the first
+      # `git tag vX.Y.Z` — that's expected, not a bug.
+      - name: Mirror latest release DMG
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p site/public/downloads
+          if ! gh release view --repo keelapps/keelhaven --json tagName,assets > /tmp/release.json 2>/tmp/release.err; then
+            echo "No published release yet — skipping DMG mirror ($(cat /tmp/release.err))"
+            exit 0
+          fi
+          TAG=$(jq -r .tagName /tmp/release.json)
+          VERSION="${TAG#v}"
+          ASSET=$(jq -r '.assets[] | select(.name | endswith(".dmg")) | .name' /tmp/release.json | head -n1)
+          if [ -z "$ASSET" ]; then
+            echo "Latest release $TAG has no .dmg asset — skipping mirror"
+            exit 0
+          fi
+          gh release download "$TAG" --repo keelapps/keelhaven --pattern '*.dmg' --dir site/public/downloads --clobber
+          printf '{"version": "%s", "dmgURL": "https://keelhaven.app/downloads/%s"}\n' "$VERSION" "$ASSET" > site/public/latest.json
       - name: Build site
         run: |
           npm ci --prefix site
