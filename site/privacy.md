@@ -13,9 +13,15 @@ Keelhaven is built so that there is nothing to have a policy about.
   single byte is uploaded. The repository password stays in your macOS Keychain
   and is never sent anywhere.
 
-The website you are reading is a static site served by GitHub Pages; we run no
-trackers on it. If you email us for support, we see your email address and use
-it only to reply.
+That covers the app, which is the part that touches your files. Two things
+around it are worth stating plainly:
+
+- **This website** is a static site served by GitHub Pages. It runs no
+  trackers, sets no cookies, and loads nothing from third parties. GitHub sees
+  the requests it serves, as any web host does.
+- **Support email** sent to our address is routed through Cloudflare Email
+  Routing to a mailbox we read. We see your address and whatever you write, and
+  use it only to answer you.
 
 Questions? See the [FAQ](/#faq) or email us — the address is in the site
 footer.

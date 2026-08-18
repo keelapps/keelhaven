@@ -1,7 +1,7 @@
 # Open Source Licenses
 
-Keelhaven is a commercial, closed-source application. It is built on open
-source software, and this page is where that software is credited.
+Keelhaven is a commercial, closed-source application built on open source
+software. This page credits it.
 
 ## restic
 
@@ -58,10 +58,7 @@ of their respective owners.
 
 ## Where to report problems
 
-Please report Keelhaven bugs to **Keelhaven**, not to the restic project.
-
-If something goes wrong during a backup, the fault is far more likely to be in
-how Keelhaven drives restic than in restic itself. The restic maintainers are
-volunteers, and filing our bugs on their issue tracker or forum spends their
-time on our behalf. If a genuine restic bug does turn up, we will report it
-upstream ourselves.
+Report Keelhaven bugs to us, not to the restic project. A failed backup is far
+more likely to come from how Keelhaven drives restic than from restic itself,
+and its maintainers are volunteers. If a genuine restic bug does turn up, we
+report it upstream ourselves.

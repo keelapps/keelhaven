@@ -39,7 +39,7 @@ landing:
 
 <script setup>
 import { computed } from 'vue'
-import { useData, withBase } from 'vitepress'
+import { useData } from 'vitepress'
 
 const { frontmatter } = useData()
 const mailto = computed(() => {
@@ -48,9 +48,19 @@ const mailto = computed(() => {
 })
 </script>
 
-<!-- TODO before launch: real product screenshot in the ShotFrame below
-     (added via design/build.mjs into site/public/), real download link
-     replacing the mailto CTA, and the 1.0 price in the Pricing section. -->
+<!-- TODO before launch: a real download link replacing the mailto CTA, and
+     the 1.0 price in the Pricing section.
+
+     A product tour section belongs between the hero and Features, but only
+     once there is a real screenshot to put in it — design/build.mjs writes
+     into site/public/, and ShotFrame is still registered and ready:
+
+       <LandingSection id="tour" eyebrow="00 · See it"
+                       title="One menu bar item. That's the whole app.">
+         <ShotFrame><img … /></ShotFrame>
+       </LandingSection>
+
+     An empty frame apologising for itself is worse than no section at all. -->
 
 <div class="kh-landing">
 
@@ -70,15 +80,6 @@ const mailto = computed(() => {
     <a class="kh-btn kh-btn-ghost" href="#guide">Read the guide</a>
   </p>
 </section>
-
-<LandingSection id="tour" eyebrow="00 · See it" title="One menu bar item. That's the whole app.">
-  <ShotFrame>
-    <div class="kh-shot-placeholder">
-      <img :src="withBase('/icon-128.png')" alt="Keelhaven app icon" width="72" height="72" />
-      <p>First public beta on the way — screenshot to follow.</p>
-    </div>
-  </ShotFrame>
-</LandingSection>
 
 <LandingSection id="features" eyebrow="01 · Features" title="Built to be forgotten">
 
