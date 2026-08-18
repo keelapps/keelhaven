@@ -1,0 +1,38 @@
+Makefile
+  h_95e33fbd4ab2d9 25
+KeelhavenCore/Sources/KeelhavenCore/Models/UpdateInfo.swift
+  s_92d6a5d1c377e7::t_ca5fdc241e0e7a 1-45
+KeelhavenCore/Tests/KeelhavenCoreTests/UpdateInfoTests.swift
+  s_92d6a5d1c377e7::t_1c4ab163f1b954 1-61
+Keelhaven/Services/UpdateChecker.swift
+  s_92d6a5d1c377e7::t_b115e1e295fd4c 1-23
+Keelhaven/AppState.swift
+  s_92d6a5d1c377e7::t_a2c603555faac5 25
+  s_92d6a5d1c377e7::t_2cf835220811f0 83-100
+Keelhaven/MenuBar/MenuBarView.swift
+  s_92d6a5d1c377e7::t_abbd809dd83fcc 59-69
+.github/workflows/website.yml
+  s_92d6a5d1c377e7::t_431b7eb2e09645 40-62
+  s_92d6a5d1c377e7::t_a2e2aad34df41a 17-22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "ae9a07e7b7cea9d46abaab10a7162a1aa57abbac",
+  "prompts": {},
+  "humans": {
+    "h_95e33fbd4ab2d9": {
+      "author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_92d6a5d1c377e7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8c06c0c8-3bc6-45ab-9aa9-c12c453537bd",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
