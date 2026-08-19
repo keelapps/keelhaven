@@ -7,6 +7,7 @@ import LandingNav from './components/LandingNav.vue'
 import LandingSection from './components/LandingSection.vue'
 import LandingFooter from './components/LandingFooter.vue'
 import ShotFrame from './components/ShotFrame.vue'
+import MenuBarDemo from './components/MenuBarDemo.vue'
 import PricingCard from './components/PricingCard.vue'
 import FaqItem from './components/FaqItem.vue'
 import './landing.css'
@@ -18,6 +19,7 @@ export default {
     app.component('LandingSection', LandingSection)
     app.component('LandingFooter', LandingFooter)
     app.component('ShotFrame', ShotFrame)
+    app.component('MenuBarDemo', MenuBarDemo)
     app.component('PricingCard', PricingCard)
     app.component('FaqItem', FaqItem)
   },

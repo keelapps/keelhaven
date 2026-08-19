@@ -616,3 +616,360 @@ body:has(.kh-landing) .VPLocalNav {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* ---------------------------------------------------------------- demo --
+   MenuBarDemo.vue — an animated recreation of the menu bar popover, kept
+   faithful to Keelhaven/MenuBar/*.swift: Apple system colors for the status
+   dot and progress bar, no percentage text while running (the app shows
+   none), the real strings. One 12s loop; every element animates on the same
+   12s clock so the choreography reads as percentages of that loop:
+     0–20%  idle           21.5%  click Back Up Now
+     24–74% backup runs    76–91% done + notification
+     92–96% crossfade back to the idle frame for a clean loop seam.
+   Colors here are macOS chrome, not brand tokens — the popover must look
+   like the Mac app, not like the website. The frame around it stays brand. */
+
+.kh-landing .kh-demo {
+  position: relative;
+  min-height: 480px;
+  padding: 26px 24px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+}
+
+/* --- mini menu bar ----------------------------------------------------- */
+.kh-landing .kh-demo-scene {
+  position: relative;
+  width: min(560px, 100%);
+  display: flex;
+  flex-direction: column;
+}
+.kh-landing .kh-demo-menubar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  height: 26px;
+  padding: 0 12px;
+  border-radius: 7px;
+  background: rgba(234, 242, 251, 0.14);
+  color: var(--kh-mist);
+  font-size: 12px;
+  font-weight: 500;
+}
+.kh-landing .kh-demo-mb-slot {
+  position: relative;
+  width: 17px;
+  height: 17px;
+}
+.kh-landing .kh-demo-mb-slot svg {
+  position: absolute;
+  inset: 0;
+}
+.kh-landing .kh-demo-mb-idle { animation: kh-demo-mb-idle 12s infinite; }
+.kh-landing .kh-demo-mb-busy { opacity: 0; animation: kh-demo-mb-busy 12s infinite; }
+.kh-landing .kh-demo-mb-busy-spin {
+  transform-origin: 12px 12px;
+  animation: kh-demo-spin 1.4s linear infinite;
+}
+@keyframes kh-demo-mb-idle {
+  0%, 22% { opacity: 1; }
+  24%, 74% { opacity: 0; }
+  76%, 100% { opacity: 1; }
+}
+@keyframes kh-demo-mb-busy {
+  0%, 22% { opacity: 0; }
+  24%, 74% { opacity: 1; }
+  76%, 100% { opacity: 0; }
+}
+@keyframes kh-demo-spin { to { transform: rotate(360deg); } }
+
+/* --- popover ----------------------------------------------------------- */
+.kh-landing .kh-demo-popover {
+  position: relative;
+  width: 340px;
+  margin: 14px 46px 0 auto;
+  padding: 16px;
+  border-radius: 10px;
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 18px 50px rgba(2, 8, 16, 0.5), 0 2px 10px rgba(2, 8, 16, 0.3);
+  color: #1d1d1f;
+  font-size: 13px;
+  line-height: 1.35;
+}
+.kh-landing .kh-demo-arrow {
+  position: absolute;
+  top: -6px;
+  right: 60px;
+  width: 12px;
+  height: 12px;
+  background: #f5f5f7;
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  transform: rotate(45deg);
+}
+.kh-landing .kh-demo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.kh-landing .kh-demo-title { font-size: 15px; font-weight: 600; }
+.kh-landing .kh-demo-info { color: rgba(60, 60, 67, 0.6); }
+.kh-landing .kh-demo-divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 12px 0;
+}
+
+/* --- plan rows --------------------------------------------------------- */
+.kh-landing .kh-demo-plan {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+.kh-landing .kh-demo-plan + .kh-demo-plan { margin-top: 12px; }
+.kh-landing .kh-demo-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex: none;
+  background: #34c759; /* Apple systemGreen — the app's "ok" dot */
+}
+.kh-landing .kh-demo-dot-1 { animation: kh-demo-dot 12s infinite; }
+@keyframes kh-demo-dot {
+  0%, 22% { background: #34c759; }
+  24%, 74% { background: #007aff; } /* systemBlue — "running" */
+  76%, 100% { background: #34c759; }
+}
+.kh-landing .kh-demo-plan-body { flex: 1; min-width: 0; }
+.kh-landing .kh-demo-plan-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.kh-landing .kh-demo-plan-name {
+  font-weight: 600;
+  flex: 1;
+  min-width: 0;
+}
+.kh-landing .kh-demo-runbtn {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.12);
+  white-space: nowrap;
+}
+.kh-landing .kh-demo-runbtn-1 { animation: kh-demo-btn1 12s infinite; }
+@keyframes kh-demo-btn1 {
+  0%, 20.5% { opacity: 1; background: #fff; }
+  21.5%, 22.5% { opacity: 1; background: #d9d9de; } /* pressed */
+  24%, 74% { opacity: 0; }
+  78%, 100% { opacity: 1; background: #fff; }
+}
+.kh-landing .kh-demo-runbtn-2 { animation: kh-demo-btn2 12s infinite; }
+@keyframes kh-demo-btn2 {
+  0%, 22% { opacity: 1; }
+  24%, 74% { opacity: 0.45; } /* disabled while another backup runs */
+  76%, 100% { opacity: 1; }
+}
+.kh-landing .kh-demo-more { color: rgba(60, 60, 67, 0.6); flex: none; }
+.kh-landing .kh-demo-plan-dest {
+  color: rgba(60, 60, 67, 0.6);
+  margin-top: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kh-landing .kh-demo-plan-sched {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: rgba(60, 60, 67, 0.6);
+  margin-top: 3px;
+}
+
+/* --- the status line: idle text ⇄ progress bar ⇄ done text ------------- */
+.kh-landing .kh-demo-statusline {
+  position: relative;
+  height: 18px;
+  margin-top: 3px;
+}
+.kh-landing .kh-demo-status {
+  position: absolute;
+  inset: 0;
+  color: rgba(60, 60, 67, 0.6);
+  opacity: 0;
+}
+.kh-landing .kh-demo-status.is-on { opacity: 1; }
+.kh-landing .kh-demo-status-idle { animation: kh-demo-status-idle 12s infinite; }
+@keyframes kh-demo-status-idle {
+  0%, 22% { opacity: 1; }
+  24%, 91% { opacity: 0; }
+  95%, 100% { opacity: 1; }
+}
+.kh-landing .kh-demo-status-done { animation: kh-demo-status-done 12s infinite; }
+@keyframes kh-demo-status-done {
+  0%, 74.5% { opacity: 0; }
+  76%, 91% { opacity: 1; }
+  95%, 100% { opacity: 0; }
+}
+.kh-landing .kh-demo-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 6px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  opacity: 0;
+  animation: kh-demo-progress 12s infinite;
+}
+@keyframes kh-demo-progress {
+  0%, 23% { opacity: 0; }
+  24.5%, 74% { opacity: 1; }
+  75.5%, 100% { opacity: 0; }
+}
+.kh-landing .kh-demo-progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: #007aff;
+  width: 0;
+  animation: kh-demo-fill 12s infinite;
+}
+/* Uneven steps on purpose — real backups scan, stall on a big file, then
+   sprint. A linear sweep reads as fake. */
+@keyframes kh-demo-fill {
+  0%, 24% { width: 0; }
+  30% { width: 21%; }
+  38% { width: 36%; }
+  46% { width: 41%; }
+  56% { width: 68%; }
+  64% { width: 87%; }
+  71% { width: 96%; }
+  74%, 90% { width: 100%; }
+  91%, 100% { width: 0; }
+}
+
+/* --- footer rows -------------------------------------------------------- */
+.kh-landing .kh-demo-addrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+.kh-landing .kh-demo-footrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+}
+.kh-landing .kh-demo-quit { margin-top: 10px; }
+.kh-landing .kh-demo-kbd { color: rgba(60, 60, 67, 0.3); }
+.kh-landing .kh-demo-switch {
+  width: 26px;
+  height: 15px;
+  border-radius: 999px;
+  background: #34c759;
+  position: relative;
+  flex: none;
+}
+.kh-landing .kh-demo-knob {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0.5px 2px rgba(0, 0, 0, 0.25);
+}
+
+/* --- cursor ------------------------------------------------------------- */
+.kh-landing .kh-demo-cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+  animation: kh-demo-cursor 12s infinite;
+  pointer-events: none;
+}
+@keyframes kh-demo-cursor {
+  0%, 10% { opacity: 0; transform: translate(305px, 330px); }
+  13% { opacity: 1; transform: translate(296px, 310px); }
+  20% { opacity: 1; transform: translate(250px, 62px); }
+  21.5% { opacity: 1; transform: translate(250px, 62px) scale(0.88); }
+  23% { opacity: 1; transform: translate(250px, 62px) scale(1); }
+  30% { opacity: 1; transform: translate(300px, 210px); }
+  34%, 100% { opacity: 0; transform: translate(310px, 260px); }
+}
+
+/* --- notification ------------------------------------------------------- */
+.kh-landing .kh-demo-notif {
+  position: absolute;
+  top: 62px;
+  right: 16px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 290px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(245, 245, 247, 0.92);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(2, 8, 16, 0.45);
+  color: #1d1d1f;
+  transform: translateX(120%);
+  opacity: 0;
+  animation: kh-demo-notif 12s infinite;
+}
+.kh-landing .kh-demo-notif img,
+.kh-landing .kh-shot-frame .kh-demo-notif img {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  flex: none;
+}
+.kh-landing .kh-demo-notif-title { font-size: 13px; font-weight: 600; }
+.kh-landing .kh-demo-notif-body {
+  font-size: 12px;
+  color: rgba(60, 60, 67, 0.72);
+}
+@keyframes kh-demo-notif {
+  0%, 76% { transform: translateX(120%); opacity: 0; }
+  79%, 89% { transform: translateX(0); opacity: 1; }
+  93%, 100% { transform: translateX(120%); opacity: 0; }
+}
+
+/* Reduced motion: hold the calm idle frame — which is the product promise
+   anyway. Base styles above already render exactly that. */
+@media (prefers-reduced-motion: reduce) {
+  .kh-landing .kh-demo *,
+  .kh-landing .kh-demo-cursor,
+  .kh-landing .kh-demo-notif {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .kh-landing .kh-demo {
+    min-height: 430px;
+    padding: 18px 8px 24px;
+  }
+  .kh-landing .kh-demo-popover {
+    transform: scale(0.88);
+    transform-origin: top right;
+    margin-right: 8px;
+  }
+  .kh-landing .kh-demo-notif { display: none; }
+}
