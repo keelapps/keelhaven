@@ -1,0 +1,35 @@
+.github/workflows/build-app.yml
+  s_895a153daaa8c4::t_fa46eac54212c0 1-98
+.github/workflows/ci.yml
+  s_895a153daaa8c4::t_7a5e105f5b63df 7-10,28-30,40-53
+.github/workflows/release.yml
+  s_895a153daaa8c4::t_4280052096e7d7 32-36
+.github/workflows/website.yml
+  s_895a153daaa8c4::t_0d80bde2d6b3a0 33
+CLAUDE.md
+  s_895a153daaa8c4::t_6302266c1f8b27 28,52
+Makefile
+  s_895a153daaa8c4::t_1ae05199805171 31
+README.md
+  s_895a153daaa8c4::t_36e256ca4703d0 28-33
+Scripts/install-latest.sh
+  s_895a153daaa8c4::t_2f5b854f61486f 2,4-17,21-31,46-109,111
+docs/RELEASING.md
+  s_895a153daaa8c4::t_4488dadbdb6f3e 9,11-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "75cf98ca771327b649ca663f2367f66634c72fff",
+  "prompts": {},
+  "sessions": {
+    "s_895a153daaa8c4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3b41c0b0-0192-465d-8149-e75f9f1c7f48",
+        "model": "claude-opus-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
