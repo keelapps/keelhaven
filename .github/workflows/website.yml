@@ -30,6 +30,7 @@ jobs:
   deploy:
     name: Build and publish
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v6

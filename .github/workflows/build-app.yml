@@ -1,0 +1,98 @@
+name: Build app
+
+# Ad-hoc Release builds for personal installs via Scripts/install-latest.sh.
+#
+# Manual on purpose. macOS runners bill at 10× against the private-repo minutes
+# quota, and two builds per main push was the single largest line item in this
+# org's usage (~20 billed minutes per push, ~280 minutes over the last 14
+# pushes) for artifacts that are only ever downloaded when someone actually
+# wants to install a new build. Now they are built when asked for.
+#
+# Deliberately *not* triggered by `v*.*.*` tags: release.yml already builds on
+# those, and its output is strictly better (Developer ID signed, notarized,
+# universal). Two workflows on one tag would just pay the macOS premium twice.
+#
+# `variant` defaults to apple-silicon because that is what a modern Mac needs,
+# and building one architecture instead of two halves the bill again.
+# install-latest.sh passes the running machine's architecture explicitly.
+on:
+  workflow_dispatch:
+    inputs:
+      variant:
+        description: Architecture to build
+        type: choice
+        options: [apple-silicon, intel, both]
+        default: apple-silicon
+
+concurrency:
+  group: build-app-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-app:
+    name: Build app (${{ matrix.label }})
+    runs-on: macos-15
+    # A hung xcodebuild would otherwise run to the 6-hour default — 3600 billed
+    # minutes on a 10× runner, nearly two months of the quota in one job.
+    timeout-minutes: 30
+    strategy:
+      # One architecture failing should not cancel a sibling that is nearly done.
+      fail-fast: false
+      matrix:
+        label: ${{ fromJSON(inputs.variant == 'both' && '["apple-silicon","intel"]' || format('["{0}"]', inputs.variant)) }}
+    steps:
+      - uses: actions/checkout@v7
+
+      # One artifact per architecture: bundling only the matching restic slice
+      # halves the download compared to a universal build.
+      - name: Resolve architecture names
+        id: arch
+        run: |
+          case "${{ matrix.label }}" in
+            apple-silicon) echo "restic=arm64" >> "$GITHUB_OUTPUT"; echo "xcode=arm64"  >> "$GITHUB_OUTPUT" ;;
+            intel)         echo "restic=amd64" >> "$GITHUB_OUTPUT"; echo "xcode=x86_64" >> "$GITHUB_OUTPUT" ;;
+            *) echo "::error::Unknown variant '${{ matrix.label }}'"; exit 1 ;;
+          esac
+
+      - name: Install XcodeGen
+        # untap: the runner image ships an untrusted aws/tap that makes every
+        # brew command print tap-trust warnings; we don't use it.
+        run: |
+          brew untap aws/tap || true
+          brew install xcodegen
+
+      - name: Vendor restic (checksum-verified)
+        run: ./Scripts/fetch-restic.sh ${{ steps.arch.outputs.restic }}
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      # Ad-hoc signing (identity "-"): runnable on any Mac after removing the
+      # quarantine attribute, good enough for personal installs from the
+      # artifact below. Public distribution goes through release.yml instead.
+      - name: Build Release
+        run: >
+          xcodebuild
+          -project Keelhaven.xcodeproj
+          -scheme Keelhaven
+          -configuration Release
+          -derivedDataPath build
+          build
+          CODE_SIGN_STYLE=Manual
+          CODE_SIGN_IDENTITY=-
+          CURRENT_PROJECT_VERSION=${{ github.run_number }}
+          ARCHS=${{ steps.arch.outputs.xcode }}
+          ONLY_ACTIVE_ARCH=NO
+
+      - name: Zip app
+        run: ditto -c -k --keepParent build/Build/Products/Release/Keelhaven.app Keelhaven.app.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Keelhaven-${{ github.run_number }}-${{ matrix.label }}
+          path: Keelhaven.app.zip
+          if-no-files-found: error
+          # Artifact storage also counts against the plan. These are throwaway
+          # personal-install builds; the default 90 days is dead weight.
+          retention-days: 14

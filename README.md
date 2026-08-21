@@ -25,9 +25,12 @@ quits any running copy, and launches the new one:
 <details>
 <summary>Manual fallback (what the script automates)</summary>
 
-Every CI run on `main` uploads ad-hoc-signed builds as workflow artifacts, one
-per architecture: [Actions](../../actions) → latest CI run → download
-`Keelhaven-<n>-apple-silicon` (M-series Macs) or `Keelhaven-<n>-intel`.
+Builds are made on demand, not on every push — macOS runners bill at 10× and
+nobody downloads most of them. Trigger one at [Actions](../../actions) →
+Build app → Run workflow (pick your architecture), then download
+`Keelhaven-<n>-apple-silicon` (M-series Macs) or `Keelhaven-<n>-intel`. The
+script above does exactly this for you, reusing an existing artifact when one
+already matches `main`.
 
 GitHub wraps every artifact in its own zip, so the download is a **zip inside a
 zip**: `Keelhaven-<n>-<arch>.zip` contains `Keelhaven.app.zip`, which contains

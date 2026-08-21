@@ -6,9 +6,11 @@ triggers on pushing a `vX.Y.Z` tag, or manually via
 Actions → Release → Run workflow (give it a version, it uploads the DMG as a
 build artifact instead of creating a release — useful for a dry run).
 
-This is separate from `ci.yml`'s `build-app` jobs, which produce ad-hoc-signed
+This is separate from `build-app.yml`, which produces ad-hoc-signed
 per-architecture zips for `Scripts/install-latest.sh` (personal installs
-only, not public distribution — see the README).
+only, not public distribution — see the README). That workflow is manual and
+deliberately does *not* fire on `vX.Y.Z` tags: this one already covers tags,
+and two macOS builds per tag would pay the 10× premium twice.
 
 ## One-time setup
 

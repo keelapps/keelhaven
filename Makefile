@@ -28,7 +28,7 @@ dmg: build ## Package the Release build into Keelhaven.dmg (ad-hoc signed locall
 install: build ## Build from source and install to /Applications
 	./Scripts/install-local.sh
 
-update: ## Install the latest CI build from main (no local build)
+update: ## Install the latest build of main from CI (builds on demand, no local toolchain)
 	./Scripts/install-latest.sh
 
 dev-site: ## Preview the website locally with live reload (http://localhost:5173/)
