@@ -105,3 +105,7 @@ anything. A user-set path override and Homebrew locations remain as fallbacks.
 - Secrets reach restic only through the child process environment — never argv, never disk.
 - The restic child gets a minimal clean environment (`PATH`, `HOME`, `TMPDIR`, `SSH_AUTH_SOCK` + credentials), not the app's.
 - Zero telemetry. Nothing leaves your machine except your encrypted backups, to the destination you chose.
+
+## License
+
+Keelhaven is source-available under the [Functional Source License, Version 1.1, MIT Future License](LICENSE.md) (FSL-1.1-MIT): read it, build it, use it — just don't offer it as a competing product. Each version automatically becomes MIT-licensed two years after its release. The bundled [restic](https://restic.net) engine is redistributed under its own BSD-2-Clause license, shipped in the app bundle and surfaced in the About window.
