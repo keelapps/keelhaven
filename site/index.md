@@ -14,8 +14,7 @@ landing:
   # The default-theme pages (/privacy, /licenses) carry it separately via
   # themeConfig.socialLinks in config.mts.
   github: https://github.com/keelapps/keelhaven
-  cta: Get early access
-  ctaSubject: Keelhaven early access
+  cta: Download
   nav:
     - { text: Features, anchor: features }
     - { text: Guide, anchor: guide }
@@ -47,14 +46,13 @@ import { computed } from 'vue'
 import { useData } from 'vitepress'
 
 const { frontmatter } = useData()
-const mailto = computed(() => {
-  const landing = frontmatter.value.landing
-  return `mailto:${landing.contact}?subject=${encodeURIComponent(landing.ctaSubject)}`
-})
+const releases = computed(
+  () => `${frontmatter.value.landing.github}/releases/latest`
+)
 </script>
 
-<!-- The download CTA is live: DownloadButton swaps the mailto for a DMG link
-     on its own once the first tagged release lands. -->
+<!-- The download CTA is live: DownloadButton links to the GitHub releases
+     page until /latest.json resolves, then swaps in the direct DMG link. -->
 
 <div class="kh-landing">
 
@@ -70,8 +68,9 @@ const mailto = computed(() => {
     <span>Restores with open tools</span>
   </p>
   <p class="kh-hero-actions">
-    <DownloadButton label="Download for macOS" fallback-label="Get early access" :fallback-href="mailto" />
+    <DownloadButton label="Download for macOS" :fallback-href="releases" />
     <a class="kh-btn kh-btn-ghost" href="#guide">Read the guide</a>
+    <span class="kh-hero-install">or from the terminal: <code>brew install --cask keelapps/tap/keelhaven</code></span>
   </p>
 </section>
 
@@ -147,7 +146,7 @@ Hourly, daily, or weekly. Keelhaven runs in the background and only speaks up wh
 
 <div class="kh-guide-note">
 
-Runs on macOS 14 or later, Apple silicon and Intel, with everything it needs bundled. Prefer Homebrew? `brew install --cask keelapps/tap/keelhaven`. Beta builds aren't notarised by Apple yet, so the very first launch takes one extra approval — the [FAQ below](#faq) walks through it in three clicks.
+Runs on macOS 14 or later, Apple silicon and Intel, with everything it needs bundled. Prefer the terminal? `brew install --cask keelapps/tap/keelhaven`, or without Homebrew: `curl -fsSL https://keelhaven.app/install.sh | bash`. Beta builds aren't notarised by Apple yet, so the very first launch takes one extra approval — the [FAQ below](#faq) walks through it in three clicks.
 
 </div>
 
@@ -214,9 +213,9 @@ An external or network drive mounted on your Mac, any S3-compatible bucket (AWS,
 No. Everything Keelhaven needs ships inside the app bundle, including its backup engine — no separate install step, no Homebrew requirement, nothing to keep up to date.
 
 </FaqItem>
-<FaqItem question="Can I install it with Homebrew?">
+<FaqItem question="Can I install it from the terminal?">
 
-Yes: `brew install --cask keelapps/tap/keelhaven` installs the same DMG the download button serves, and `brew upgrade` picks up new releases. Homebrew doesn't bypass Gatekeeper, so the first-launch approval [above](#faq) still applies.
+Two ways, both installing the same DMG the download button serves. With Homebrew, `brew install --cask keelapps/tap/keelhaven` — and `brew upgrade` picks up new releases. Without it, `curl -fsSL https://keelhaven.app/install.sh | bash` downloads the latest release and copies it into Applications; the [script](https://github.com/keelapps/keelhaven/blob/main/site/public/install.sh) is a short, readable page of shell if you'd rather check it first.
 
 </FaqItem>
 <FaqItem question="What happens if I forget the repository password?">

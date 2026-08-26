@@ -1,0 +1,9 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/keelapps/keelhaven/blob/main/SECURITY.md
+    about: Report it privately, never as a public issue.
+
+  - name: FAQ on the website
+    url: https://keelhaven.app/#faq
+    about: First-launch approval, Homebrew install, restore without Keelhaven, and more.

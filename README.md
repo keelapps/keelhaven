@@ -18,6 +18,12 @@ Keelhaven wraps the battle-tested [restic](https://restic.net) engine in a nativ
 brew install --cask keelapps/tap/keelhaven
 ```
 
+Without Homebrew, one command installs (or updates to) the latest release:
+
+```bash
+curl -fsSL https://keelhaven.app/install.sh | bash
+```
+
 Or download `Keelhaven-<version>.dmg` from [keelhaven.app](https://keelhaven.app)
 or the [latest release](../../releases/latest) and drag the app into
 Applications. Either way, beta builds aren't notarized yet, so the very first
