@@ -1,0 +1,35 @@
+.github/workflows/release.yml
+  s_662292205fc4c4::t_47679d5efc8252 174-175,181
+docs/RELEASING.md
+  s_662292205fc4c4::t_d562d351c01a89 26-51,69-72
+  s_662292205fc4c4::t_5cbed7228b4e16 73
+Makefile
+  s_662292205fc4c4::t_4c20a3da623a56 28-30
+  s_662292205fc4c4::t_1c6f8a175f0777 6
+Scripts/release-local.sh
+  s_662292205fc4c4::t_3a3bf8a6c60ea1 1-86
+CLAUDE.md
+  s_662292205fc4c4::t_43eb442a0393c1 52
+Scripts/first-launch-note.md
+  s_662292205fc4c4::t_7f7391ae44bf18 1-7
+Scripts/deploy-site.sh
+  s_662292205fc4c4::t_aac299dc48d230 18-43
+.gitignore
+  s_662292205fc4c4::t_223e12f2dc6c2b 14-16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "a8cfe78e7c2cf9535c86047df82b17092b85e22c",
+  "prompts": {},
+  "sessions": {
+    "s_662292205fc4c4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "969d26fb-3956-4d46-a1b2-d8158b3c0554",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
