@@ -222,7 +222,7 @@ For now, yes — every run adds a snapshot, and Keelhaven never deletes one. Sna
 </FaqItem>
 <FaqItem question="How do I know the backups are actually good?">
 
-A failed or incomplete run is never silent — errors from the engine surface immediately in the menu bar and as a notification. What Keelhaven doesn't do yet is periodically re-verify an existing repository; that's on the roadmap. Because the repository is standard restic, `restic check` gives you that today — and restoring a file now and then is the gold standard for any backup tool, ours included.
+A failed or incomplete run is never silent — errors from the engine surface immediately in the menu bar and as a notification. Keelhaven also verifies each plan's repository with restic's own integrity check on a schedule — weekly by default, adjustable per plan — and a quiet "Verified" line in the plan row shows the last time it passed; only a problem speaks up. And restoring a file now and then remains the gold standard for any backup tool, ours included.
 
 </FaqItem>
 <FaqItem question="Do I need to install anything else?">
