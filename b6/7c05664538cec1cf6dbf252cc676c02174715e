@@ -1,0 +1,24 @@
+.github/workflows/release.yml
+  s_903bf4ea2027e1::t_fa122bb2e96f97 245-257
+  s_903bf4ea2027e1::t_eb6de9f47891b4 48-49
+.github/workflows/website.yml
+  s_903bf4ea2027e1::t_2a756dc19cd166 17-20
+docs/RELEASING.md
+  s_903bf4ea2027e1::t_27e08e6981d87c 81
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "b67c05664538cec1cf6dbf252cc676c02174715e",
+  "prompts": {},
+  "sessions": {
+    "s_903bf4ea2027e1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d4e5a192-3228-43c1-af5a-c78a34054447",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
