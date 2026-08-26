@@ -79,6 +79,9 @@ gh release create "$TAG" "$DMG" \
     --notes-file Scripts/first-launch-note.md \
     --generate-notes
 
+echo "Bumping the Homebrew tap..."
+./Scripts/update-homebrew-tap.sh "$VERSION" "$DMG"
+
 echo "Mirroring the DMG into the site deploy..."
 ./Scripts/deploy-site.sh
 

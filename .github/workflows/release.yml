@@ -41,6 +41,7 @@ jobs:
     env:
       HAS_SIGNING: ${{ secrets.DEVELOPER_ID_CERT_P12_BASE64 != '' }}
       HAS_NOTARY: ${{ secrets.AC_API_KEY_ID != '' }}
+      HAS_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v7
 
@@ -188,6 +189,18 @@ jobs:
           files: Keelhaven-${{ steps.version.outputs.version }}.dmg
           body_path: release-note.md
           generate_release_notes: true
+
+      # Point the Homebrew tap (keelapps/homebrew-tap) at the DMG that was
+      # just published, so `brew install --cask keelapps/tap/keelhaven`
+      # serves it. Needs HOMEBREW_TAP_TOKEN (fine-grained PAT, contents:
+      # write on the tap repo — docs/RELEASING.md); without the secret the
+      # step is skipped and the next release-local.sh run — or a manual
+      # Scripts/update-homebrew-tap.sh — catches the tap up.
+      - name: Bump Homebrew tap
+        if: github.event_name == 'push' && env.HAS_TAP_TOKEN == 'true'
+        env:
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: ./Scripts/update-homebrew-tap.sh "${{ steps.version.outputs.version }}" "Keelhaven-${{ steps.version.outputs.version }}.dmg"
 
       - name: Upload DMG artifact
         if: github.event_name == 'workflow_dispatch'
