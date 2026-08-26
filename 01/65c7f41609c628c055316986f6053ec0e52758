@@ -1,0 +1,41 @@
+site/.vitepress/theme/landing.css
+  s_662292205fc4c4::t_b3469266cd7c69 130-135
+Scripts/make-dmg.sh
+  s_662292205fc4c4::t_080287f96e8f07 4-5
+Keelhaven/Services/UpdateChecker.swift
+  s_662292205fc4c4::t_191f6333816442 5
+CLAUDE.md
+  s_662292205fc4c4::t_c67f480ee337b8 52
+site/index.md
+  s_662292205fc4c4::t_2aeea53bf86787 220
+  s_662292205fc4c4::t_ddb9120acf6750 51-53,69
+  s_662292205fc4c4::t_c8ee4dff437430 169-177
+  s_662292205fc4c4::t_8b04465928b921 146
+docs/RELEASING.md
+  s_662292205fc4c4::t_7de63fff9c20a6 3-16,24-46,48-64,101-105,110-112,119-121
+.github/workflows/build-app.yml
+  s_662292205fc4c4::t_c9a7982975bb9b 12-14
+site/.vitepress/theme/components/DownloadButton.vue
+  s_662292205fc4c4::t_c380151ac2101f 1-38
+site/.vitepress/theme/index.ts
+  s_662292205fc4c4::t_623989cd334fbe 13
+  s_662292205fc4c4::t_64be3a951ae164 26
+.github/workflows/release.yml
+  s_662292205fc4c4::t_794ff0404f8ccf 3-5,7-13,30,39-43,77,93-108,117-119,128,152,168,171-190,196
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "0165c7f41609c628c055316986f6053ec0e52758",
+  "prompts": {},
+  "sessions": {
+    "s_662292205fc4c4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "969d26fb-3956-4d46-a1b2-d8158b3c0554",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
