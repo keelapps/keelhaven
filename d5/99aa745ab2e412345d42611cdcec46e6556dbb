@@ -1,0 +1,22 @@
+site/.vitepress/theme/landing.css
+  s_dcedf2e0ad101b::t_b5689ce56e39cc 549-577,580
+  s_dcedf2e0ad101b::t_09429eac672071 578-579
+site/index.md
+  s_dcedf2e0ad101b::t_2f6975be10f99c 149-156
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "d599aa745ab2e412345d42611cdcec46e6556dbb",
+  "prompts": {},
+  "sessions": {
+    "s_dcedf2e0ad101b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "db85c54f-a8b0-4840-89ea-f4b08ca8ce11",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
