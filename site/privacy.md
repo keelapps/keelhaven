@@ -16,9 +16,12 @@ Keelhaven is built so that there is nothing to have a policy about.
 That covers the app, which is the part that touches your files. Two things
 around it are worth stating plainly:
 
-- **This website** is a static site served by GitHub Pages. It runs no
-  trackers, sets no cookies, and loads nothing from third parties. GitHub sees
-  the requests it serves, as any web host does.
+- **This website** is a static site served by GitHub Pages. GitHub sees the
+  requests it serves, as any web host does. The site also uses Google
+  Analytics to count visits and see which pages are read; Google sets cookies
+  for this and receives the usual request data (IP address, browser, pages
+  viewed). This is the one exception to "no third parties", it covers only
+  this website, and the app itself sends nothing to anyone — see above.
 - **Support email** sent to our address is routed through Cloudflare Email
   Routing to a mailbox we read. We see your address and whatever you write, and
   use it only to answer you.
