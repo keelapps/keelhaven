@@ -20,7 +20,7 @@ landing:
   footer:
     tagline: Privacy-first backups for your Mac.
     versionNote: pre-release
-    copyright: © Keelapps. All rights reserved.
+    copyright: © Keelapps.
     groups:
       - title: Support
         links:
@@ -34,7 +34,7 @@ landing:
       - title: Legal
         links:
           - { text: Privacy, link: /privacy }
-          - { text: Open source licenses, link: /licenses }
+          - { text: Licenses, link: /licenses }
 ---
 
 <script setup>
@@ -182,7 +182,7 @@ No — run both. Time Machine is excellent at putting a whole Mac back the way i
 </FaqItem>
 <FaqItem question="Why pay for this when open-source tools are free?">
 
-Because the engine isn't the part that's missing. Keelhaven's backup engine is [restic](https://restic.net) — free, open source, and excellent; you are not paying us for it. The price covers everything a command-line tool deliberately leaves to you: a schedule that actually runs, passwords held in the macOS Keychain and never written to disk or logs, a menu bar that stays quiet until something needs you, and setup that doesn't start with reading documentation. Our lock-in is zero by design, so we have to be worth paying for — that's the intended trade.
+Because the engine isn't the part that's missing. Keelhaven's backup engine is [restic](https://restic.net) — free, open source, and excellent; you are not paying us for it. The price covers everything a command-line tool deliberately leaves to you: a schedule that actually runs, passwords held in the macOS Keychain and never written to disk or logs, a menu bar that stays quiet until something needs you, and setup that doesn't start with reading documentation. Our lock-in is zero by design, so we have to be worth paying for — that's the intended trade. And if you'd rather spend time than money, the [source is on GitHub](https://github.com/keelapps/keelhaven) — building it yourself is part of the deal.
 
 </FaqItem>
 <FaqItem question="Am I locked into Keelhaven?">
@@ -192,7 +192,7 @@ No. Every plan writes an ordinary restic repository, so you can list, verify, an
 </FaqItem>
 <FaqItem question="Is Keelhaven open source?">
 
-The app itself is a paid, closed-source product. Its backup engine is not: Keelhaven bundles and redistributes restic, which is open source under the BSD 2-Clause License — see [Open source licenses](/licenses) for the full notice. So while you can't read Keelhaven's source, you are never dependent on it to reach your data.
+Source-available — nearly, but not quite, the same thing. The full source is on [GitHub](https://github.com/keelapps/keelhaven) under the FSL-1.1-MIT license: read it, audit it, build it yourself — the one thing it forbids is shipping a competing product, and each version becomes plain MIT two years after release. The official builds are the paid product. The bundled restic engine is fully open source under the BSD 2-Clause License — see [Licenses](/licenses) for both notices.
 
 </FaqItem>
 <FaqItem question="Is my data readable by anyone else?">

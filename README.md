@@ -6,7 +6,7 @@
 
 **[keelhaven.app](https://keelhaven.app)**
 
-Privacy-first Mac backup to your own storage. One-time purchase, no subscription, no telemetry.
+Privacy-first Mac backup to your own storage. Source-available, free while in beta, pay once at 1.0 — no subscription, no telemetry.
 
 Keelhaven wraps the battle-tested [restic](https://restic.net) engine in a native SwiftUI menu bar app: pick folders, pick a destination you own (external drive, any S3-compatible bucket, or SFTP/NAS), set a schedule — your files are encrypted on your Mac before they leave it.
 
@@ -55,8 +55,9 @@ the second extraction step.
 
 The `xattr` step is required: downloaded apps get macOS's quarantine flag, and
 ad-hoc-signed (un-notarized) apps are blocked by Gatekeeper until it's removed.
-This is fine for installing on your own Macs; public releases will be
-Developer-ID-signed and notarized instead.
+This is fine for installing on your own Macs; release DMGs currently ship
+un-notarized too, with the same one-time approval — the release notes and the
+site FAQ walk through it.
 
 ## Development setup
 
