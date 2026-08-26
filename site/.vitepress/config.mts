@@ -12,7 +12,7 @@ const appVersion =
   ).match(/MARKETING_VERSION:\s*"?([\d.]+)/)?.[1] ?? '0.0.0'
 
 // Published via .github/workflows/website.yml: built here,
-// static output pushed to the public keelapps/keelhaven-site repo and served
+// static output pushed to this repo's gh-pages branch and served
 // by GitHub Pages at https://keelhaven.app/ — the custom domain lives in
 // site/public/CNAME, which is the only thing keeping it attached (the deploy
 // force-pushes an orphan branch, so a CNAME added anywhere else is wiped on

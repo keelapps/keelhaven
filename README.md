@@ -96,7 +96,7 @@ anything. A user-set path override and Homebrew locations remain as fallbacks.
 | `Keelhaven/` | SwiftUI app: menu bar, wizard, services (scheduler, notifications, login item, Keychain wiring). |
 | `project.yml` | XcodeGen spec — the `.xcodeproj` is generated, never committed. |
 | `design/` | Icon and brand kit. `icon.mjs` holds the geometry; `build.mjs` renders the asset catalog, `.icns` and favicons. See `design/README.md`. |
-| `site/` | Public website + docs (VitePress). Built and published to `keelapps/keelhaven-site` by `.github/workflows/website.yml`, served at [keelhaven.app](https://keelhaven.app). See `docs/WEBSITE.md`. |
+| `site/` | Public website + docs (VitePress). Built and published to this repo's `gh-pages` branch by `.github/workflows/website.yml`, served at [keelhaven.app](https://keelhaven.app). See `docs/WEBSITE.md`. |
 | `docs/ARCHITECTURE.md` | Module boundaries, data flow, and upgrade paths. |
 | `docs/WEBSITE.md` | How the site is built, deployed, and how the keelhaven.app domain is wired. |
 
