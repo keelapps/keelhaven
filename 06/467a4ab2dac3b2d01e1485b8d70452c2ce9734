@@ -1,0 +1,36 @@
+CLAUDE.md
+  s_10b4532643158e::t_8efe82ac4d67ed 43
+site/licenses.md
+  s_10b4532643158e::t_60e2ca5a44abc0 3-4,10-13
+README.md
+  s_10b4532643158e::t_0f7c182209a9fa 9
+  s_10b4532643158e::t_fb0bd982320b44 112
+LICENSE
+  s_10b4532643158e::t_4f95333ed780cb 1-674
+CONTRIBUTING.md
+  s_10b4532643158e::t_e2a069e4ee76a0 1-23
+docs/WEBSITE.md
+  s_10b4532643158e::t_003e48fd4a1fbd 7
+site/index.md
+  s_10b4532643158e::t_08f1fdd22546bb 156,159-160
+  s_10b4532643158e::t_81f628ed5c4c03 56-57
+  s_10b4532643158e::t_df38e174a8f178 68
+  s_10b4532643158e::t_a9904bc4b23845 187,189
+  s_10b4532643158e::t_c3e386e38550ed 199
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "06467a4ab2dac3b2d01e1485b8d70452c2ce9734",
+  "prompts": {},
+  "sessions": {
+    "s_10b4532643158e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ad36422c-6c8d-43b6-9ead-6de02d820172",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
