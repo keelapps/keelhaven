@@ -546,7 +546,38 @@ body:has(.kh-landing) .VPLocalNav {
   max-width: 72ch;
 }
 .kh-landing .kh-guide-note p {
-  margin: 0;
+  margin: 0 0 14px;
+}
+.kh-landing .kh-guide-note p:last-child {
+  margin-bottom: 0;
+}
+.kh-landing .kh-install {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 14px;
+}
+.kh-landing .kh-install-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+}
+.kh-landing .kh-install-label {
+  flex: none;
+  width: 132px;
+  font-size: 13.5px;
+  color: var(--kh-ink-soft);
+}
+.kh-landing .kh-install code {
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--kh-chip);
+  border: 1px solid var(--kh-line);
+  user-select: all;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-width: 100%;
 }
 
 /* ---------- footer ---------- */
