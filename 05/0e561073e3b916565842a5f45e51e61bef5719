@@ -1,0 +1,38 @@
+.github/workflows/website.yml
+  s_09937db4549fd6::t_c7481794e152a1 17-19
+  s_09937db4549fd6::t_00db198f0c8890 71,74
+  s_09937db4549fd6::t_0a9284de9fb51c 24-27
+  s_09937db4549fd6::t_e7bdd529ab8f76 3-7,10
+docs/WEBSITE.md
+  s_09937db4549fd6::t_2399732786c896 56
+  s_09937db4549fd6::t_f15aaf2da01fe1 101-102
+  s_09937db4549fd6::t_735c380a3219c4 132
+  s_09937db4549fd6::t_8f0a2c7799186d 4-5,8
+  s_09937db4549fd6::t_7c7dbace6f7bd1 30-32,34
+  s_09937db4549fd6::t_40115115b70dfe 96
+CLAUDE.md
+  s_09937db4549fd6::t_9afc5ec1b541e5 43
+site/.vitepress/config.mts
+  s_09937db4549fd6::t_1f1f13719e525a 15
+Scripts/deploy-site.sh
+  s_09937db4549fd6::t_ea5affa52a7971 55
+  s_09937db4549fd6::t_5802019543fb1c 3-4,8
+README.md
+  s_09937db4549fd6::t_d9441378645bf6 99
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "050e561073e3b916565842a5f45e51e61bef5719",
+  "prompts": {},
+  "sessions": {
+    "s_09937db4549fd6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2de66d68-e1db-4a77-9405-cca3a545f309",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
