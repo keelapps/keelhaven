@@ -1,12 +1,13 @@
 # Website
 
 The public site — landing page, `/privacy`, `/licenses` — is a VitePress
-project in `site/`, built here in the private repo and published as static
-files to the public `keelapps/keelhaven-site` repo, which GitHub Pages serves
-at **https://keelhaven.app**.
+project in `site/`, built here and published as static files to the public
+`keelapps/keelhaven.app` repo, which GitHub Pages serves at
+**https://keelhaven.app**.
 
-Sources stay private; only the built HTML is public, and it is copyrighted
-rather than open source (see that repo's README).
+Sources live in this repo under the FSL-1.1-MIT license (`LICENSE.md` at the
+repo root); the site repo holds only the rendered output, which keeps its own
+© Keelapps notice.
 
 ## Working on it locally
 

@@ -11,7 +11,7 @@ const appVersion =
     'utf8'
   ).match(/MARKETING_VERSION:\s*"?([\d.]+)/)?.[1] ?? '0.0.0'
 
-// Published via .github/workflows/website.yml: built here (private repo),
+// Published via .github/workflows/website.yml: built here,
 // static output pushed to the public keelapps/keelhaven-site repo and served
 // by GitHub Pages at https://keelhaven.app/ — the custom domain lives in
 // site/public/CNAME, which is the only thing keeping it attached (the deploy
@@ -82,8 +82,8 @@ export default defineConfig({
       // + the About window) — the website distributes nothing, so a discreet
       // licenses link is plenty here. Full credit lives on /licenses and in
       // the FAQ.
-      message: `<a href="${base}privacy">Privacy</a> · <a href="${base}licenses">Open source licenses</a>`,
-      copyright: '© Keelapps. All rights reserved.',
+      message: `<a href="${base}privacy">Privacy</a> · <a href="${base}licenses">Licenses</a>`,
+      copyright: '© Keelapps.',
     },
   },
 
