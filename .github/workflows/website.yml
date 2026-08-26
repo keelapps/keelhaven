@@ -44,24 +44,42 @@ jobs:
       # Runs on every deploy, not just the release trigger above — force_orphan
       # below replaces gh-pages wholesale each time, so a docs-only push would
       # otherwise wipe out whatever DMG a prior release run had mirrored here.
-      # Keelhaven has no public releases yet, so this no-ops until the first
-      # `git tag vX.Y.Z` — that's expected, not a bug.
+      #
+      # On release-triggered runs the DMG may still be uploading: the
+      # `published` webhook fires when the release is created, before
+      # action-gh-release finishes attaching assets — v0.2.0 raced exactly
+      # this way and the mirror silently skipped, killing latest.json (and
+      # with it the in-app update prompt). So on the release trigger, poll
+      # until the asset appears and fail loudly if it never does; on other
+      # triggers a missing release/asset stays a normal skip.
       - name: Mirror latest release DMG
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p site/public/downloads
-          if ! gh release view --repo keelapps/keelhaven --json tagName,assets > /tmp/release.json 2>/tmp/release.err; then
-            echo "No published release yet — skipping DMG mirror ($(cat /tmp/release.err))"
-            exit 0
-          fi
-          TAG=$(jq -r .tagName /tmp/release.json)
-          VERSION="${TAG#v}"
-          ASSET=$(jq -r '.assets[] | select(.name | endswith(".dmg")) | .name' /tmp/release.json | head -n1)
+          TRIES=1
+          [ "${{ github.event_name }}" = "release" ] && TRIES=30
+          TAG="" ASSET=""
+          for i in $(seq 1 "$TRIES"); do
+            if gh release view --repo keelapps/keelhaven --json tagName,assets > /tmp/release.json 2>/tmp/release.err; then
+              TAG=$(jq -r .tagName /tmp/release.json)
+              ASSET=$(jq -r '.assets[] | select(.name | endswith(".dmg")) | .name' /tmp/release.json | head -n1)
+              [ -n "$ASSET" ] && break
+              echo "Release $TAG has no .dmg asset yet (check $i/$TRIES)"
+            else
+              echo "No published release yet (check $i/$TRIES): $(cat /tmp/release.err)"
+            fi
+            [ "$i" -lt "$TRIES" ] && sleep 10
+          done
           if [ -z "$ASSET" ]; then
-            echo "Latest release $TAG has no .dmg asset — skipping mirror"
+            if [ "${{ github.event_name }}" = "release" ]; then
+              echo "::error::Release published but its .dmg never appeared — refusing to deploy without a mirror; re-run this workflow once the asset exists"
+              exit 1
+            fi
+            echo "No published release with a .dmg — skipping DMG mirror"
             exit 0
           fi
+          VERSION="${TAG#v}"
           gh release download "$TAG" --repo keelapps/keelhaven --pattern '*.dmg' --dir site/public/downloads --clobber
           printf '{"version": "%s", "dmgURL": "https://keelhaven.app/downloads/%s"}\n' "$VERSION" "$ASSET" > site/public/latest.json
       - name: Build site
