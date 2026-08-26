@@ -1,0 +1,15 @@
+name: PR Auto-labeler
+
+on:
+  # pull_request_target event is required for auto-labeler on fork PRs
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+permissions: {}
+
+jobs:
+  draft-release:
+    permissions:
+      pull-requests: write
+      contents: read
+    uses: keelapps/.github/.github/workflows/pr-labeler.yml@main
