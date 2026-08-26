@@ -45,6 +45,8 @@ jobs:
     timeout-minutes: 90
     permissions:
       contents: write
+      # To dispatch website.yml after publishing — see that step's comment.
+      actions: write
     # The secrets context is not available in step-level `if`s directly, so
     # surface "are the Apple credentials configured?" as job env instead.
     env:
@@ -239,6 +241,19 @@ jobs:
           files: Keelhaven-${{ steps.version.outputs.version }}.dmg
           body_path: release-note.md
           generate_release_notes: true
+
+      # The release above is created with GITHUB_TOKEN, and GitHub
+      # suppresses events made with a workflow's own token (anti-recursion),
+      # so website.yml's `release: published` trigger never fires from here
+      # — v0.3.0 shipped with a stale latest.json exactly this way. Dispatch
+      # the deploy explicitly instead: workflow_dispatch is exempt from the
+      # suppression, and the DMG is uploaded by now, so the mirror finds it
+      # on the first look.
+      - name: Deploy the website mirror
+        if: env.PUBLISHING == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run website.yml --ref main
 
       # Point the Homebrew tap (keelapps/homebrew-tap) at the DMG that was
       # just published, so `brew install --cask keelapps/tap/keelhaven`
