@@ -1,0 +1,34 @@
+docs/WEBSITE.md
+  s_09937db4549fd6::t_e5f8f277a445d9 4-6,8-10
+site/index.md
+  s_09937db4549fd6::t_56005aced265aa 195
+  s_09937db4549fd6::t_5be51bc48f52d4 37
+  s_09937db4549fd6::t_cb06b6d0e09115 185
+  s_09937db4549fd6::t_17ba5b844dadb4 23
+site/licenses.md
+  s_09937db4549fd6::t_ef469d80f1df06 1,3-14
+site/.vitepress/config.mts
+  s_09937db4549fd6::t_d38af61566dd9c 14
+  s_09937db4549fd6::t_b88adf3f075c77 85-86
+README.md
+  s_09937db4549fd6::t_437bd90a796d8b 58-60
+  s_09937db4549fd6::t_c3b7878a2dce47 9
+CLAUDE.md
+  s_09937db4549fd6::t_aa08950d2c7c8f 43
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "0c0daad4353a1ce2ea41425e30affa797e1026c2",
+  "prompts": {},
+  "sessions": {
+    "s_09937db4549fd6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2de66d68-e1db-4a77-9405-cca3a545f309",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
