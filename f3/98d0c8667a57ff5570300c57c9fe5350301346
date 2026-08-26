@@ -1,0 +1,21 @@
+project.yml
+  s_903bf4ea2027e1::t_cb45b01d45eeae 52-56
+docs/RELEASING.md
+  s_903bf4ea2027e1::t_fe38fb55aeda49 26-32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "f398d0c8667a57ff5570300c57c9fe5350301346",
+  "prompts": {},
+  "sessions": {
+    "s_903bf4ea2027e1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d4e5a192-3228-43c1-af5a-c78a34054447",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
