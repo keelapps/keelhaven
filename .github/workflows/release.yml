@@ -184,7 +184,7 @@ jobs:
 
       - name: Publish GitHub Release
         if: github.event_name == 'push'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: Keelhaven-${{ steps.version.outputs.version }}.dmg
           body_path: release-note.md
