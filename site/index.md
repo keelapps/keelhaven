@@ -53,9 +53,8 @@ const mailto = computed(() => {
 })
 </script>
 
-<!-- TODO before launch: the 1.0 price in the Pricing section. The download
-     CTA is live: DownloadButton swaps the mailto for a DMG link on its own
-     once the first tagged release lands. -->
+<!-- The download CTA is live: DownloadButton swaps the mailto for a DMG link
+     on its own once the first tagged release lands. -->
 
 <div class="kh-landing">
 
@@ -66,7 +65,7 @@ const mailto = computed(() => {
   <p class="kh-hero-tagline">A quiet menu bar app that backs up the folders you care about — encrypted on your Mac, on your schedule, to storage you own.</p>
   <p class="kh-hero-facts">
     <span>macOS 14+</span>
-    <span>No subscription</span>
+    <span>Free &amp; open source</span>
     <span>No telemetry</span>
     <span>Restores with open tools</span>
   </p>
@@ -154,11 +153,11 @@ Runs on macOS 14 or later, Apple silicon and Intel, with everything it needs bun
 
 </LandingSection>
 
-<LandingSection id="pricing" eyebrow="03 · Pricing" title="Pay once. That's the entire model.">
+<LandingSection id="pricing" eyebrow="03 · Pricing" title="Free. That's the entire model.">
 
 <PricingCard>
-<template #price><span class="kh-badge">Free while in beta</span></template>
-<template #note>One-time purchase at 1.0 — bought once, updates forever, never a subscription.</template>
+<template #price><span class="kh-badge">Free and open source</span></template>
+<template #note>Free in beta, free after 1.0 — never a subscription. Down the road an optional Pro edition may add advanced conveniences, but backing up and restoring your data will never sit behind a paywall.</template>
 
 - Unlimited backup plans and destinations
 - Universal build — Apple silicon and Intel
@@ -185,9 +184,9 @@ Nothing is wrong — beta builds aren't notarised with Apple yet, so macOS shows
 No — run both. Time Machine is excellent at putting a whole Mac back the way it was, from a drive on your desk. Keelhaven is for the second copy: the folders you can't lose, encrypted, somewhere that isn't your desk.
 
 </FaqItem>
-<FaqItem question="Why pay for this when open-source tools are free?">
+<FaqItem question="It's free — so how is it sustained?">
 
-Because the engine isn't the part that's missing. Keelhaven's backup engine is [restic](https://restic.net) — free, open source, and excellent; you are not paying us for it. The price covers everything a command-line tool deliberately leaves to you: a schedule that actually runs, passwords held in the macOS Keychain and never written to disk or logs, a menu bar that stays quiet until something needs you, and setup that doesn't start with reading documentation. Our lock-in is zero by design, so we have to be worth paying for — that's the intended trade. And if you'd rather spend time than money, the [source is on GitHub](https://github.com/keelapps/keelhaven) — building it yourself is part of the deal.
+By earning a place on your Mac first. Keelhaven's backup engine is [restic](https://restic.net) — free, open source, and excellent — and Keelhaven adds everything a command-line tool deliberately leaves to you: a schedule that actually runs, passwords held in the macOS Keychain and never written to disk or logs, and a menu bar that stays quiet until something needs you. All of that is free and stays free. If enough people come to rely on it, a paid Pro edition may follow with advanced conveniences — think snapshot browsing or retention policies — and that would fund the free app rather than shrink it.
 
 </FaqItem>
 <FaqItem question="Am I locked into Keelhaven?">
@@ -197,7 +196,7 @@ No. Every plan writes an ordinary restic repository, so you can list, verify, an
 </FaqItem>
 <FaqItem question="Is Keelhaven open source?">
 
-Source-available — nearly, but not quite, the same thing. The full source is on [GitHub](https://github.com/keelapps/keelhaven) under the FSL-1.1-MIT license: read it, audit it, build it yourself — the one thing it forbids is shipping a competing product, and each version becomes plain MIT two years after release. The official builds are the paid product. The bundled restic engine is fully open source under the BSD 2-Clause License — see [Licenses](/licenses) for both notices.
+Yes. The full source is on [GitHub](https://github.com/keelapps/keelhaven) under the GPLv3: read it, audit it, build it, fork it. The bundled restic engine is open source under the BSD 2-Clause License — see [Licenses](/licenses) for both notices.
 
 </FaqItem>
 <FaqItem question="Is my data readable by anyone else?">
