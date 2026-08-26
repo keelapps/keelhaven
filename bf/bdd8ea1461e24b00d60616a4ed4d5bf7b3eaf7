@@ -1,0 +1,16 @@
+LICENSE.md
+  h_95e33fbd4ab2d9 1-110
+README.md
+  h_95e33fbd4ab2d9 108-111
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "bfbdd8ea1461e24b00d60616a4ed4d5bf7b3eaf7",
+  "prompts": {},
+  "humans": {
+    "h_95e33fbd4ab2d9": {
+      "author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
