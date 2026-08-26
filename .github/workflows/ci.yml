@@ -53,14 +53,52 @@ jobs:
       || !contains(github.event.head_commit.message, '(#')
     steps:
       - uses: actions/checkout@v7
-      # The integration test suite exercises the real restic binary end-to-end
-      # (it self-skips when restic is missing, but we want it running in CI).
+      # The integration test suites exercise the real restic binary end-to-end
+      # against all three backends: local disk, S3 (MinIO below), and SFTP
+      # (sshd below). They self-skip when their backend is missing, but we
+      # want all of them running in CI — hence the hard failure gates in the
+      # setup steps: a broken server here must fail the job loudly, because a
+      # silent XCTSkip would look green while testing nothing.
       - name: Install restic
         # untap: the runner image ships an untrusted aws/tap that makes every
         # brew command print tap-trust warnings; we don't use it.
         run: |
           brew untap aws/tap || true
           brew install restic
+      # MinIO is a single static binary; fetching it directly is faster than
+      # adding a brew tap. Credentials match the test defaults in
+      # ResticS3IntegrationTests.swift.
+      - name: Start MinIO (S3 integration tests)
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/minio" \
+            "https://dl.min.io/server/minio/release/darwin-$(uname -m | sed 's/x86_64/amd64/')/minio"
+          chmod +x "$RUNNER_TEMP/minio"
+          MINIO_ROOT_USER=keelhaven-test MINIO_ROOT_PASSWORD=keelhaven-test-secret \
+            "$RUNNER_TEMP/minio" server --address 127.0.0.1:9000 "$RUNNER_TEMP/minio-data" \
+            > "$RUNNER_TEMP/minio.log" 2>&1 &
+          for _ in $(seq 1 30); do
+            curl -sf http://127.0.0.1:9000/minio/health/live > /dev/null && exit 0
+            sleep 1
+          done
+          echo "::error::MinIO did not become healthy"
+          cat "$RUNNER_TEMP/minio.log"
+          exit 1
+      # Loopback sshd with key auth — the same setup restic's sftp backend
+      # needs from a real user (non-interactive ssh, host key already known).
+      - name: Enable sshd (SFTP integration tests)
+        run: |
+          sudo systemsetup -setremotelogin on || true
+          nc -z 127.0.0.1 22 || sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          [ -f ~/.ssh/id_ed25519 ] || ssh-keygen -q -t ed25519 -N '' -f ~/.ssh/id_ed25519
+          cat ~/.ssh/id_ed25519.pub >> ~/.ssh/authorized_keys
+          chmod 600 ~/.ssh/authorized_keys
+          for _ in $(seq 1 30); do
+            nc -z 127.0.0.1 22 && break
+            sleep 1
+          done
+          ssh-keyscan -H 127.0.0.1 >> ~/.ssh/known_hosts 2>/dev/null
+          ssh -o BatchMode=yes -o ConnectTimeout=5 127.0.0.1 true
       - name: Run tests
         run: swift test --package-path KeelhavenCore --enable-code-coverage
       # KeelhavenCore is fully unit-tested and stays that way: any core code
