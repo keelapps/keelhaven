@@ -147,7 +147,7 @@ Hourly, daily, or weekly. Keelhaven runs in the background and only speaks up wh
 
 <div class="kh-guide-note">
 
-Runs on macOS 14 or later, Apple silicon and Intel, with everything it needs bundled. Beta builds aren't notarised by Apple yet, so the very first launch takes one extra approval — the [FAQ below](#faq) walks through it in three clicks.
+Runs on macOS 14 or later, Apple silicon and Intel, with everything it needs bundled. Prefer Homebrew? `brew install --cask keelapps/tap/keelhaven`. Beta builds aren't notarised by Apple yet, so the very first launch takes one extra approval — the [FAQ below](#faq) walks through it in three clicks.
 
 </div>
 
@@ -212,6 +212,11 @@ An external or network drive mounted on your Mac, any S3-compatible bucket (AWS,
 <FaqItem question="Do I need to install anything else?">
 
 No. Everything Keelhaven needs ships inside the app bundle, including its backup engine — no separate install step, no Homebrew requirement, nothing to keep up to date.
+
+</FaqItem>
+<FaqItem question="Can I install it with Homebrew?">
+
+Yes: `brew install --cask keelapps/tap/keelhaven` installs the same DMG the download button serves, and `brew upgrade` picks up new releases. Homebrew doesn't bypass Gatekeeper, so the first-launch approval [above](#faq) still applies.
 
 </FaqItem>
 <FaqItem question="What happens if I forget the repository password?">

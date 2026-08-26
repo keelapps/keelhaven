@@ -12,6 +12,18 @@ Keelhaven wraps the battle-tested [restic](https://restic.net) engine in a nativ
 
 **Status: early development.** The engine, wizard, scheduled backups, and whole-snapshot restore work; file-level browsing inside snapshots is next.
 
+## Install
+
+```bash
+brew install --cask keelapps/tap/keelhaven
+```
+
+Or download `Keelhaven-<version>.dmg` from [keelhaven.app](https://keelhaven.app)
+or the [latest release](../../releases/latest) and drag the app into
+Applications. Either way, beta builds aren't notarized yet, so the very first
+launch needs a one-time approval — the [site FAQ](https://keelhaven.app/#faq)
+walks through it.
+
 ## Install from CI (personal use)
 
 **Use the install script** — it downloads the newest successful build for your

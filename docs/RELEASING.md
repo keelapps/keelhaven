@@ -34,9 +34,10 @@ Actions quota is exhausted — the same situation `Scripts/deploy-site.sh`
 covers for the website. It runs the core tests (the only gate left when PR
 CI can't run), builds the universal ad-hoc-signed DMG, tags `v0.2.0` and
 pushes the tag, publishes the GitHub Release with the first-launch note
-(`Scripts/first-launch-note.md`, shared with the workflow), then runs
-`deploy-site.sh` — which mirrors the DMG plus `latest.json` to
-`https://keelhaven.app/downloads/` as part of the site deploy.
+(`Scripts/first-launch-note.md`, shared with the workflow), bumps the
+[Homebrew tap](#homebrew-tap), then runs `deploy-site.sh` — which mirrors
+the DMG plus `latest.json` to `https://keelhaven.app/downloads/` as part of
+the site deploy.
 
 While the quota is out, the tag push and the release event each leave a
 not-started failed run behind. Harmless, but they can be silenced until
@@ -65,6 +66,8 @@ Watch the run under Actions → Release. On success:
    switches from the early-access mailto to a real download link, and
    installed apps start showing the in-app update prompt
    (`Keelhaven/Services/UpdateChecker.swift`).
+4. With the `HOMEBREW_TAP_TOKEN` secret configured, the workflow also bumps
+   the [Homebrew tap](#homebrew-tap); without it that step is skipped.
 
 Either path ends in the same place, and they can be mixed freely: both the
 workflow and `deploy-site.sh` mirror whatever the *newest published release*
@@ -86,6 +89,29 @@ This repeats on every update installed by hand, since each newly downloaded
 DMG carries a fresh quarantine flag — the one real cost of skipping the
 $99/year membership. If that friction ever outweighs the fee, add the
 secrets below; nothing else has to change.
+
+## Homebrew tap
+
+[`keelapps/homebrew-tap`](https://github.com/keelapps/homebrew-tap) carries
+the cask behind `brew install --cask keelapps/tap/keelhaven`, pointing at the
+newest release DMG by version and sha256. `Scripts/update-homebrew-tap.sh`
+rewrites those two lines and pushes; it is idempotent, so both release paths
+call it freely:
+
+- **`release-local.sh`** runs it with your normal git credentials — nothing
+  to configure.
+- **`release.yml`** needs a `HOMEBREW_TAP_TOKEN` repo secret: a fine-grained
+  PAT with **contents: read and write** on `keelapps/homebrew-tap` only.
+  Until the secret exists the workflow skips the step, and the tap catches up
+  on the next `release-local.sh` run — or manually:
+  `./Scripts/update-homebrew-tap.sh 0.2.0 Keelhaven-0.2.0.dmg`.
+
+Homebrew applies its own quarantine flag on install, so the cask does not
+change the first-launch story above — its `caveats` block repeats the
+walkthrough. When the repo clears Homebrew's notability bar (roughly 75
+stars), the cask can additionally be submitted to the official
+`homebrew/homebrew-cask` (dropping the tap prefix from the install command);
+the tap keeps working regardless.
 
 ## Optional upgrade: Developer ID + notarization
 
