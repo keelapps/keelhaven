@@ -269,10 +269,25 @@ body:has(.kh-landing) .VPLocalNav {
 .kh-landing .kh-hero-actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 12px;
   margin: 36px 0 0;
   padding-bottom: 24px;
   border-bottom: 1px solid var(--kh-line);
+}
+
+.kh-landing .kh-hero-install {
+  flex-basis: 100%;
+  font-size: 13.5px;
+  color: var(--kh-ink-soft);
+}
+.kh-landing .kh-hero-install code {
+  font-size: 12.5px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--kh-chip);
+  border: 1px solid var(--kh-line);
+  user-select: all;
 }
 
 /* ---------- screenshot frame ---------- */

@@ -6,6 +6,7 @@
 // is hidden on the landing page.
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useData, withBase } from 'vitepress'
+import { useLatestRelease } from '../latest'
 
 const { frontmatter } = useData()
 const landing = computed(() => frontmatter.value.landing ?? {})
@@ -40,11 +41,11 @@ onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
 })
 
-const mailto = computed(
-  () =>
-    `mailto:${landing.value.contact}?subject=${encodeURIComponent(
-      landing.value.ctaSubject ?? ''
-    )}`
+// Same self-upgrading download link as the hero's DownloadButton: the GitHub
+// releases page until /latest.json resolves, the DMG itself afterwards.
+const { dmgURL } = useLatestRelease()
+const ctaHref = computed(
+  () => dmgURL.value || `${landing.value.github}/releases/latest`
 )
 </script>
 
@@ -79,7 +80,11 @@ const mailto = computed(
           />
         </svg>
       </a>
-      <a class="kh-btn kh-btn-primary kh-nav-cta" :href="mailto">
+      <a
+        class="kh-btn kh-btn-primary kh-nav-cta"
+        :href="ctaHref"
+        :download="Boolean(dmgURL) || undefined"
+      >
         {{ landing.cta }}
       </a>
     </nav>
