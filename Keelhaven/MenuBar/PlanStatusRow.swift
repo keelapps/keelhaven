@@ -84,6 +84,11 @@ struct PlanStatusRow: View {
                 .foregroundStyle(.secondary)
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(String(localized: "Schedule: \(plan.schedule.displayText)"))
+                // Absent until the first check so a fresh plan stays
+                // uncluttered; red is reserved for an actual failed check.
+                if let lastCheck = plan.lastCheck {
+                    verificationLine(lastCheck)
+                }
                 statusLine
             }
         }
@@ -115,6 +120,10 @@ struct PlanStatusRow: View {
             openWindow(id: WindowID.restore)
             NSApp.activate(ignoringOtherApps: true)
         }
+        Button("Verify Backup Now") {
+            appState.runCheck(plan)
+        }
+        .disabled(appState.isResticBusy || appState.resticBinaryURL == nil)
         Button("Edit Plan…") {
             appState.editPlanID = plan.id
             openWindow(id: WindowID.editPlan)
@@ -130,7 +139,7 @@ struct PlanStatusRow: View {
         Button("Delete Backup Plan…", role: .destructive) {
             confirmAndDelete()
         }
-        .disabled(appState.isBackupRunning)
+        .disabled(appState.isResticBusy)
     }
 
     /// Confirmation dialogs use app-modal NSAlert, not SwiftUI `.alert`:
@@ -204,8 +213,28 @@ struct PlanStatusRow: View {
             }
             .buttonStyle(.bordered)
             .controlSize(.regular)
-            .disabled(appState.isBackupRunning || appState.resticBinaryURL == nil)
+            .disabled(appState.isResticBusy || appState.resticBinaryURL == nil)
         }
+    }
+
+    private func verificationLine(_ check: CheckRunRecord) -> some View {
+        HStack(spacing: 4) {
+            Image(systemName: check.success ? "checkmark.shield" : "exclamationmark.shield")
+            if check.success {
+                Text("Verified \(check.date.formatted(date: .abbreviated, time: .omitted))")
+            } else {
+                Text("Verification failed")
+            }
+        }
+        .font(.callout)
+        .foregroundStyle(check.success ? AnyShapeStyle(.secondary) : AnyShapeStyle(.red))
+        .help(check.success
+            ? String(localized: "restic reported the repository intact on \(check.date.formatted(date: .abbreviated, time: .shortened))")
+            : (check.errorMessage ?? String(localized: "The last repository check failed")))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(check.success
+            ? String(localized: "Backup verified on \(check.date.formatted(date: .abbreviated, time: .omitted))")
+            : String(localized: "Backup verification failed"))
     }
 
     @ViewBuilder
@@ -216,6 +245,16 @@ struct PlanStatusRow: View {
                 .controlSize(.small)
                 .padding(.top, 2)
                 .accessibilityLabel(String(localized: "Backup \(Int(progress * 100)) percent done"))
+        case .checking:
+            HStack(spacing: 6) {
+                ProgressView()
+                    .controlSize(.small)
+                Text("Verifying backup…")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(String(localized: "Backup verification running"))
         case .failed(let message):
             Text(message)
                 .font(.callout)

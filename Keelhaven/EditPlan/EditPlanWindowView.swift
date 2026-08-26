@@ -45,6 +45,8 @@ struct EditPlanWindowView: View {
                 .font(.headline)
             ScheduleEditor(kind: $model.scheduleKind, dailyTime: $model.dailyTime, weekday: $model.weekday)
 
+            verificationSection
+
             destinationRow(for: plan)
 
             excludeSection
@@ -62,7 +64,8 @@ struct EditPlanWindowView: View {
                         name: model.name,
                         sourcePaths: model.sourcePaths,
                         excludePatterns: model.excludePatterns,
-                        schedule: model.builtSchedule()
+                        schedule: model.builtSchedule(),
+                        checkCadence: model.checkCadence
                     )
                     dismiss()
                 }
@@ -117,6 +120,24 @@ struct EditPlanWindowView: View {
                         .foregroundStyle(.secondary)
                 }
             }
+        }
+    }
+
+    private var verificationSection: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Verification")
+                .font(.headline)
+            Picker("Verification", selection: $model.checkCadence) {
+                Text("Weekly").tag(CheckCadence.weekly)
+                Text("Monthly").tag(CheckCadence.monthly)
+                Text("Off").tag(CheckCadence.off)
+            }
+            .labelsHidden()
+            .pickerStyle(.segmented)
+            .frame(maxWidth: 260)
+            Text("Runs restic's own repository check after a backup, and only speaks up when something is wrong.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
         }
     }
 

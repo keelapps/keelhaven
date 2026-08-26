@@ -13,13 +13,17 @@ enum PlanHealth {
 extension BackupPlan {
     func health(runState: PlanRunState) -> PlanHealth {
         switch runState {
-        case .running:
+        case .running, .checking:
             return .running
         case .failed:
             return .needsAttention
         case .succeeded:
             return .ok
         case .idle:
+            // A failed integrity check outranks a good backup: the backups
+            // exist but may not be restorable, which is the one thing this
+            // dot must never show green for.
+            if let lastCheck, !lastCheck.success { return .needsAttention }
             guard let lastRun else { return .neverBackedUp }
             return lastRun.success ? .ok : .needsAttention
         }

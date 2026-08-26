@@ -57,4 +57,51 @@ final class ModelRoundTripTests: XCTestCase {
         )
         XCTAssertEqual(try roundTrip(record), record)
     }
+
+    func testPlanWithCheckFieldsRoundTrip() throws {
+        let plan = BackupPlan(
+            name: "Documents",
+            sourcePaths: ["/Users/me/Documents"],
+            destination: .local(path: "/Volumes/Backup/repo"),
+            schedule: .hourly,
+            checkCadence: .monthly,
+            createdAt: date,
+            lastCheck: CheckRunRecord(
+                date: date,
+                success: false,
+                duration: 12.5,
+                errorMessage: "error: load <data/1234>: invalid data returned"
+            )
+        )
+        XCTAssertEqual(try roundTrip(plan), plan)
+    }
+
+    func testLegacyPlanJSONDecodesWithCheckDefaults() throws {
+        // A plan saved by 0.2.0, before scheduled checks existed: same shape
+        // as today's encoder output minus the two check keys.
+        let plan = BackupPlan(
+            name: "Documents",
+            sourcePaths: ["/Users/me/Documents"],
+            destination: .local(path: "/Volumes/Backup/repo"),
+            schedule: .daily(hour: 21, minute: 30),
+            createdAt: date,
+            lastCheck: CheckRunRecord(date: date, success: true)
+        )
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        var object = try XCTUnwrap(
+            try JSONSerialization.jsonObject(with: encoder.encode(plan)) as? [String: Any]
+        )
+        object.removeValue(forKey: "checkCadence")
+        object.removeValue(forKey: "lastCheck")
+        let legacyData = try JSONSerialization.data(withJSONObject: object)
+
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let decoded = try decoder.decode(BackupPlan.self, from: legacyData)
+        XCTAssertEqual(decoded.checkCadence, .weekly)
+        XCTAssertNil(decoded.lastCheck)
+        XCTAssertEqual(decoded.name, plan.name)
+        XCTAssertEqual(decoded.schedule, plan.schedule)
+    }
 }
