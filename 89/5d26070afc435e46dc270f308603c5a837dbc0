@@ -1,0 +1,19 @@
+.github/workflows/website.yml
+  s_903bf4ea2027e1::t_aacc4febe7ca20 47-54,60-73,75-79,82
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "895d26070afc435e46dc270f308603c5a837dbc0",
+  "prompts": {},
+  "sessions": {
+    "s_903bf4ea2027e1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d4e5a192-3228-43c1-af5a-c78a34054447",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
