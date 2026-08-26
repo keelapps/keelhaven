@@ -72,7 +72,7 @@ export default defineConfig({
     // site/privacy.md discloses it and must change in step with this block.
     [
       'script',
-      { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-C671MMNMGY' },
+      { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-WWCP7VVJPM' },
     ],
     [
       'script',
