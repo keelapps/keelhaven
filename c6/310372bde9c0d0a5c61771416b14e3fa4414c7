@@ -1,0 +1,19 @@
+site/.vitepress/theme/components/DownloadButton.vue
+  s_f90fe9e16e55ab::t_7090089f726567 34-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "c6310372bde9c0d0a5c61771416b14e3fa4414c7",
+  "prompts": {},
+  "sessions": {
+    "s_f90fe9e16e55ab": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c4d5ee47-ff8c-4529-9c8e-fc05be8add23",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
