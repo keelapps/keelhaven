@@ -1,0 +1,32 @@
+.github/workflows/ci.yml
+  s_c0d5648d0ce4ee::t_1a29560d6f2691 56-61,68-101
+KeelhavenCore/Tests/KeelhavenCoreTests/ResticS3IntegrationTests.swift
+  s_c0d5648d0ce4ee::t_a8d01a2bba3378 1-83,90-91
+  s_c0d5648d0ce4ee::t_5864d0944c8f76 84-89
+KeelhavenCore/Tests/KeelhavenCoreTests/ResticRunnerIntegrationTests.swift
+  s_c0d5648d0ce4ee::t_169e62f7117a9c 22
+CONTRIBUTING.md
+  s_c0d5648d0ce4ee::t_a4ed6a26844db9 28-52
+KeelhavenCore/Tests/KeelhavenCoreTests/IntegrationTestSupport.swift
+  s_c0d5648d0ce4ee::t_9d2b081045cf82 1-130
+KeelhavenCore/Tests/KeelhavenCoreTests/ResticSFTPIntegrationTests.swift
+  s_c0d5648d0ce4ee::t_f5d0deab3b1bc7 1-89
+CLAUDE.md
+  s_c0d5648d0ce4ee::t_76977e6a57e174 49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "6f92e15581989cd520003977339242c36bb2f220",
+  "prompts": {},
+  "sessions": {
+    "s_c0d5648d0ce4ee": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8804667e-58dc-4d35-84ad-1a985927e65f",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
