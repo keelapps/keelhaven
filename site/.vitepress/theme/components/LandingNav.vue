@@ -80,10 +80,14 @@ const ctaHref = computed(
           />
         </svg>
       </a>
+      <!-- `download` must be empty, not a boolean: its value is the suggested
+           filename, so `download="true"` saves the DMG as a file named "true".
+           Empty keeps the filename from the URL and still stops VitePress's
+           SPA router from intercepting the click. -->
       <a
         class="kh-btn kh-btn-primary kh-nav-cta"
         :href="ctaHref"
-        :download="Boolean(dmgURL) || undefined"
+        :download="dmgURL ? '' : undefined"
       >
         {{ landing.cta }}
       </a>
