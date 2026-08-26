@@ -1,0 +1,37 @@
+Scripts/release-local.sh
+  s_903bf4ea2027e1::t_d9e6c626bd4bbd 40-50
+  s_903bf4ea2027e1::t_5e451e3b3f3252 90
+Scripts/compose-release-notes.sh
+  s_903bf4ea2027e1::t_e2850e903fa68d 1-29
+docs/RELEASING.md
+  s_903bf4ea2027e1::t_ab1c3fc6b15630 90,94-97
+  s_903bf4ea2027e1::t_8ef47f102bdb94 56-62,67,73-76
+  s_903bf4ea2027e1::t_3e2f2ec4bb4ffb 26-54
+  s_903bf4ea2027e1::t_7776b04e9223df 55
+CHANGELOG.md
+  s_903bf4ea2027e1::t_5a69d383c91453 1-39
+.github/workflows/release.yml
+  s_903bf4ea2027e1::t_a5b44c8bf16c68 18-22,26-31
+  s_903bf4ea2027e1::t_9279874b1868b7 54-56
+  s_903bf4ea2027e1::t_0e1747aecb5eaa 253
+  s_903bf4ea2027e1::t_506ab75f49ff8e 217-225,227-229,231,234-235
+  s_903bf4ea2027e1::t_fc270e9c1bf580 247
+  s_903bf4ea2027e1::t_ca50d1dd9a7f63 68-71,74-105
+  s_903bf4ea2027e1::t_793f5615c074be 106
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "cd72e5b70c3ae33130791f1e2ae154cbe51f4bd2",
+  "prompts": {},
+  "sessions": {
+    "s_903bf4ea2027e1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d4e5a192-3228-43c1-af5a-c78a34054447",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
