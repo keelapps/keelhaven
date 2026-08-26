@@ -127,6 +127,12 @@ body:has(.kh-landing) .VPLocalNav {
   box-shadow: 0 6px 20px rgba(238, 140, 44, 0.35);
 }
 
+.kh-landing .kh-btn-version {
+  margin-left: 9px;
+  font-weight: 500;
+  opacity: 0.65;
+}
+
 .kh-landing .kh-btn-ghost {
   border: 1px solid var(--kh-line);
   color: var(--kh-ink);

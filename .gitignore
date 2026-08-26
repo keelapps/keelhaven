@@ -11,6 +11,9 @@ Keelhaven/Info.plist
 Vendor/
 # Produced by `make dmg` / Scripts/make-dmg.sh
 *.dmg
+# Mirrored into the working tree by Scripts/deploy-site.sh for the deploy only
+site/public/downloads/
+site/public/latest.json
 build/
 design/node_modules/
 design/package-lock.json

@@ -10,6 +10,7 @@ import ShotFrame from './components/ShotFrame.vue'
 import MenuBarDemo from './components/MenuBarDemo.vue'
 import PricingCard from './components/PricingCard.vue'
 import FaqItem from './components/FaqItem.vue'
+import DownloadButton from './components/DownloadButton.vue'
 import './landing.css'
 
 export default {
@@ -22,5 +23,6 @@ export default {
     app.component('MenuBarDemo', MenuBarDemo)
     app.component('PricingCard', PricingCard)
     app.component('FaqItem', FaqItem)
+    app.component('DownloadButton', DownloadButton)
   },
 } satisfies Theme

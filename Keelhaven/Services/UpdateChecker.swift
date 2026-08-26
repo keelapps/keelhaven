@@ -2,7 +2,7 @@ import Foundation
 import KeelhavenCore
 
 /// Checks the public `latest.json` manifest mirrored to keelhaven.app
-/// alongside every signed release DMG. Never surfaces a network or parsing
+/// alongside every release DMG. Never surfaces a network or parsing
 /// failure to the user — a bad manifest or offline machine just means no
 /// update prompt this launch, not an error.
 enum UpdateChecker {

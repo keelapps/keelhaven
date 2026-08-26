@@ -1,16 +1,16 @@
 name: Release
 
-# Builds a Developer-ID-signed, notarized, universal Keelhaven.dmg and
-# attaches it to a GitHub Release. Separate from ci.yml's ad-hoc build-app
-# jobs, which exist only for Scripts/install-latest.sh (personal installs,
-# not public distribution) — see docs/RELEASING.md before the first run.
+# Builds a universal Keelhaven.dmg and attaches it to a GitHub Release.
+# Separate from ci.yml's ad-hoc build-app jobs, which exist only for
+# Scripts/install-latest.sh (personal installs, not public distribution).
 #
-# Requires repo secrets that aren't set up yet as of this writing:
-#   DEVELOPER_ID_CERT_P12_BASE64, DEVELOPER_ID_CERT_PASSWORD,
-#   CI_KEYCHAIN_PASSWORD, APPLE_TEAM_ID,
-#   AC_API_KEY_ID, AC_API_ISSUER_ID, AC_API_KEY_P8_BASE64
-# Until they exist this workflow will fail at the "Import signing
-# certificate" step — that's expected, not a bug.
+# Signing is best-effort by design: with no Apple Developer secrets set up
+# (the current state — no $99/year membership), the app is ad-hoc signed and
+# not notarized, so first launch needs a one-time Gatekeeper allowance. The
+# release body and the site FAQ walk users through it. If the secrets from
+# docs/RELEASING.md are ever added, the same tag push produces a
+# Developer-ID-signed, notarized, stapled DMG with zero workflow changes —
+# the Apple-specific steps below just start running.
 on:
   push:
     tags:
@@ -27,7 +27,7 @@ concurrency:
 
 jobs:
   release:
-    name: Build, sign, notarize, publish
+    name: Build, package, publish
     runs-on: macos-15
     # `notarytool --wait` can sit for a long time, and this is a 10×-billed
     # runner, so the 6-hour default would be 3600 billed minutes if Apple's
@@ -36,6 +36,11 @@ jobs:
     timeout-minutes: 90
     permissions:
       contents: write
+    # The secrets context is not available in step-level `if`s directly, so
+    # surface "are the Apple credentials configured?" as job env instead.
+    env:
+      HAS_SIGNING: ${{ secrets.DEVELOPER_ID_CERT_P12_BASE64 != '' }}
+      HAS_NOTARY: ${{ secrets.AC_API_KEY_ID != '' }}
     steps:
       - uses: actions/checkout@v7
 
@@ -69,6 +74,7 @@ jobs:
       # Standard GitHub Actions pattern: import the Developer ID cert into a
       # throwaway keychain scoped to this job, never the runner's default.
       - name: Import signing certificate
+        if: env.HAS_SIGNING == 'true'
         env:
           CERT_P12_BASE64: ${{ secrets.DEVELOPER_ID_CERT_P12_BASE64 }}
           CERT_PASSWORD: ${{ secrets.DEVELOPER_ID_CERT_PASSWORD }}
@@ -84,7 +90,22 @@ jobs:
           security list-keychains -d user -s "$KEYCHAIN" $(security list-keychains -d user | tr -d '"')
           rm -f "$RUNNER_TEMP/cert.p12"
 
-      - name: Build Release (Developer ID signed)
+      # Identity "-" is ad-hoc: runnable on both architectures (arm64 refuses
+      # entirely unsigned binaries), rejected by Gatekeeper only until the
+      # user allows it once. --timestamp is meaningless without a real
+      # certificate, so it rides with the Developer ID branch.
+      - name: Resolve signing identity
+        id: signing
+        run: |
+          if [ "$HAS_SIGNING" = "true" ]; then
+            echo "identity=Developer ID Application" >> "$GITHUB_OUTPUT"
+            echo "flags=--timestamp" >> "$GITHUB_OUTPUT"
+          else
+            echo "identity=-" >> "$GITHUB_OUTPUT"
+            echo "flags=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build Release
         run: >
           xcodebuild
           -project Keelhaven.xcodeproj
@@ -93,9 +114,9 @@ jobs:
           -derivedDataPath build
           build
           CODE_SIGN_STYLE=Manual
-          CODE_SIGN_IDENTITY="Developer ID Application"
-          DEVELOPMENT_TEAM=${{ secrets.APPLE_TEAM_ID }}
-          OTHER_CODE_SIGN_FLAGS=--timestamp
+          CODE_SIGN_IDENTITY="${{ steps.signing.outputs.identity }}"
+          DEVELOPMENT_TEAM="${{ secrets.APPLE_TEAM_ID }}"
+          OTHER_CODE_SIGN_FLAGS="${{ steps.signing.outputs.flags }}"
           MARKETING_VERSION=${{ steps.version.outputs.version }}
           CURRENT_PROJECT_VERSION=${{ github.run_number }}
           ARCHS="arm64 x86_64"
@@ -104,6 +125,7 @@ jobs:
       # Apple notarizes a zip/dmg, not a bare .app — the .app is what gets
       # stapled afterward so Gatekeeper can check it offline.
       - name: Notarize app
+        if: env.HAS_NOTARY == 'true'
         env:
           AC_API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
           AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
@@ -127,6 +149,7 @@ jobs:
       # Notarize the DMG too — the .app inside is already stapled, but the
       # DMG itself gets Gatekeeper-checked on first mount as well.
       - name: Notarize and staple DMG
+        if: env.HAS_NOTARY == 'true'
         env:
           AC_API_KEY_ID: ${{ secrets.AC_API_KEY_ID }}
           AC_API_ISSUER_ID: ${{ secrets.AC_API_ISSUER_ID }}
@@ -142,14 +165,28 @@ jobs:
           rm -f "$RUNNER_TEMP/AuthKey.p8"
 
       - name: Delete signing keychain
-        if: always()
+        if: always() && env.HAS_SIGNING == 'true'
         run: security delete-keychain "$RUNNER_TEMP/release.keychain-db" || true
+
+      # Unnotarized builds trip Gatekeeper on first launch, and people who
+      # download straight from the GitHub Release never see the site FAQ — so
+      # the walkthrough goes right in the release body. Notarized builds
+      # don't need it and get a clean body. The text is shared with
+      # Scripts/release-local.sh, the manual twin of this workflow.
+      - name: Compose release-notes preamble
+        run: |
+          if [ "$HAS_NOTARY" = "true" ]; then
+            : > release-note.md
+          else
+            cp Scripts/first-launch-note.md release-note.md
+          fi
 
       - name: Publish GitHub Release
         if: github.event_name == 'push'
         uses: softprops/action-gh-release@v2
         with:
           files: Keelhaven-${{ steps.version.outputs.version }}.dmg
+          body_path: release-note.md
           generate_release_notes: true
 
       - name: Upload DMG artifact

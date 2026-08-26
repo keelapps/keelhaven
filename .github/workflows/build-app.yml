@@ -9,8 +9,9 @@ name: Build app
 # wants to install a new build. Now they are built when asked for.
 #
 # Deliberately *not* triggered by `v*.*.*` tags: release.yml already builds on
-# those, and its output is strictly better (Developer ID signed, notarized,
-# universal). Two workflows on one tag would just pay the macOS premium twice.
+# those, and its output is strictly better (universal, DMG-packaged, and
+# notarized once the optional Apple secrets exist). Two workflows on one tag
+# would just pay the macOS premium twice.
 #
 # `variant` defaults to apple-silicon because that is what a modern Mac needs,
 # and building one architecture instead of two halves the bill again.

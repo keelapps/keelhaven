@@ -48,8 +48,9 @@ const mailto = computed(() => {
 })
 </script>
 
-<!-- TODO before launch: a real download link replacing the mailto CTA, and
-     the 1.0 price in the Pricing section. -->
+<!-- TODO before launch: the 1.0 price in the Pricing section. The download
+     CTA is live: DownloadButton swaps the mailto for a DMG link on its own
+     once the first tagged release lands. -->
 
 <div class="kh-landing">
 
@@ -65,7 +66,7 @@ const mailto = computed(() => {
     <span>Restores with open tools</span>
   </p>
   <p class="kh-hero-actions">
-    <a class="kh-btn kh-btn-primary" :href="mailto">Get early access</a>
+    <DownloadButton label="Download for macOS" fallback-label="Get early access" :fallback-href="mailto" />
     <a class="kh-btn kh-btn-ghost" href="#guide">Read the guide</a>
   </p>
 </section>
@@ -142,7 +143,7 @@ Hourly, daily, or weekly. Keelhaven runs in the background and only speaks up wh
 
 <div class="kh-guide-note">
 
-Runs on macOS 14 or later, Apple silicon and Intel, with everything it needs bundled. Download links will land here with the first public beta — beta builds aren't notarised yet, so macOS will ask you to allow the app once in **System Settings › Privacy & Security**.
+Runs on macOS 14 or later, Apple silicon and Intel, with everything it needs bundled. Beta builds aren't notarised by Apple yet, so the very first launch takes one extra approval — the [FAQ below](#faq) walks through it in three clicks.
 
 </div>
 
@@ -165,6 +166,15 @@ Runs on macOS 14 or later, Apple silicon and Intel, with everything it needs bun
 
 <LandingSection id="faq" eyebrow="04 · Questions" title="Straight answers">
 
+<FaqItem question="macOS says it can't verify Keelhaven. Is something wrong?">
+
+Nothing is wrong — beta builds aren't notarised with Apple yet, so macOS shows its standard warning for any app it can't verify online. Allow it once and it never asks again for that version:
+
+- **macOS 15 (Sequoia):** double-click Keelhaven once and dismiss the warning, then open **System Settings › Privacy & Security**, scroll down, and click **Open Anyway**.
+- **macOS 14 (Sonoma):** right-click Keelhaven in Applications, choose **Open**, then click **Open** again.
+- **Prefer the Terminal?** `xattr -d com.apple.quarantine /Applications/Keelhaven.app` clears the flag and skips the dialog entirely.
+
+</FaqItem>
 <FaqItem question="Does this replace Time Machine?">
 
 No — run both. Time Machine is excellent at putting a whole Mac back the way it was, from a drive on your desk. Keelhaven is for the second copy: the folders you can't lose, encrypted, somewhere that isn't your desk.
@@ -207,7 +217,7 @@ The backup is unrecoverable, by design — repositories are encrypted end to end
 </FaqItem>
 <FaqItem question="Why isn't it on the Mac App Store?">
 
-App Store apps must run in the sandbox, and the backup engine needs to read the folders you point it at and open network and SSH connections. Keelhaven ships with the hardened runtime enabled and signed builds, just not through the store.
+App Store apps must run in the sandbox, and the backup engine needs to read the folders you point it at and open network and SSH connections. Keelhaven ships with the hardened runtime enabled, just not through the store — and while in beta, without Apple notarisation, which is why the first launch asks for [one approval](#faq).
 
 </FaqItem>
 

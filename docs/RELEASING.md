@@ -1,10 +1,19 @@
 # Releasing
 
-`.github/workflows/release.yml` builds a universal, Developer-ID-signed,
-notarized `Keelhaven-<version>.dmg` and attaches it to a GitHub Release. It
-triggers on pushing a `vX.Y.Z` tag, or manually via
-Actions → Release → Run workflow (give it a version, it uploads the DMG as a
-build artifact instead of creating a release — useful for a dry run).
+`.github/workflows/release.yml` builds a universal `Keelhaven-<version>.dmg`
+and attaches it to a GitHub Release. It triggers on pushing a `vX.Y.Z` tag,
+or manually via Actions → Release → Run workflow (give it a version, it
+uploads the DMG as a build artifact instead of creating a release — useful
+for a dry run).
+
+**No Apple Developer membership is required.** With no signing secrets
+configured (the current state), the app is ad-hoc signed and not notarized:
+the DMG works on both architectures, but macOS asks the user to allow the
+app once on first launch. That walkthrough ships in three places so nobody
+has to hunt for it — the release body (written by the workflow), the site
+FAQ, and this file. If the [optional secrets below](#optional-upgrade-developer-id--notarization)
+are ever added, the same tag push produces a signed, notarized, stapled DMG
+with zero workflow changes.
 
 This is separate from `build-app.yml`, which produces ad-hoc-signed
 per-architecture zips for `Scripts/install-latest.sh` (personal installs
@@ -12,11 +21,78 @@ only, not public distribution — see the README). That workflow is manual and
 deliberately does *not* fire on `vX.Y.Z` tags: this one already covers tags,
 and two macOS builds per tag would pay the 10× premium twice.
 
-## One-time setup
+## Cutting a release
 
-You need an active [Apple Developer Program](https://developer.apple.com/programs/)
-membership ($99/year) for the two credentials below. Do this once per Apple
-Developer team.
+### From this Mac (no Actions minutes needed)
+
+```bash
+make release VERSION=0.2.0
+```
+
+`Scripts/release-local.sh` is the manual twin of `release.yml` for when the
+Actions quota is exhausted — the same situation `Scripts/deploy-site.sh`
+covers for the website. It runs the core tests (the only gate left when PR
+CI can't run), builds the universal ad-hoc-signed DMG, tags `v0.2.0` and
+pushes the tag, publishes the GitHub Release with the first-launch note
+(`Scripts/first-launch-note.md`, shared with the workflow), then runs
+`deploy-site.sh` — which mirrors the DMG plus `latest.json` to
+`https://keelhaven.app/downloads/` as part of the site deploy.
+
+While the quota is out, the tag push and the release event each leave a
+not-started failed run behind. Harmless, but they can be silenced until
+quota returns:
+
+```bash
+gh workflow disable release.yml && gh workflow disable website.yml
+# later: gh workflow enable release.yml && gh workflow enable website.yml
+```
+
+### Via GitHub Actions
+
+```bash
+git tag v0.2.0
+git push origin v0.2.0
+```
+
+Watch the run under Actions → Release. On success:
+
+1. A GitHub Release for the tag appears with `Keelhaven-0.2.0.dmg` attached
+   and first-launch instructions in the body (omitted once builds are
+   notarized).
+2. Publishing the release triggers `website.yml`, which mirrors the DMG to
+   `https://keelhaven.app/downloads/` and writes `latest.json` next to it.
+3. `latest.json` lights up the rest on its own: the site's hero button
+   switches from the early-access mailto to a real download link, and
+   installed apps start showing the in-app update prompt
+   (`Keelhaven/Services/UpdateChecker.swift`).
+
+Either path ends in the same place, and they can be mixed freely: both the
+workflow and `deploy-site.sh` mirror whatever the *newest published release*
+is, so a later Actions deploy won't clobber a locally cut release or vice
+versa.
+
+## What users see (unsigned builds)
+
+First launch of each downloaded version trips Gatekeeper, because the build
+is ad-hoc signed and macOS can't verify it online:
+
+- **macOS 15 (Sequoia):** double-click once, dismiss the warning, then
+  System Settings › Privacy & Security → **Open Anyway**. (Sequoia removed
+  the right-click shortcut.)
+- **macOS 14 (Sonoma):** right-click the app → **Open** → **Open**.
+- **Terminal:** `xattr -d com.apple.quarantine /Applications/Keelhaven.app`.
+
+This repeats on every update installed by hand, since each newly downloaded
+DMG carries a fresh quarantine flag — the one real cost of skipping the
+$99/year membership. If that friction ever outweighs the fee, add the
+secrets below; nothing else has to change.
+
+## Optional upgrade: Developer ID + notarization
+
+An active [Apple Developer Program](https://developer.apple.com/programs/)
+membership ($99/year) buys warning-free first launches. Configure the two
+credentials below once and `release.yml` picks them up automatically on the
+next tag.
 
 ### 1. Developer ID Application certificate
 
@@ -53,29 +129,24 @@ doesn't need 2FA, and can be scoped tightly.
    - `AC_API_ISSUER_ID` — the Issuer ID at the top of the Keys page
    - `AC_API_KEY_P8_BASE64` — `base64 -i AuthKey_XXXXXXXXXX.p8 | pbcopy`
 
-## Cutting a release
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-Watch the run under Actions → Release. On success, a GitHub Release for the
-tag appears with `Keelhaven-1.0.0.dmg` attached, already signed, notarized,
-and stapled — Gatekeeper accepts it offline with no "unidentified developer"
-prompt.
+The workflow keys off which secrets exist: `DEVELOPER_ID_CERT_P12_BASE64`
+enables Developer ID signing, `AC_API_KEY_ID` enables the two notarization
+steps and drops the first-launch note from the release body. Set both
+groups together — notarizing an ad-hoc-signed build would just fail at
+Apple's end.
 
 ## Troubleshooting
 
 - **"Import signing certificate" fails** — one of the four cert-related
-  secrets above is missing or the `.p12` password doesn't match.
+  secrets above is missing or the `.p12` password doesn't match. (Without
+  any of those secrets the step is skipped entirely; it can only fail once
+  you've started adding them.)
 - **`notarytool submit` fails with "invalid"** — run
   `xcrun notarytool log <submission-id> --key ... --key-id ... --issuer ...`
   (the workflow log prints the submission ID) to see which binary inside the
   bundle failed Apple's checks — almost always a missing hardened-runtime
   entitlement or a nested executable signed without `--timestamp`.
 - **Testing locally without secrets**: `make dmg` still works — it packages
-  whatever's in `build/Build/Products/Release/`, which is ad-hoc-signed
-  unless you've manually set up local Developer ID signing. Good enough for
-  checking the DMG mechanics (volume name, Applications symlink, layout)
-  without touching notarization at all.
+  whatever's in `build/Build/Products/Release/`, which is ad-hoc-signed just
+  like an unsigned CI release build. Good enough for checking the DMG
+  mechanics (volume name, Applications symlink, layout) end to end.

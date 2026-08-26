@@ -15,6 +15,32 @@ if [ "$branch" != "main" ]; then
   echo "⚠️  Deploying the working tree of '$branch', not main."
 fi
 
+# Manual twin of website.yml's mirror step. The force-push below replaces
+# gh-pages wholesale, so *every* deploy must re-mirror the newest release
+# DMG and latest.json, or the live download link dies with this push —
+# which is also why a missing gh is a hard stop, not a skipped step.
+command -v gh >/dev/null || {
+  echo "Needs the GitHub CLI (brew install gh) — refusing to deploy without the DMG mirror." >&2
+  exit 1
+}
+rm -rf site/public/downloads site/public/latest.json
+mkdir -p site/public/downloads
+if info=$(gh release view --repo keelapps/keelhaven --json tagName,assets \
+    --jq '"\(.tagName)\t\([.assets[] | select(.name | endswith(".dmg"))][0].name // "")"' 2>/dev/null); then
+  tag=${info%%$'\t'*}
+  asset=${info#*$'\t'}
+  if [ -n "$asset" ]; then
+    echo "Mirroring $asset ($tag) into the deploy."
+    gh release download "$tag" --repo keelapps/keelhaven --pattern '*.dmg' --dir site/public/downloads --clobber
+    printf '{"version": "%s", "dmgURL": "https://keelhaven.app/downloads/%s"}\n' \
+      "${tag#v}" "$asset" > site/public/latest.json
+  else
+    echo "Latest release $tag has no .dmg asset — deploying without a DMG mirror."
+  fi
+else
+  echo "No published release found (or gh isn't authenticated) — deploying without a DMG mirror."
+fi
+
 npm --prefix site ci
 npm --prefix site run build
 

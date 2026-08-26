@@ -3,7 +3,7 @@
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap test restic build dmg install update dev-site deploy-site clean
+.PHONY: help bootstrap test restic build dmg release install update dev-site deploy-site clean
 
 help: ## List available targets
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "  make %-12s %s\n", $$1, $$2}'
@@ -24,6 +24,9 @@ build: restic ## Build a Release Keelhaven.app from the working tree
 
 dmg: build ## Package the Release build into Keelhaven.dmg (ad-hoc signed locally)
 	./Scripts/make-dmg.sh
+
+release: ## Cut a public release from this Mac: tests, universal DMG, GitHub Release, site mirror (make release VERSION=0.2.0)
+	./Scripts/release-local.sh $(VERSION)
 
 install: build ## Build from source and install to /Applications
 	./Scripts/install-local.sh

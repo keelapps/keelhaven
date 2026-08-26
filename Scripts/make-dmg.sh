@@ -1,8 +1,8 @@
 #!/bin/bash
 # Packages a built Keelhaven.app into a drag-to-Applications .dmg for
 # distribution outside the Mac App Store (issue #63). Works on any built
-# app — ad-hoc-signed local builds included — the release workflow is what
-# points this at a Developer-ID-signed, notarized, stapled app.
+# app — ad-hoc-signed builds included, which is what public releases ship
+# until the optional Apple signing secrets exist (docs/RELEASING.md).
 #
 # Usage: make-dmg.sh [path-to-Keelhaven.app] [output.dmg]
 set -euo pipefail
