@@ -10,6 +10,10 @@ landing:
   # Routing alias on keelhaven.app that forwards to a real inbox, so it can be
   # re-pointed without touching the site.
   contact: support@keelhaven.app
+  # The repository URL, read by the nav icon and the footer's github link.
+  # The default-theme pages (/privacy, /licenses) carry it separately via
+  # themeConfig.socialLinks in config.mts.
+  github: https://github.com/keelapps/keelhaven
   cta: Get early access
   ctaSubject: Keelhaven early access
   nav:
@@ -31,6 +35,7 @@ landing:
           - { text: Features, anchor: features }
           - { text: Getting started, anchor: guide }
           - { text: Pricing, anchor: pricing }
+          - { text: Source on GitHub, github: true }
       - title: Legal
         links:
           - { text: Privacy, link: /privacy }
