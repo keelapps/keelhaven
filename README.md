@@ -10,7 +10,7 @@ Privacy-first Mac backup to your own storage. Free and open source (GPLv3) — n
 
 Keelhaven wraps the battle-tested [restic](https://restic.net) engine in a native SwiftUI menu bar app: pick folders, pick a destination you own (external drive, any S3-compatible bucket, or SFTP/NAS), set a schedule — your files are encrypted on your Mac before they leave it.
 
-**Status: early development.** The engine, wizard, scheduled backups, and whole-snapshot restore work; file-level browsing inside snapshots is next.
+**Status: public beta.** The engine, wizard, scheduled backups, and whole-snapshot restore all work; file-level browsing inside snapshots is next.
 
 ## Install
 

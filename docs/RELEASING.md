@@ -23,6 +23,13 @@ and two macOS builds per tag would pay the 10× premium twice.
 
 ## Cutting a release
 
+Whichever path you take, first bump `MARKETING_VERSION` in `project.yml` to
+the new version and land that on `main`. Both release paths override it from
+the tag at build time, so the released DMG is always right — but source
+builds (contributors, `make install`) report whatever `project.yml` says, and
+a stale value makes them nag themselves to "update" to the version they
+already have.
+
 ### From this Mac (no Actions minutes needed)
 
 ```bash
