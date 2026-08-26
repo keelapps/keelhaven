@@ -1,0 +1,36 @@
+.github/workflows/release.yml
+  s_10b4532643158e::t_25f8e9aa725569 44
+  s_10b4532643158e::t_aefb5dd13f0a63 193-204
+Scripts/update-homebrew-tap.sh
+  s_10b4532643158e::t_d347e9b936162b 1-53
+README.md
+  s_10b4532643158e::t_d11a70a77df1b9 15-26
+docs/RELEASING.md
+  s_10b4532643158e::t_080e981d3649a7 69-70
+  s_10b4532643158e::t_a8453779a47aa0 93-115
+  s_10b4532643158e::t_97ce39338e9f84 37-40
+site/index.md
+  s_10b4532643158e::t_82552939ae1368 150
+  s_10b4532643158e::t_e9648d164bf9f9 217-220
+  s_10b4532643158e::t_28d16fbdf55017 216
+Scripts/release-local.sh
+  s_10b4532643158e::t_3f7635b77b6f9d 82-84
+CLAUDE.md
+  s_10b4532643158e::t_1c7379eeed1fb7 52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "99125b4b30ab5f2e9a59781de58814e182714795",
+  "prompts": {},
+  "sessions": {
+    "s_10b4532643158e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ad36422c-6c8d-43b6-9ead-6de02d820172",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
