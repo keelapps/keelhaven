@@ -1,0 +1,41 @@
+Keelhaven/EditPlan/EditPlanWindowView.swift
+  s_903bf4ea2027e1::t_c91cefb8957a31 67-68
+  s_903bf4ea2027e1::t_5158c6ae6babb2 126-140
+  s_903bf4ea2027e1::t_6c5d110fea7a70 48-49
+  s_903bf4ea2027e1::t_f3c59519641517 141-143
+Keelhaven/AppState.swift
+  s_903bf4ea2027e1::t_bc67d18c32e0b7 182,207,215,285-341
+  s_903bf4ea2027e1::t_00cafdaf34156d 194-203
+  s_903bf4ea2027e1::t_52b413f7ad0c13 9
+  s_903bf4ea2027e1::t_15ded033a24142 260-267
+  s_903bf4ea2027e1::t_050f59336c1918 117-122
+  s_903bf4ea2027e1::t_1d2ddebf341c8d 157,165-166,175
+  s_903bf4ea2027e1::t_21e7cba904558f 342
+Keelhaven/Services/NotificationService.swift
+  s_903bf4ea2027e1::t_d964288664b35e 34-42
+Keelhaven/MenuBar/PlanStatusRow.swift
+  s_903bf4ea2027e1::t_60d8a9899f3320 123-126
+  s_903bf4ea2027e1::t_304e2e14c85fcd 87-91
+  s_903bf4ea2027e1::t_c42c25d4de6b25 220-239,248-257
+  s_903bf4ea2027e1::t_da807fdb678328 142,216
+Keelhaven/EditPlan/EditPlanModel.swift
+  s_903bf4ea2027e1::t_efa448a4d4461f 16,25
+Keelhaven/MenuBar/PlanHealth.swift
+  s_903bf4ea2027e1::t_039d536cff0371 16,23-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "b33c322c3127839bc6e5d586a9cdf399c6775ff2",
+  "prompts": {},
+  "sessions": {
+    "s_903bf4ea2027e1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d4e5a192-3228-43c1-af5a-c78a34054447",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
