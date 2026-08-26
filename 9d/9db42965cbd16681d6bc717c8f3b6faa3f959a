@@ -1,0 +1,29 @@
+site/.vitepress/theme/components/LandingNav.vue
+  s_10b4532643158e::t_b822a1bec2b78e 66-81
+site/.vitepress/config.mts
+  s_10b4532643158e::t_0a9621959a9ca4 80-84
+site/index.md
+  s_10b4532643158e::t_a286808964431f 38
+  s_10b4532643158e::t_88dd0bdcd33686 13-16
+site/.vitepress/theme/components/LandingFooter.vue
+  s_10b4532643158e::t_c3e5f71f865f04 19,22,27-31
+  s_10b4532643158e::t_0916dd76aa3449 50-54
+site/.vitepress/theme/landing.css
+  s_10b4532643158e::t_0939ccd904bf6d 203-216
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "9d9db42965cbd16681d6bc717c8f3b6faa3f959a",
+  "prompts": {},
+  "sessions": {
+    "s_10b4532643158e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ad36422c-6c8d-43b6-9ead-6de02d820172",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
