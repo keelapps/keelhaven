@@ -77,6 +77,11 @@ export default defineConfig({
     // The site is a single landing page; only /privacy and /licenses use
     // this default-theme chrome.
     nav: [{ text: 'Home', link: '/' }],
+    // GitHub icon in that default-theme navbar. The landing page's own nav
+    // and footer carry the same link, driven by index.md frontmatter.
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/keelapps/keelhaven' },
+    ],
     footer: {
       // The BSD-2-Clause notice travels with the app bundle (restic-LICENSE.txt
       // + the About window) — the website distributes nothing, so a discreet

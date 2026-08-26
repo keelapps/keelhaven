@@ -200,6 +200,20 @@ body:has(.kh-landing) .VPLocalNav {
   color: var(--kh-ink);
 }
 
+.kh-landing .kh-nav-github {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  color: var(--kh-ink-soft);
+  transition: color 0.15s ease;
+}
+.kh-landing .kh-nav-github:hover {
+  color: var(--kh-ink);
+}
+
 .kh-landing .kh-nav-cta {
   padding: 8px 18px;
   font-size: 14px;

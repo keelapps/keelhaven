@@ -16,12 +16,19 @@ const href = (link: {
   href?: string
   anchor?: string
   mailto?: boolean
+  github?: boolean
 }) => {
   if (link.mailto) return `mailto:${landing.value.contact}`
+  if (link.github) return landing.value.github
   if (link.anchor) return `#${link.anchor}`
   if (link.href) return link.href
   return withBase(link.link ?? '/')
 }
+
+// Off-site links open in a new tab — VitePress does this for markdown links,
+// but these anchors are rendered by hand.
+const external = (link: { href?: string; github?: boolean }) =>
+  Boolean(link.href || link.github)
 </script>
 
 <template>
@@ -40,7 +47,11 @@ const href = (link: {
           <h4>{{ group.title }}</h4>
           <ul>
             <li v-for="link in group.links" :key="link.text">
-              <a :href="href(link)">{{ link.text }}</a>
+              <a
+                :href="href(link)"
+                :target="external(link) ? '_blank' : undefined"
+                :rel="external(link) ? 'noopener' : undefined"
+              >{{ link.text }}</a>
             </li>
           </ul>
         </div>
