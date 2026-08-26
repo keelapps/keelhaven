@@ -2,9 +2,9 @@
 
 `.github/workflows/release.yml` builds a universal `Keelhaven-<version>.dmg`
 and attaches it to a GitHub Release. It triggers on pushing a `vX.Y.Z` tag,
-or manually via Actions → Release → Run workflow (give it a version, it
-uploads the DMG as a build artifact instead of creating a release — useful
-for a dry run).
+or manually via Actions → Release → Run workflow: with **publish** ticked it
+cuts the whole release itself, without it just uploads the DMG as a build
+artifact — useful for a dry run.
 
 **No Apple Developer membership is required.** With no signing secrets
 configured (the current state), the app is ad-hoc signed and not notarized:
@@ -23,12 +23,22 @@ and two macOS builds per tag would pay the 10× premium twice.
 
 ## Cutting a release
 
-Whichever path you take, first bump `MARKETING_VERSION` in `project.yml` to
-the new version and land that on `main`. Both release paths override it from
-the tag at build time, so the released DMG is always right — but source
-builds (contributors, `make install`) report whatever `project.yml` says, and
-a stale value makes them nag themselves to "update" to the version they
+Whichever path you take, `MARKETING_VERSION` in `project.yml` must match the
+new version on `main` — the one-button path commits that bump for you, the
+other two need it landed first. Every release path overrides it from the tag
+at build time, so the released DMG is always right — but source builds
+(contributors, `make install`) report whatever `project.yml` says, and a
+stale value makes them nag themselves to "update" to the version they
 already have.
+
+### One button, from GitHub (recommended)
+
+Actions → Release → **Run workflow**: enter the version, tick **publish**.
+The run bumps `project.yml` on `main` if needed, builds the universal DMG,
+creates the `v<version>` tag and the GitHub Release, and bumps the
+[Homebrew tap](#homebrew-tap) when its secret is set. Guard rails: publish
+runs only from `main`, refuse an existing tag, refuse a malformed version.
+Left unticked, a manual run stays the artifact-only dry run.
 
 ### From this Mac (no Actions minutes needed)
 
@@ -55,14 +65,15 @@ gh workflow disable release.yml && gh workflow disable website.yml
 # later: gh workflow enable release.yml && gh workflow enable website.yml
 ```
 
-### Via GitHub Actions
+### Via a tag push
 
 ```bash
 git tag v0.2.0
 git push origin v0.2.0
 ```
 
-Watch the run under Actions → Release. On success:
+Watch the run under Actions → Release. On success (same for the one-button
+path):
 
 1. A GitHub Release for the tag appears with `Keelhaven-0.2.0.dmg` attached
    and first-launch instructions in the body (omitted once builds are
@@ -76,7 +87,7 @@ Watch the run under Actions → Release. On success:
 4. With the `HOMEBREW_TAP_TOKEN` secret configured, the workflow also bumps
    the [Homebrew tap](#homebrew-tap); without it that step is skipped.
 
-Either path ends in the same place, and they can be mixed freely: both the
+Every path ends in the same place, and they can be mixed freely: both the
 workflow and `deploy-site.sh` mirror whatever the *newest published release*
 is, so a later Actions deploy won't clobber a locally cut release or vice
 versa.

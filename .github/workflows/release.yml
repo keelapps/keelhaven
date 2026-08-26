@@ -15,11 +15,20 @@ on:
   push:
     tags:
       - "v*.*.*"
+  # A manual run is a dry run by default: it builds the same universal DMG
+  # and uploads it as a workflow artifact, touching nothing public. Tick
+  # `publish` for the one-button release: bump project.yml on main if
+  # needed, create the v<version> tag, publish the GitHub Release (which
+  # triggers website.yml's DMG + latest.json mirror), and bump the tap.
   workflow_dispatch:
     inputs:
       version:
-        description: "Marketing version (e.g. 1.0.0) — only used for a manual run, a tag push derives it from the tag"
-        required: false
+        description: "Marketing version (e.g. 1.0.0) — a tag push derives it from the tag instead"
+        required: true
+      publish:
+        description: "Publish for real: bump project.yml, tag v<version>, GitHub Release, Homebrew tap. Off = build-only dry run."
+        type: boolean
+        default: false
 
 concurrency:
   group: release-${{ github.ref }}
@@ -42,6 +51,9 @@ jobs:
       HAS_SIGNING: ${{ secrets.DEVELOPER_ID_CERT_P12_BASE64 != '' }}
       HAS_NOTARY: ${{ secrets.AC_API_KEY_ID != '' }}
       HAS_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN != '' }}
+      # True on a tag push and on a manual run with `publish` ticked — every
+      # step that touches the outside world keys off this one flag.
+      PUBLISHING: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.publish) }}
     steps:
       - uses: actions/checkout@v7
 
@@ -50,14 +62,47 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             VERSION="${{ inputs.version }}"
-            if [ -z "$VERSION" ]; then
-              echo "::error::version input is required for a manual run" >&2
-              exit 1
-            fi
           else
             VERSION="${GITHUB_REF_NAME#v}"
           fi
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::version must look like 1.0.0, got \"$VERSION\"" >&2
+            exit 1
+          fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      # A manual publish must not be able to release a side branch or reuse
+      # a tag — a tag push proves both by existing.
+      - name: Guard the manual publish
+        if: github.event_name == 'workflow_dispatch' && inputs.publish
+        run: |
+          if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "::error::publish runs must start from main, not $GITHUB_REF" >&2
+            exit 1
+          fi
+          if git ls-remote --exit-code --tags origin "refs/tags/v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+            echo "::error::tag v${{ steps.version.outputs.version }} already exists — pick the next version" >&2
+            exit 1
+          fi
+
+      # Keep project.yml's MARKETING_VERSION in step with the release so
+      # source builds report the right version (docs/RELEASING.md). The tag
+      # is created later by the release itself, pointing at this commit.
+      - name: Bump project.yml on main
+        id: bump
+        if: github.event_name == 'workflow_dispatch' && inputs.publish
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          CURRENT=$(sed -n 's/^[[:space:]]*MARKETING_VERSION: //p' project.yml | tr -d '[:space:]')
+          if [ "$CURRENT" != "$VERSION" ]; then
+            sed -i '' "s/^\([[:space:]]*MARKETING_VERSION:\).*/\1 $VERSION/" project.yml
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add project.yml
+            git commit -m "release: bump MARKETING_VERSION to $VERSION"
+            git push origin HEAD:main
+          fi
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Install XcodeGen
         run: |
@@ -182,10 +227,15 @@ jobs:
             cp Scripts/first-launch-note.md release-note.md
           fi
 
+      # On a tag push the tag exists and target_commitish is ignored; on a
+      # manual publish the release creates the tag, pointed at the commit
+      # the bump step left main on.
       - name: Publish GitHub Release
-        if: github.event_name == 'push'
+        if: env.PUBLISHING == 'true'
         uses: softprops/action-gh-release@v3
         with:
+          tag_name: v${{ steps.version.outputs.version }}
+          target_commitish: ${{ steps.bump.outputs.sha || github.sha }}
           files: Keelhaven-${{ steps.version.outputs.version }}.dmg
           body_path: release-note.md
           generate_release_notes: true
@@ -197,13 +247,13 @@ jobs:
       # step is skipped and the next release-local.sh run — or a manual
       # Scripts/update-homebrew-tap.sh — catches the tap up.
       - name: Bump Homebrew tap
-        if: github.event_name == 'push' && env.HAS_TAP_TOKEN == 'true'
+        if: env.PUBLISHING == 'true' && env.HAS_TAP_TOKEN == 'true'
         env:
           HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
         run: ./Scripts/update-homebrew-tap.sh "${{ steps.version.outputs.version }}" "Keelhaven-${{ steps.version.outputs.version }}.dmg"
 
       - name: Upload DMG artifact
-        if: github.event_name == 'workflow_dispatch'
+        if: env.PUBLISHING != 'true'
         uses: actions/upload-artifact@v7
         with:
           name: Keelhaven-${{ steps.version.outputs.version }}
