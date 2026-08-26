@@ -1,0 +1,24 @@
+.github/workflows/release-drafter.yml
+  s_10b4532643158e::t_7c10dce554d76a 1-28
+.github/labeler.yml
+  s_10b4532643158e::t_b7494c175dd6bc 1-44
+.github/workflows/labeler.yml
+  s_10b4532643158e::t_7009d5e4c651e9 1-19
+  s_10b4532643158e::t_abe0bc91f4434a 20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "1f214c0c5dc48cbff21b57b5b7f6d64c5f6b9194",
+  "prompts": {},
+  "sessions": {
+    "s_10b4532643158e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ad36422c-6c8d-43b6-9ead-6de02d820172",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
