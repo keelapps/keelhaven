@@ -81,6 +81,14 @@ final class ResticRunnerIntegrationTests: XCTestCase {
         XCTAssertEqual(config.version, 2)
         XCTAssertEqual(config.id.count, 64)
 
+        // check: a healthy repository passes the integrity check the
+        // scheduled-verification feature runs
+        try await runner.runIgnoringOutput(
+            .check,
+            destination: destination,
+            credentials: credentials
+        )
+
         // restore the snapshot into a fresh target and verify the files
         let restoreTarget = workDirectory.appendingPathComponent("restored", isDirectory: true)
         var restoreSummary: RestoreSummary?
