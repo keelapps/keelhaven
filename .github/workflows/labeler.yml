@@ -1,0 +1,20 @@
+# Area labels from changed paths (.github/labeler.yml holds the map) —
+# complements release-drafter's autolabeler, which labels by branch prefix
+# and title. `_target` (not `pull_request`) so fork PRs get labeled too;
+# safe because the action reads the config from main and never checks out
+# PR code.
+name: Labeler
+
+on:
+  pull_request_target:
+
+permissions: {}
+
+jobs:
+  label:
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/labeler@v7
