@@ -1,0 +1,114 @@
+name: Bug report
+description: Something in Keelhaven is not working as it should
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this.
+
+        **Never paste a repository password or storage credentials here.** This
+        tracker is public and permanent. Keelhaven keeps those in your macOS
+        Keychain precisely so they do not end up in places like this — redact
+        them from any log or screenshot before attaching it. Bucket names and
+        hostnames are usually safe; access keys never are.
+
+        If the problem is a security vulnerability, stop and follow
+        [our security policy](https://github.com/keelapps/keelhaven/blob/main/SECURITY.md)
+        instead.
+
+  - type: input
+    id: version
+    attributes:
+      label: Keelhaven version
+      description: >
+        The About window shows the version and build. Copy both — the build
+        identifies the exact commit, which is often what settles whether a bug
+        is already fixed.
+      placeholder: 0.1.0 (a1b2c3d)
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the behaviour you saw, and what you expected instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The smallest sequence that reliably triggers it.
+      placeholder: |
+        1. Add a plan with …
+        2. Run a backup …
+        3. Keelhaven then …
+    validations:
+      required: true
+
+  - type: textarea
+    id: error
+    attributes:
+      label: Error message
+      description: >
+        The exact text Keelhaven showed, if it showed one. Verbatim beats
+        paraphrased — the wording usually points straight at the failing step.
+      render: text
+    validations:
+      required: false
+
+  - type: dropdown
+    id: destination
+    attributes:
+      label: Which kind of destination?
+      description: >
+        Most backup failures are specific to how the storage behaves, so this
+        narrows things down faster than anything else here.
+      options:
+        - External or local drive
+        - Network drive / NAS mounted on the Mac
+        - SFTP to my own server or NAS
+        - S3-compatible bucket (AWS, B2, Wasabi, R2, MinIO, …)
+        - Not related to a destination
+    validations:
+      required: true
+
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version and Mac
+      placeholder: macOS 15.2, MacBook Pro M1
+    validations:
+      required: true
+
+  - type: dropdown
+    id: reproducible
+    attributes:
+      label: How often does it happen?
+      options:
+        - Every time
+        - Intermittently
+        - Happened once
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots or anything else
+      description: Drag images in directly. Redact credentials and private paths first.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have checked that this issue is not already reported.
+          required: true
+        - label: This report contains no passwords, access keys, or other credentials.
+          required: true
