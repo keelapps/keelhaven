@@ -1,17 +1,16 @@
 # Licenses
 
-Keelhaven is source-available: the code is public, and the official builds are
-the commercial product. This page states Keelhaven's own license and credits
-the open source software it builds on.
+Keelhaven is free and open source software. This page states Keelhaven's own
+license and credits the open source software it builds on.
 
 ## Keelhaven
 
 Keelhaven's source code lives at
 [github.com/keelapps/keelhaven](https://github.com/keelapps/keelhaven) under
-the [Functional Source License, Version 1.1, MIT Future License](https://github.com/keelapps/keelhaven/blob/main/LICENSE.md)
-(FSL-1.1-MIT). Read it, audit it, build it for your own use — the one thing it
-forbids is offering Keelhaven as a competing product. Each version
-automatically becomes MIT-licensed two years after its release.
+the [GNU General Public License, version 3 or later](https://github.com/keelapps/keelhaven/blob/main/LICENSE)
+(GPL-3.0-or-later). Read it, audit it, build it, modify it, fork it — anything
+the GPL allows. The "Keelhaven" name and icon are not part of that grant: a
+fork should ship under its own name.
 
 ## restic
 

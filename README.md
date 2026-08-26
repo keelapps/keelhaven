@@ -6,7 +6,7 @@
 
 **[keelhaven.app](https://keelhaven.app)**
 
-Privacy-first Mac backup to your own storage. Source-available, free while in beta, pay once at 1.0 — no subscription, no telemetry.
+Privacy-first Mac backup to your own storage. Free and open source (GPLv3) — no subscription, no telemetry.
 
 Keelhaven wraps the battle-tested [restic](https://restic.net) engine in a native SwiftUI menu bar app: pick folders, pick a destination you own (external drive, any S3-compatible bucket, or SFTP/NAS), set a schedule — your files are encrypted on your Mac before they leave it.
 
@@ -109,4 +109,4 @@ anything. A user-set path override and Homebrew locations remain as fallbacks.
 
 ## License
 
-Keelhaven is source-available under the [Functional Source License, Version 1.1, MIT Future License](LICENSE.md) (FSL-1.1-MIT): read it, build it, use it — just don't offer it as a competing product. Each version automatically becomes MIT-licensed two years after its release. The bundled [restic](https://restic.net) engine is redistributed under its own BSD-2-Clause license, shipped in the app bundle and surfaced in the About window.
+Keelhaven is free software under the [GNU General Public License, version 3 or later](LICENSE) (GPL-3.0-or-later): use it, study it, build it, fork it. The app itself stays free; the plan for funding it is an optional paid Pro edition later, built on this code — which is why contributions come with a relicensing grant, see [CONTRIBUTING.md](CONTRIBUTING.md). The "Keelhaven" name and icon are not covered by the code license: a fork should ship under its own name. The bundled [restic](https://restic.net) engine is redistributed under its own BSD-2-Clause license, shipped in the app bundle and surfaced in the About window.
