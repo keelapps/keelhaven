@@ -31,6 +31,15 @@ enum NotificationService {
         await post(content)
     }
 
+    /// Only failures notify — a passed check shows quietly in the plan row.
+    static func postCheckFailed(planName: String, message: String) async {
+        let content = UNMutableNotificationContent()
+        content.title = String(localized: "Backup verification failed")
+        content.body = "\(planName): \(message)"
+        content.sound = .default
+        await post(content)
+    }
+
     private static func post(_ content: UNMutableNotificationContent) async {
         let request = UNNotificationRequest(
             identifier: UUID().uuidString,

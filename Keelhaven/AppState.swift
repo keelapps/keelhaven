@@ -6,6 +6,7 @@ import KeelhavenCore
 enum PlanRunState: Equatable {
     case idle
     case running(progress: Double)
+    case checking
     case succeeded(Date)
     case failed(String)
 }
@@ -113,7 +114,12 @@ final class AppState {
 
     var menuBarIcon: MenuBarIcon {
         let states = runStates.values
-        if states.contains(where: { if case .running = $0 { return true }; return false }) {
+        if states.contains(where: {
+            switch $0 {
+            case .running, .checking: return true
+            default: return false
+            }
+        }) {
             return .symbol("arrow.triangle.2.circlepath")
         }
         if states.contains(where: { if case .failed = $0 { return true }; return false }) {
@@ -148,7 +154,7 @@ final class AppState {
         }
     }
 
-    /// Applies an Edit Plan save. Mutates the four editable fields in place —
+    /// Applies an Edit Plan save. Mutates the five editable fields in place —
     /// never replaces the whole struct, so a backup finishing concurrently
     /// keeps its `lastRun` write (`finishRun` mutates the same array slot).
     func updatePlan(
@@ -156,7 +162,8 @@ final class AppState {
         name: String,
         sourcePaths: [String],
         excludePatterns: [String],
-        schedule: Schedule
+        schedule: Schedule,
+        checkCadence: CheckCadence
     ) {
         let trimmed = name.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty, !sourcePaths.isEmpty,
@@ -165,13 +172,14 @@ final class AppState {
         plans[index].sourcePaths = sourcePaths
         plans[index].excludePatterns = excludePatterns
         plans[index].schedule = schedule
+        plans[index].checkCadence = checkCadence
         Task {
             try? await planStore.save(plans)
         }
     }
 
     func deletePlan(_ plan: BackupPlan) {
-        guard !isBackupRunning else { return }
+        guard !isResticBusy else { return }
         plans.removeAll { $0.id == plan.id }
         runStates.removeValue(forKey: plan.id)
         planManager.removeSecrets(planID: plan.id)
@@ -183,12 +191,20 @@ final class AppState {
 
     // MARK: - Running backups
 
-    var isBackupRunning: Bool {
-        runStates.values.contains { if case .running = $0 { return true }; return false }
+    /// True while any plan has a restic process going — a backup or a
+    /// repository check. One restic at a time, app-wide: two invocations
+    /// would contend for the repository lock.
+    var isResticBusy: Bool {
+        runStates.values.contains {
+            switch $0 {
+            case .running, .checking: return true
+            default: return false
+            }
+        }
     }
 
     private func runDuePlans() {
-        guard !isBackupRunning else { return }
+        guard !isResticBusy else { return }
         let now = Date()
         if let due = plans.first(where: { SchedulePolicy.isDue($0, now: now) }) {
             runBackup(due)
@@ -196,7 +212,7 @@ final class AppState {
     }
 
     func runBackup(_ plan: BackupPlan) {
-        guard !isBackupRunning else { return }
+        guard !isResticBusy else { return }
         guard let binaryURL = resticBinaryURL else {
             runStates[plan.id] = .failed(ResticError.binaryNotFound.localizedDescription)
             return
@@ -241,6 +257,14 @@ final class AppState {
             await finishRun(plan, record: record)
             runStates[plan.id] = .succeeded(Date())
             await NotificationService.postBackupFinished(planName: plan.name, summary: summary)
+            // Verification rides on the tail of a successful backup: the
+            // destination is provably reachable and restic is already
+            // serialized, so a due check can never fire a false alarm about
+            // an unplugged drive or overlap another invocation.
+            if let current = plans.first(where: { $0.id == plan.id }),
+               CheckPolicy.isDue(current, now: Date()) {
+                await performCheck(current, binaryURL: binaryURL)
+            }
         } catch {
             let message = (error as? ResticError)?.localizedDescription ?? error.localizedDescription
             let record = BackupRunRecord(date: startedAt, success: false, errorMessage: message)
@@ -256,6 +280,64 @@ final class AppState {
         }
         try? await planStore.save(plans)
         try? await historyStore.append(record, planID: plan.id)
+    }
+
+    // MARK: - Repository checks
+
+    /// The "Verify Backup Now" action. Scheduled checks don't come through
+    /// here — they chain off `performBackup` so the destination is known
+    /// reachable.
+    func runCheck(_ plan: BackupPlan) {
+        guard !isResticBusy else { return }
+        guard let binaryURL = resticBinaryURL else {
+            runStates[plan.id] = .failed(ResticError.binaryNotFound.localizedDescription)
+            return
+        }
+        Task {
+            await self.performCheck(plan, binaryURL: binaryURL)
+        }
+    }
+
+    private func performCheck(_ plan: BackupPlan, binaryURL: URL) async {
+        let stateBefore = runStates[plan.id] ?? .idle
+        runStates[plan.id] = .checking
+        let startedAt = Date()
+        do {
+            let credentials = try credentials(for: plan)
+            let runner = ResticRunner(binaryURL: binaryURL)
+            try await runner.runIgnoringOutput(
+                .check,
+                destination: plan.destination,
+                credentials: credentials
+            )
+            await finishCheck(plan, record: CheckRunRecord(
+                date: startedAt,
+                success: true,
+                duration: Date().timeIntervalSince(startedAt)
+            ))
+            runStates[plan.id] = stateBefore
+            // Success is silent — the plan row's "Verified" line is enough.
+        } catch {
+            let message = (error as? ResticError)?.localizedDescription ?? error.localizedDescription
+            await finishCheck(plan, record: CheckRunRecord(
+                date: startedAt,
+                success: false,
+                duration: Date().timeIntervalSince(startedAt),
+                errorMessage: message
+            ))
+            // Back to idle, not `stateBefore`: a post-backup `.succeeded`
+            // would keep the health dot green while the persistent
+            // failed-check line (read in the idle branch) must turn it red.
+            runStates[plan.id] = .idle
+            await NotificationService.postCheckFailed(planName: plan.name, message: message)
+        }
+    }
+
+    private func finishCheck(_ plan: BackupPlan, record: CheckRunRecord) async {
+        if let index = plans.firstIndex(where: { $0.id == plan.id }) {
+            plans[index].lastCheck = record
+        }
+        try? await planStore.save(plans)
     }
 
     /// For the Touch ID–gated "Copy Repository Password" action only.
