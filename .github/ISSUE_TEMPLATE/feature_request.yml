@@ -9,9 +9,10 @@ body:
         If we understand what you are actually trying to accomplish, we can
         often find a better answer than the one either of us started with.
 
-        A few things — restore browsing, retention policies, extra backends —
-        are deliberately not built yet rather than forgotten; the list lives in
-        [CLAUDE.md](https://github.com/keelapps/keelhaven/blob/main/CLAUDE.md).
+        A few things — file-level restore browsing, retention policies, extra
+        backends — are deliberately not built yet rather than forgotten; the
+        list lives in the
+        [architecture notes](https://github.com/keelapps/keelhaven/blob/main/docs/ARCHITECTURE.md#not-yet-built-deliberately).
         Asking for one of them is still useful: it tells us how much it is
         missed.
 
