@@ -25,6 +25,31 @@ The app ships with its own copy of restic (universal binary, checksum-verified
 against the official release) in `Contents/MacOS/` — end users never install
 anything. A user-set path override and Homebrew locations remain as fallbacks.
 
+### Backend integration tests (S3 / SFTP)
+
+`make test` always exercises restic end-to-end against a local-disk repository.
+Two further suites do the same against the network backends and self-skip
+unless their backend is reachable; CI always runs both (see
+`.github/workflows/ci.yml`). To run them locally:
+
+- **S3** (`ResticS3IntegrationTests`) needs an S3-compatible server on
+  `127.0.0.1:9000`:
+
+  ```bash
+  brew install minio/stable/minio
+  MINIO_ROOT_USER=keelhaven-test MINIO_ROOT_PASSWORD=keelhaven-test-secret \
+    minio server --address 127.0.0.1:9000 /tmp/minio-data
+  ```
+
+- **SFTP** (`ResticSFTPIntegrationTests`) needs non-interactive ssh to
+  `$(whoami)@127.0.0.1`: enable *System Settings → General → Sharing → Remote
+  Login* with key auth in place, then confirm with
+  `ssh -o BatchMode=yes 127.0.0.1 true`.
+
+Both suites honor `KEELHAVEN_TEST_S3_*` / `KEELHAVEN_TEST_SFTP_*` environment
+overrides for pointing at real cloud storage or a NAS — see the test file
+headers.
+
 ### Manual smoke test
 
 1. Run the app — it appears in the menu bar only (no Dock icon).

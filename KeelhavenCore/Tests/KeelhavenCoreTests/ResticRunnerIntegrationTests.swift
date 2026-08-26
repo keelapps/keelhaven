@@ -4,15 +4,6 @@ import XCTest
 /// End-to-end tests against a real restic binary. Skipped when restic is not
 /// installed, so `swift test` stays green on bare CI machines.
 final class ResticRunnerIntegrationTests: XCTestCase {
-    private static func locateRestic() -> URL? {
-        for path in ["/opt/homebrew/bin/restic", "/usr/local/bin/restic"] {
-            if FileManager.default.isExecutableFile(atPath: path) {
-                return URL(fileURLWithPath: path)
-            }
-        }
-        return nil
-    }
-
     private var workDirectory: URL!
 
     override func setUpWithError() throws {
@@ -28,7 +19,7 @@ final class ResticRunnerIntegrationTests: XCTestCase {
     }
 
     func testInitBackupSnapshotsAndErrorClassification() async throws {
-        guard let binary = Self.locateRestic() else {
+        guard let binary = IntegrationTestSupport.locateRestic() else {
             throw XCTSkip("restic is not installed; run: brew install restic")
         }
 
