@@ -22,7 +22,7 @@ landing:
     - { text: FAQ, anchor: faq }
   footer:
     tagline: Privacy-first backups for your Mac.
-    versionNote: pre-release
+    versionNote: public beta
     copyright: © Keelapps.
     groups:
       - title: Support
@@ -206,6 +206,16 @@ No. Backups are encrypted on your Mac before anything is uploaded, and the repos
 <FaqItem question="Which destinations are supported?">
 
 An external or network drive mounted on your Mac, any S3-compatible bucket (AWS, Backblaze B2, Wasabi, Cloudflare R2, MinIO), and SFTP to your own server or NAS.
+
+</FaqItem>
+<FaqItem question="Do backups grow forever?">
+
+For now, yes — every run adds a snapshot, and Keelhaven never deletes one. Snapshots are deduplicated, so a run stores only what changed since the last one, but nothing is pruned automatically yet. Retention policies are on the roadmap; until they land, the repository is standard restic, so `restic forget --prune` with a policy of your choosing works today, from any machine.
+
+</FaqItem>
+<FaqItem question="How do I know the backups are actually good?">
+
+A failed or incomplete run is never silent — errors from the engine surface immediately in the menu bar and as a notification. What Keelhaven doesn't do yet is periodically re-verify an existing repository; that's on the roadmap. Because the repository is standard restic, `restic check` gives you that today — and restoring a file now and then is the gold standard for any backup tool, ours included.
 
 </FaqItem>
 <FaqItem question="Do I need to install anything else?">
