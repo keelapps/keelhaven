@@ -1,12 +1,11 @@
 # Website
 
 The public site — landing page, `/privacy`, `/licenses` — is a VitePress
-project in `site/`, built here and published as static files to the public
-`keelapps/keelhaven.app` repo, which GitHub Pages serves at
-**https://keelhaven.app**.
+project in `site/`, built here and published to this repo's `gh-pages`
+branch, which GitHub Pages serves at **https://keelhaven.app**.
 
 Sources live in this repo under the FSL-1.1-MIT license (`LICENSE.md` at the
-repo root); the site repo holds only the rendered output, which keeps its own
+repo root); `gh-pages` holds only the rendered output, which keeps its own
 © Keelapps notice.
 
 ## Working on it locally
@@ -28,12 +27,11 @@ frontmatter so a future `site/zh/index.md` can localize it in one place),
 Two paths, same output, same branch:
 
 - **`.github/workflows/website.yml`** — runs on pushes to `main` that touch
-  `site/**`, builds, and pushes `site/.vitepress/dist` to
-  `keelapps/keelhaven-site:gh-pages` with `peaceiris/actions-gh-pages`
-  (`force_orphan: true`). Auth is the `SITE_DEPLOY_KEY` secret, the private
-  half of a write-enabled deploy key on the site repo.
+  `site/**`, builds, and pushes `site/.vitepress/dist` to this repo's
+  `gh-pages` branch with `peaceiris/actions-gh-pages` (`force_orphan: true`).
+  Auth is the workflow's own `GITHUB_TOKEN` — no deploy key, no secret.
 - **`make deploy-site`** (`Scripts/deploy-site.sh`) — the manual twin, for
-  when Actions minutes are out. Force-pushes the same branch from your working
+  when Actions is unavailable. Force-pushes the same branch from your working
   tree; the next CI deploy simply overwrites it.
 
 Both force-push. Nothing on `gh-pages` survives that is not in the build
@@ -55,7 +53,7 @@ GitHub Pages attaches a custom domain by way of a `CNAME` file at the root of
 the published branch. Because our deploy replaces that branch wholesale, a
 CNAME created through the Pages UI — or committed to `gh-pages` by hand —
 lasts exactly until the next deploy, and then the site starts answering on
-`keelapps.github.io` again with `keelhaven.app` returning a 404.
+`keelapps.github.io/keelhaven/` again with `keelhaven.app` returning a 404.
 
 So it lives in the source tree, at **`site/public/CNAME`**, and VitePress
 copies it into `dist/` on every build. Both publish paths pick it up. Don't
@@ -95,13 +93,13 @@ the expected middle state, not a misconfiguration.
 
 1. Publish at least once with `site/public/CNAME` in place.
 2. Add the DNS records above and wait for them to resolve.
-3. `keelapps/keelhaven-site` → Settings → Pages → **Custom domain** →
+3. `keelapps/keelhaven` → Settings → Pages → **Custom domain** →
    `keelhaven.app` → Save, and let the DNS check pass.
 4. Wait for Let's Encrypt issuance (minutes, occasionally hours), then tick
    **Enforce HTTPS**.
 
-The old `keelapps.github.io/keelhaven-site/` URLs 301 to the new domain once
-the custom domain is set, so existing links keep working.
+The `keelapps.github.io/keelhaven/` URLs 301 to the new domain once the
+custom domain is set, so existing links keep working.
 
 ## Support address
 
@@ -131,5 +129,5 @@ curl -s https://keelhaven.app/sitemap.xml | head -3
 - **Browser refuses to connect, no certificate.** Issuance hasn't finished, or
   the DNS records were changed after the domain was saved. Remove and re-add
   the custom domain in Settings to retry issuance.
-- **Assets 404 with a `/keelhaven-site/` prefix.** Something reintroduced the
+- **Assets 404 with a `/keelhaven/` prefix.** Something reintroduced the
   old `base`; `site/.vitepress/config.mts` must have `base = '/'`.

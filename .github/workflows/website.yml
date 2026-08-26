@@ -1,26 +1,29 @@
 name: Website
 
-# Builds the public website (site/, VitePress) and pushes the static output to
-# the public keelapps/keelhaven-site repo, which GitHub Pages serves at
-# https://keelhaven.app/. This keeps the doc sources in this private repo
-# without needing a paid GitHub plan for Pages. See docs/WEBSITE.md for how
-# the domain is wired up.
+# Builds the public website (site/, VitePress) and force-pushes the static
+# output to this repo's gh-pages branch, which GitHub Pages serves at
+# https://keelhaven.app/. One repo, no deploy keys — the separate site repo
+# retired when this repo went public. See docs/WEBSITE.md for how the domain
+# is wired up.
 #
 # Runs on ubuntu (bills at 1×, unlike the 10× macOS jobs in ci.yml) and only
-# when site content actually changes, so it barely touches the minutes quota.
+# when site content actually changes.
 on:
   push:
     branches: [main]
     paths:
       - site/**
       - .github/workflows/website.yml
-  # release.yml's tag-push path publishes a GitHub Release on the private
-  # keelapps/keelhaven repo — this is the only trigger that fires right
-  # after one lands, so the mirror step below gets a chance to run before
-  # anyone notices the download is stale.
+  # release.yml's tag-push path publishes a GitHub Release — this is the
+  # only trigger that fires right after one lands, so the mirror step below
+  # gets a chance to run before anyone notices the download is stale.
   release:
     types: [published]
   workflow_dispatch:
+
+# The workflow's own GITHUB_TOKEN pushes gh-pages — no cross-repo deploy key.
+permissions:
+  contents: write
 
 concurrency:
   group: website-${{ github.ref }}
@@ -65,13 +68,10 @@ jobs:
         run: |
           npm ci --prefix site
           npm run build --prefix site
-      # SITE_DEPLOY_KEY is the private half of a deploy key whose public half
-      # is registered (write-enabled) on keelapps/keelhaven-site.
-      - name: Publish to keelapps/keelhaven-site
+      - name: Publish to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          deploy_key: ${{ secrets.SITE_DEPLOY_KEY }}
-          external_repository: keelapps/keelhaven-site
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: site/.vitepress/dist
           # force_orphan replaces gh-pages wholesale, so anything not in
