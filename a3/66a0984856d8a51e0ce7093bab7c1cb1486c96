@@ -1,0 +1,32 @@
+KeelhavenCore/Sources/KeelhavenCore/Models/CheckRunRecord.swift
+  s_903bf4ea2027e1::t_0c1d5da729dcf8 1-22
+KeelhavenCore/Tests/KeelhavenCoreTests/CheckPolicyTests.swift
+  s_903bf4ea2027e1::t_f7e7e8f0731fb1 1-75
+KeelhavenCore/Tests/KeelhavenCoreTests/ResticRunnerIntegrationTests.swift
+  s_903bf4ea2027e1::t_c6f22c2de86f00 84-91
+KeelhavenCore/Tests/KeelhavenCoreTests/ModelRoundTripTests.swift
+  s_903bf4ea2027e1::t_f1c2cf4a8d71e0 60-106
+KeelhavenCore/Sources/KeelhavenCore/Models/CheckCadence.swift
+  s_903bf4ea2027e1::t_066b56935423f8 1-11
+KeelhavenCore/Sources/KeelhavenCore/Scheduling/CheckPolicy.swift
+  s_903bf4ea2027e1::t_94ad2fc9f3b5f0 1-35
+KeelhavenCore/Sources/KeelhavenCore/Models/BackupPlan.swift
+  s_903bf4ea2027e1::t_c256180000a062 33,35-36,44,47-64
+  s_903bf4ea2027e1::t_3973e05c340c41 14,17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "a366a0984856d8a51e0ce7093bab7c1cb1486c96",
+  "prompts": {},
+  "sessions": {
+    "s_903bf4ea2027e1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d4e5a192-3228-43c1-af5a-c78a34054447",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
