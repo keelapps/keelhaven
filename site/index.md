@@ -146,7 +146,14 @@ Hourly, daily, or weekly. Keelhaven runs in the background and only speaks up wh
 
 <div class="kh-guide-note">
 
-Runs on macOS 14 or later, Apple silicon and Intel, with everything it needs bundled. Prefer the terminal? `brew install --cask keelapps/tap/keelhaven`, or without Homebrew: `curl -fsSL https://keelhaven.app/install.sh | bash`. Beta builds aren't notarised by Apple yet, so the very first launch takes one extra approval — the [FAQ below](#faq) walks through it in three clicks.
+Runs on macOS 14 or later, Apple silicon and Intel, with everything it needs bundled. Prefer the terminal? Either command installs the same app the download button serves:
+
+<div class="kh-install">
+  <div class="kh-install-row"><span class="kh-install-label">With Homebrew</span><code>brew install --cask keelapps/tap/keelhaven</code></div>
+  <div class="kh-install-row"><span class="kh-install-label">Without Homebrew</span><code>curl -fsSL https://keelhaven.app/install.sh | bash</code></div>
+</div>
+
+Beta builds aren't notarised by Apple yet, so the very first launch takes one extra approval — the [FAQ below](#faq) walks through it in three clicks.
 
 </div>
 
