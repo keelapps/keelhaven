@@ -14,9 +14,10 @@ on:
     paths:
       - site/**
       - .github/workflows/website.yml
-  # release.yml's tag-push path publishes a GitHub Release — this is the
-  # only trigger that fires right after one lands, so the mirror step below
-  # gets a chance to run before anyone notices the download is stale.
+  # Fires when a human publishes a release (say, a draft from the UI).
+  # A release published by release.yml does NOT land here — GitHub
+  # suppresses events created with a workflow's own token — which is why
+  # release.yml dispatches this workflow explicitly after publishing.
   release:
     types: [published]
   workflow_dispatch:

@@ -78,7 +78,7 @@ path):
 1. A GitHub Release for the tag appears with `Keelhaven-0.2.0.dmg` attached
    and first-launch instructions in the body (omitted once builds are
    notarized).
-2. Publishing the release triggers `website.yml`, which mirrors the DMG to
+2. The run then dispatches `website.yml`, which mirrors the DMG to
    `https://keelhaven.app/downloads/` and writes `latest.json` next to it.
 3. `latest.json` lights up the rest on its own: the site's hero button
    switches from the early-access mailto to a real download link, and
