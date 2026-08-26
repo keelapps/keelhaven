@@ -67,6 +67,23 @@ export default defineConfig({
     ['meta', { name: 'twitter:title', content: 'Keelhaven — privacy-first Mac backup' }],
     ['meta', { name: 'twitter:description', content: description }],
     ['meta', { name: 'twitter:image', content: `${siteUrl}og.png` }],
+
+    // Google Analytics (gtag.js). The one third-party loaded by the site —
+    // site/privacy.md discloses it and must change in step with this block.
+    [
+      'script',
+      { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-C671MMNMGY' },
+    ],
+    [
+      'script',
+      {},
+      [
+        'window.dataLayer = window.dataLayer || [];',
+        'function gtag(){dataLayer.push(arguments);}',
+        "gtag('js', new Date());",
+        "gtag('config', 'G-C671MMNMGY');",
+      ].join('\n'),
+    ],
   ],
 
   themeConfig: {
