@@ -98,6 +98,7 @@ export default defineConfig({
     // and footer carry the same link, driven by index.md frontmatter.
     socialLinks: [
       { icon: 'github', link: 'https://github.com/shenxianpeng/keelhaven' },
+      { icon: 'x', link: 'https://x.com/xianpengshen' },
     ],
     footer: {
       // The BSD-2-Clause notice travels with the app bundle (restic-LICENSE.txt

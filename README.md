@@ -6,6 +6,13 @@
 
 **[keelhaven.app](https://keelhaven.app)**
 
+[![CI](https://img.shields.io/github/actions/workflow/status/shenxianpeng/keelhaven/ci.yml?branch=main&label=CI&logo=github)](https://github.com/shenxianpeng/keelhaven/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/shenxianpeng/keelhaven)](https://github.com/shenxianpeng/keelhaven/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/shenxianpeng/keelhaven/total)](https://github.com/shenxianpeng/keelhaven/releases)
+[![License](https://img.shields.io/github/license/shenxianpeng/keelhaven)](LICENSE)
+[![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black?logo=apple)](https://keelhaven.app)
+[![Follow @xianpengshen on X](https://img.shields.io/twitter/follow/xianpengshen?style=social&logo=x)](https://x.com/xianpengshen)
+
 Privacy-first Mac backup to your own storage. Free and open source (GPLv3) — no subscription, no telemetry.
 
 Keelhaven wraps the battle-tested [restic](https://restic.net) engine in a native SwiftUI menu bar app: pick folders, pick a destination you own (external drive, any S3-compatible bucket, or SFTP/NAS), set a schedule — your files are encrypted on your Mac before they leave it.
