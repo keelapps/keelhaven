@@ -11,7 +11,7 @@
 [![Downloads](https://img.shields.io/github/downloads/shenxianpeng/keelhaven/total)](https://github.com/shenxianpeng/keelhaven/releases)
 [![License](https://img.shields.io/github/license/shenxianpeng/keelhaven)](LICENSE)
 [![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black?logo=apple)](https://keelhaven.app)
-[![Follow @xianpengshen on X](https://img.shields.io/twitter/follow/xianpengshen?label=follow&logo=x&color=black)](https://x.com/xianpengshen)
+[![Follow @xianpengshen on X](https://img.shields.io/twitter/follow/xianpengshen?style=social&logo=x)](https://x.com/xianpengshen)
 
 Privacy-first Mac backup to your own storage. Free and open source (GPLv3) — no subscription, no telemetry.
 
