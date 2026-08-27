@@ -97,7 +97,7 @@ export default defineConfig({
     // GitHub icon in that default-theme navbar. The landing page's own nav
     // and footer carry the same link, driven by index.md frontmatter.
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/keelapps/keelhaven' },
+      { icon: 'github', link: 'https://github.com/shenxianpeng/keelhaven' },
     ],
     footer: {
       // The BSD-2-Clause notice travels with the app bundle (restic-LICENSE.txt

@@ -13,7 +13,7 @@ landing:
   # The repository URL, read by the nav icon and the footer's github link.
   # The default-theme pages (/privacy, /licenses) carry it separately via
   # themeConfig.socialLinks in config.mts.
-  github: https://github.com/keelapps/keelhaven
+  github: https://github.com/shenxianpeng/keelhaven
   cta: Download
   nav:
     - { text: Features, anchor: features }
@@ -70,7 +70,7 @@ const releases = computed(
   <p class="kh-hero-actions">
     <DownloadButton label="Download for macOS" :fallback-href="releases" />
     <a class="kh-btn kh-btn-ghost" href="#guide">Read the guide</a>
-    <span class="kh-hero-install">or from the terminal: <code>brew install --cask keelapps/tap/keelhaven</code></span>
+    <span class="kh-hero-install">or from the terminal: <code>brew install --cask shenxianpeng/tap/keelhaven</code></span>
   </p>
 </section>
 
@@ -149,7 +149,7 @@ Hourly, daily, or weekly. Keelhaven runs in the background and only speaks up wh
 Runs on macOS 14 or later, Apple silicon and Intel, with everything it needs bundled. Prefer the terminal? Either command installs the same app the download button serves:
 
 <div class="kh-install">
-  <div class="kh-install-row"><span class="kh-install-label">With Homebrew</span><code>brew install --cask keelapps/tap/keelhaven</code></div>
+  <div class="kh-install-row"><span class="kh-install-label">With Homebrew</span><code>brew install --cask shenxianpeng/tap/keelhaven</code></div>
   <div class="kh-install-row"><span class="kh-install-label">Without Homebrew</span><code>curl -fsSL https://keelhaven.app/install.sh | bash</code></div>
 </div>
 
@@ -202,7 +202,7 @@ No. Every plan writes an ordinary restic repository, so you can list, verify, an
 </FaqItem>
 <FaqItem question="Is Keelhaven open source?">
 
-Yes. The full source is on [GitHub](https://github.com/keelapps/keelhaven) under the GPLv3: read it, audit it, build it, fork it. The bundled restic engine is open source under the BSD 2-Clause License — see [Licenses](/licenses) for both notices.
+Yes. The full source is on [GitHub](https://github.com/shenxianpeng/keelhaven) under the GPLv3: read it, audit it, build it, fork it. The bundled restic engine is open source under the BSD 2-Clause License — see [Licenses](/licenses) for both notices.
 
 </FaqItem>
 <FaqItem question="Is my data readable by anyone else?">
@@ -232,7 +232,7 @@ No. Everything Keelhaven needs ships inside the app bundle, including its backup
 </FaqItem>
 <FaqItem question="Can I install it from the terminal?">
 
-Two ways, both installing the same DMG the download button serves. With Homebrew, `brew install --cask keelapps/tap/keelhaven` — and `brew upgrade` picks up new releases. Without it, `curl -fsSL https://keelhaven.app/install.sh | bash` downloads the latest release and copies it into Applications; the [script](https://github.com/keelapps/keelhaven/blob/main/site/public/install.sh) is a short, readable page of shell if you'd rather check it first.
+Two ways, both installing the same DMG the download button serves. With Homebrew, `brew install --cask shenxianpeng/tap/keelhaven` — and `brew upgrade` picks up new releases. Without it, `curl -fsSL https://keelhaven.app/install.sh | bash` downloads the latest release and copies it into Applications; the [script](https://github.com/shenxianpeng/keelhaven/blob/main/site/public/install.sh) is a short, readable page of shell if you'd rather check it first.
 
 </FaqItem>
 <FaqItem question="What happens if I forget the repository password?">

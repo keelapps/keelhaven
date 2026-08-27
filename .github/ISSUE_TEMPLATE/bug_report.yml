@@ -14,7 +14,7 @@ body:
         hostnames are usually safe; access keys never are.
 
         If the problem is a security vulnerability, stop and follow
-        [our security policy](https://github.com/keelapps/keelhaven/blob/main/SECURITY.md)
+        [our security policy](https://github.com/shenxianpeng/keelhaven/blob/main/SECURITY.md)
         instead.
 
   - type: input

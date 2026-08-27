@@ -12,7 +12,7 @@ body:
         A few things — file-level restore browsing, retention policies, extra
         backends — are deliberately not built yet rather than forgotten; the
         list lives in the
-        [architecture notes](https://github.com/keelapps/keelhaven/blob/main/docs/ARCHITECTURE.md#not-yet-built-deliberately).
+        [architecture notes](https://github.com/shenxianpeng/keelhaven/blob/main/docs/ARCHITECTURE.md#not-yet-built-deliberately).
         Asking for one of them is still useful: it tells us how much it is
         missed.
 

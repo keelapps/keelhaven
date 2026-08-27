@@ -55,7 +55,7 @@ GitHub Pages attaches a custom domain by way of a `CNAME` file at the root of
 the published branch. Because our deploy replaces that branch wholesale, a
 CNAME created through the Pages UI — or committed to `gh-pages` by hand —
 lasts exactly until the next deploy, and then the site starts answering on
-`keelapps.github.io/keelhaven/` again with `keelhaven.app` returning a 404.
+`shenxianpeng.github.io/keelhaven/` again with `keelhaven.app` returning a 404.
 
 So it lives in the source tree, at **`site/public/CNAME`**, and VitePress
 copies it into `dist/` on every build. Both publish paths pick it up. Don't
@@ -77,7 +77,7 @@ organization's Pages host. All **DNS only / grey cloud**.
 | AAAA | `@` | `2606:50c0:8001::153` |
 | AAAA | `@` | `2606:50c0:8002::153` |
 | AAAA | `@` | `2606:50c0:8003::153` |
-| CNAME | `www` | `keelapps.github.io` |
+| CNAME | `www` | `shenxianpeng.github.io` |
 
 Check these against GitHub's "Managing a custom domain for your GitHub Pages
 site" before re-entering them; the apex IPs have changed before.
@@ -95,12 +95,12 @@ the expected middle state, not a misconfiguration.
 
 1. Publish at least once with `site/public/CNAME` in place.
 2. Add the DNS records above and wait for them to resolve.
-3. `keelapps/keelhaven` → Settings → Pages → **Custom domain** →
+3. `shenxianpeng/keelhaven` → Settings → Pages → **Custom domain** →
    `keelhaven.app` → Save, and let the DNS check pass.
 4. Wait for Let's Encrypt issuance (minutes, occasionally hours), then tick
    **Enforce HTTPS**.
 
-The `keelapps.github.io/keelhaven/` URLs 301 to the new domain once the
+The `shenxianpeng.github.io/keelhaven/` URLs 301 to the new domain once the
 custom domain is set, so existing links keep working.
 
 ## Support address
@@ -125,7 +125,7 @@ curl -s https://keelhaven.app/sitemap.xml | head -3
 
 ## When it breaks
 
-- **`keelhaven.app` 404s, `keelapps.github.io` works.** The CNAME file is
+- **`keelhaven.app` 404s, `shenxianpeng.github.io` works.** The CNAME file is
   missing from the published branch — check `site/public/CNAME` is still
   committed, then re-run the deploy and re-save the custom domain in Settings.
 - **Browser refuses to connect, no certificate.** Issuance hasn't finished, or

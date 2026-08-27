@@ -1,6 +1,6 @@
 #!/bin/bash
-# Bumps Casks/keelhaven.rb in keelapps/homebrew-tap to a just-released
-# version, so `brew install --cask keelapps/tap/keelhaven` serves the newest
+# Bumps Casks/keelhaven.rb in shenxianpeng/homebrew-tap to a just-released
+# version, so `brew install --cask shenxianpeng/tap/keelhaven` serves the newest
 # DMG. Two callers: release.yml (authenticates with the HOMEBREW_TAP_TOKEN
 # secret — a fine-grained PAT with contents: write on the tap repo) and
 # release-local.sh (your normal git credentials). Idempotent: re-running for
@@ -20,9 +20,9 @@ fi
 SHA256=$(shasum -a 256 "$DMG" | awk '{print $1}')
 
 # The token rides in the remote URL; GitHub Actions masks the secret in logs.
-REMOTE="https://github.com/keelapps/homebrew-tap.git"
+REMOTE="https://github.com/shenxianpeng/homebrew-tap.git"
 if [ -n "${HOMEBREW_TAP_TOKEN:-}" ]; then
-    REMOTE="https://x-access-token:${HOMEBREW_TAP_TOKEN}@github.com/keelapps/homebrew-tap.git"
+    REMOTE="https://x-access-token:${HOMEBREW_TAP_TOKEN}@github.com/shenxianpeng/homebrew-tap.git"
 fi
 
 TMP=$(mktemp -d)

@@ -12,4 +12,4 @@ jobs:
     permissions:
       pull-requests: write
       contents: read
-    uses: keelapps/.github/.github/workflows/pr-labeler.yml@main
+    uses: shenxianpeng/.github/.github/workflows/pr-labeler.yml@main

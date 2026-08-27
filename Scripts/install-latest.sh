@@ -17,7 +17,7 @@
 #   --build      rebuild unconditionally, ignoring any existing artifact
 set -euo pipefail
 
-REPO="keelapps/keelhaven"
+REPO="shenxianpeng/keelhaven"
 WORKFLOW="build-app.yml"
 MODE=auto
 
