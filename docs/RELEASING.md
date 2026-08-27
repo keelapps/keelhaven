@@ -110,8 +110,8 @@ secrets below; nothing else has to change.
 
 ## Homebrew tap
 
-[`keelapps/homebrew-tap`](https://github.com/keelapps/homebrew-tap) carries
-the cask behind `brew install --cask keelapps/tap/keelhaven`, pointing at the
+[`shenxianpeng/homebrew-tap`](https://github.com/shenxianpeng/homebrew-tap) carries
+the cask behind `brew install --cask shenxianpeng/tap/keelhaven`, pointing at the
 newest release DMG by version and sha256. `Scripts/update-homebrew-tap.sh`
 rewrites those two lines and pushes; it is idempotent, so both release paths
 call it freely:
@@ -119,7 +119,7 @@ call it freely:
 - **`release-local.sh`** runs it with your normal git credentials — nothing
   to configure.
 - **`release.yml`** needs a `HOMEBREW_TAP_TOKEN` repo secret: a fine-grained
-  PAT with **contents: read and write** on `keelapps/homebrew-tap` only.
+  PAT with **contents: read and write** on `shenxianpeng/homebrew-tap` only.
   Until the secret exists the workflow skips the step, and the tap catches up
   on the next `release-local.sh` run — or manually:
   `./Scripts/update-homebrew-tap.sh 0.2.0 Keelhaven-0.2.0.dmg`.

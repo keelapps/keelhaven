@@ -9,7 +9,7 @@ of the folders a user backs up. A publicly posted vulnerability report is
 actionable by anyone who reads it before we have shipped a fix.
 
 Report it privately through GitHub's
-[private vulnerability reporting](https://github.com/keelapps/keelhaven/security/advisories/new).
+[private vulnerability reporting](https://github.com/shenxianpeng/keelhaven/security/advisories/new).
 
 Please include what you found, how to reproduce it, and what an attacker could
 do with it. If you have a proof of concept, keep it to the minimum needed to

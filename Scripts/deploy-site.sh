@@ -25,13 +25,13 @@ command -v gh >/dev/null || {
 }
 rm -rf site/public/downloads site/public/latest.json
 mkdir -p site/public/downloads
-if info=$(gh release view --repo keelapps/keelhaven --json tagName,assets \
+if info=$(gh release view --repo shenxianpeng/keelhaven --json tagName,assets \
     --jq '"\(.tagName)\t\([.assets[] | select(.name | endswith(".dmg"))][0].name // "")"' 2>/dev/null); then
   tag=${info%%$'\t'*}
   asset=${info#*$'\t'}
   if [ -n "$asset" ]; then
     echo "Mirroring $asset ($tag) into the deploy."
-    gh release download "$tag" --repo keelapps/keelhaven --pattern '*.dmg' --dir site/public/downloads --clobber
+    gh release download "$tag" --repo shenxianpeng/keelhaven --pattern '*.dmg' --dir site/public/downloads --clobber
     printf '{"version": "%s", "dmgURL": "https://keelhaven.app/downloads/%s"}\n' \
       "${tag#v}" "$asset" > site/public/latest.json
   else
@@ -52,7 +52,7 @@ touch "$dist/.nojekyll"
 git -C "$dist" init -q -b gh-pages
 git -C "$dist" add -A
 git -C "$dist" commit -q -m "Manual deploy from $branch @ $(git rev-parse --short HEAD)"
-git -C "$dist" push -q --force https://github.com/keelapps/keelhaven.git gh-pages
+git -C "$dist" push -q --force https://github.com/shenxianpeng/keelhaven.git gh-pages
 rm -rf "$dist/.git"
 
 echo "Deployed → https://keelhaven.app/ (Pages rebuild takes ~1 min)"

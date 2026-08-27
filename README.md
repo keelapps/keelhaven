@@ -15,7 +15,7 @@ Keelhaven wraps the battle-tested [restic](https://restic.net) engine in a nativ
 ## Install
 
 ```bash
-brew install --cask keelapps/tap/keelhaven
+brew install --cask shenxianpeng/tap/keelhaven
 ```
 
 Without Homebrew, one command installs (or updates to) the latest release:

@@ -6,8 +6,8 @@ license and credits the open source software it builds on.
 ## Keelhaven
 
 Keelhaven's source code lives at
-[github.com/keelapps/keelhaven](https://github.com/keelapps/keelhaven) under
-the [GNU General Public License, version 3 or later](https://github.com/keelapps/keelhaven/blob/main/LICENSE)
+[github.com/shenxianpeng/keelhaven](https://github.com/shenxianpeng/keelhaven) under
+the [GNU General Public License, version 3 or later](https://github.com/shenxianpeng/keelhaven/blob/main/LICENSE)
 (GPL-3.0-or-later). Read it, audit it, build it, modify it, fork it — anything
 the GPL allows. The "Keelhaven" name and icon are not part of that grant: a
 fork should ship under its own name.

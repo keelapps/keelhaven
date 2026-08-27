@@ -255,8 +255,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run website.yml --ref main
 
-      # Point the Homebrew tap (keelapps/homebrew-tap) at the DMG that was
-      # just published, so `brew install --cask keelapps/tap/keelhaven`
+      # Point the Homebrew tap (shenxianpeng/homebrew-tap) at the DMG that was
+      # just published, so `brew install --cask shenxianpeng/tap/keelhaven`
       # serves it. Needs HOMEBREW_TAP_TOKEN (fine-grained PAT, contents:
       # write on the tap repo — docs/RELEASING.md); without the secret the
       # step is skipped and the next release-local.sh run — or a manual

@@ -62,7 +62,7 @@ jobs:
           [ "${{ github.event_name }}" = "release" ] && TRIES=30
           TAG="" ASSET=""
           for i in $(seq 1 "$TRIES"); do
-            if gh release view --repo keelapps/keelhaven --json tagName,assets > /tmp/release.json 2>/tmp/release.err; then
+            if gh release view --repo shenxianpeng/keelhaven --json tagName,assets > /tmp/release.json 2>/tmp/release.err; then
               TAG=$(jq -r .tagName /tmp/release.json)
               ASSET=$(jq -r '.assets[] | select(.name | endswith(".dmg")) | .name' /tmp/release.json | head -n1)
               [ -n "$ASSET" ] && break
@@ -81,7 +81,7 @@ jobs:
             exit 0
           fi
           VERSION="${TAG#v}"
-          gh release download "$TAG" --repo keelapps/keelhaven --pattern '*.dmg' --dir site/public/downloads --clobber
+          gh release download "$TAG" --repo shenxianpeng/keelhaven --pattern '*.dmg' --dir site/public/downloads --clobber
           printf '{"version": "%s", "dmgURL": "https://keelhaven.app/downloads/%s"}\n' "$VERSION" "$ASSET" > site/public/latest.json
       - name: Build site
         run: |

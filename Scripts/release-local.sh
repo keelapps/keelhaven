@@ -85,5 +85,5 @@ echo "Bumping the Homebrew tap..."
 echo "Mirroring the DMG into the site deploy..."
 ./Scripts/deploy-site.sh
 
-echo "Released: https://github.com/keelapps/keelhaven/releases/tag/$TAG"
+echo "Released: https://github.com/shenxianpeng/keelhaven/releases/tag/$TAG"
 echo "Download: https://keelhaven.app/downloads/$DMG (Pages rebuild takes ~1 min)"

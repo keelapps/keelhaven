@@ -9,7 +9,7 @@ fix, open an issue first so nobody builds the same thing twice — and check the
 Common tasks are wrapped in a thin Makefile — run `make` to list them:
 
 ```bash
-git clone git@github.com:keelapps/keelhaven.git && cd keelhaven
+git clone git@github.com:shenxianpeng/keelhaven.git && cd keelhaven
 make bootstrap   # brew install restic xcodegen gh
 make test        # KeelhavenCore tests, incl. the real-restic integration suite
 make build       # vendor restic + xcodegen generate + Release xcodebuild

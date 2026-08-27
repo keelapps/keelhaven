@@ -6,13 +6,13 @@
 # Downloads the latest release DMG, copies Keelhaven.app into /Applications,
 # and launches it. Prefer Homebrew? The cask does the same with upgrades:
 #
-#   brew install --cask keelapps/tap/keelhaven
+#   brew install --cask shenxianpeng/tap/keelhaven
 #
 # The script needs nothing beyond what ships with macOS, touches only
 # /Applications/Keelhaven.app, and can be re-run any time to update.
 set -euo pipefail
 
-REPO="keelapps/keelhaven"
+REPO="shenxianpeng/keelhaven"
 MANIFEST="https://keelhaven.app/latest.json"
 
 fail() { echo "Error: $*" >&2; exit 1; }
