@@ -29,6 +29,7 @@ landing:
         links:
           - { text: Email support, mailto: true }
           - { text: FAQ, anchor: faq }
+          - { text: Follow on X, href: "https://x.com/xianpengshen" }
       - title: Product
         links:
           - { text: Features, anchor: features }

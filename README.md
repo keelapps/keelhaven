@@ -6,6 +6,8 @@
 
 **[keelhaven.app](https://keelhaven.app)**
 
+[![Follow @xianpengshen on X](https://img.shields.io/twitter/follow/xianpengshen?style=social&logo=x)](https://x.com/xianpengshen)
+
 Privacy-first Mac backup to your own storage. Free and open source (GPLv3) — no subscription, no telemetry.
 
 Keelhaven wraps the battle-tested [restic](https://restic.net) engine in a native SwiftUI menu bar app: pick folders, pick a destination you own (external drive, any S3-compatible bucket, or SFTP/NAS), set a schedule — your files are encrypted on your Mac before they leave it.
