@@ -78,6 +78,15 @@
         }
       }
     },
+    "*.log": {
+      "shouldTranslate": false
+    },
+    "/Volumes/BackupDrive/Keelhaven": {
+      "shouldTranslate": false
+    },
+    "/backups/mac": {
+      "shouldTranslate": false
+    },
     "1 backup needs attention": {
       "extractionState": "manual",
       "localizations": {
@@ -371,6 +380,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "正在备份"
+          }
+        }
+      }
+    },
+    "Backup verification failed": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "备份验证失败"
+          }
+        }
+      }
+    },
+    "Backup verification running": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "备份验证进行中"
+          }
+        }
+      }
+    },
+    "Backup verified on %@": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已于 %@ 完成备份验证"
           }
         }
       }
@@ -895,6 +934,9 @@
         }
       }
     },
+    "Keelhaven": {
+      "shouldTranslate": false
+    },
     "Keelhaven automatically copies your important folders to a backup drive, so nothing is lost if your Mac ever breaks or goes missing.": {
       "localizations": {
         "zh-Hans": {
@@ -1015,6 +1057,16 @@
         }
       }
     },
+    "Monthly": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每月"
+          }
+        }
+      }
+    },
     "My Backup": {
       "localizations": {
         "zh-Hans": {
@@ -1041,6 +1093,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "新建备份计划"
+          }
+        }
+      }
+    },
+    "New version %@ available": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新版本 %@ 已发布"
           }
         }
       }
@@ -1131,6 +1193,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "好"
+          }
+        }
+      }
+    },
+    "Off": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关闭"
           }
         }
       }
@@ -1465,6 +1537,16 @@
         }
       }
     },
+    "Runs restic's own repository check after a backup, and only speaks up when something is wrong.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在备份完成后运行 restic 自带的仓库检查，只在发现问题时才出声提醒。"
+          }
+        }
+      }
+    },
     "S3, SFTP, or an existing repository": {
       "localizations": {
         "zh-Hans": {
@@ -1645,6 +1727,16 @@
         }
       }
     },
+    "The last repository check failed": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上次仓库检查失败"
+          }
+        }
+      }
+    },
     "Thins older snapshots to daily, weekly and monthly keepers and reclaims the space — after a backup, at most once a week. Keep everything never deletes a snapshot.": {
       "localizations": {
         "zh-Hans": {
@@ -1705,6 +1797,46 @@
         }
       }
     },
+    "Verification": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "验证"
+          }
+        }
+      }
+    },
+    "Verification failed": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "验证失败"
+          }
+        }
+      }
+    },
+    "Verified %@": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已于 %@ 验证"
+          }
+        }
+      }
+    },
+    "Verify Backup Now": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "立即验证备份"
+          }
+        }
+      }
+    },
     "Verifying Password…": {
       "localizations": {
         "zh-Hans": {
@@ -1715,12 +1847,32 @@
         }
       }
     },
+    "Verifying backup…": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在验证备份…"
+          }
+        }
+      }
+    },
     "Version %@ (build %@, %@)": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "版本 %1$@（构建 %2$@，%3$@）"
+          }
+        }
+      }
+    },
+    "Weekly": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每周"
           }
         }
       }
@@ -1815,12 +1967,25 @@
         }
       }
     },
+    "nas.local": {
+      "shouldTranslate": false
+    },
     "restic license (BSD 2-Clause)": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "restic 许可证（BSD 2-Clause）"
+          }
+        }
+      }
+    },
+    "restic reported the repository intact on %@": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "restic 于 %@ 报告仓库完好无损"
           }
         }
       }
@@ -1834,6 +1999,12 @@
           }
         }
       }
+    },
+    "s3.amazonaws.com": {
+      "shouldTranslate": false
+    },
+    "⌘Q": {
+      "shouldTranslate": false
     }
   },
   "version": "1.0"
