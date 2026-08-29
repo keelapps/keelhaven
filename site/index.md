@@ -219,7 +219,7 @@ An external or network drive mounted on your Mac, any S3-compatible bucket (AWS,
 </FaqItem>
 <FaqItem question="Do backups grow forever?">
 
-For now, yes — every run adds a snapshot, and Keelhaven never deletes one. Snapshots are deduplicated, so a run stores only what changed since the last one, but nothing is pruned automatically yet. Retention policies are on the roadmap; until they land, the repository is standard restic, so `restic forget --prune` with a policy of your choosing works today, from any machine.
+Only if you leave retention off — which is the default, because deleting your data is never something Keelhaven decides on its own. Every run adds a deduplicated snapshot, storing only what changed. When a plan should stop growing, pick a retention preset in Edit Plan — a year of history or a month of history — and older snapshots are thinned to daily, weekly and monthly keepers, with the space reclaimed after a backup at most once a week. The repository stays standard restic throughout, so `restic forget --prune` with a policy of your own still works from any machine.
 
 </FaqItem>
 <FaqItem question="How do I know the backups are actually good?">
