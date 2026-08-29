@@ -202,13 +202,58 @@ body:has(.kh-landing) .VPLocalNav {
   background: var(--kh-chip);
   color: var(--kh-ink);
 }
-/* The language link sits with the section links but isn't one of them —
-   a hairline divider keeps the scroll-spy pills reading as a group. */
-.kh-landing .kh-nav-locale {
-  border-left: 1px solid var(--kh-line);
-  border-radius: 0 999px 999px 0;
-  margin-left: 5px;
-  padding-left: 14px;
+/* Globe language switcher: a nav-pill-styled button opening a small menu,
+   one row per language, the current one marked. */
+.kh-landing .kh-nav-lang {
+  position: relative;
+}
+.kh-landing .kh-nav-lang button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 11px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  color: var(--kh-ink-soft);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+.kh-landing .kh-nav-lang button:hover,
+.kh-landing .kh-nav-lang button[aria-expanded='true'] {
+  color: var(--kh-ink);
+}
+.kh-landing .kh-nav-lang-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 132px;
+  padding: 6px;
+  border: 1px solid var(--kh-line);
+  border-radius: 14px;
+  background: var(--kh-paper);
+  box-shadow: 0 12px 32px rgba(11, 37, 64, 0.14);
+  display: flex;
+  flex-direction: column;
+}
+.kh-landing .kh-nav-lang-menu a {
+  padding: 7px 12px;
+  border-radius: 9px;
+  font-size: 14px;
+  color: var(--kh-ink-soft);
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.kh-landing .kh-nav-lang-menu a:hover {
+  background: var(--kh-chip);
+  color: var(--kh-ink);
+}
+.kh-landing .kh-nav-lang-menu a.current {
+  color: var(--kh-ink);
+  font-weight: 600;
 }
 
 .kh-landing .kh-nav-github {
@@ -688,6 +733,13 @@ body:has(.kh-landing) .VPLocalNav {
   }
   .kh-landing .kh-nav-cta {
     display: none;
+  }
+  /* Globe + chevron alone on phones; the menu still names each language. */
+  .kh-landing .kh-nav-lang-label {
+    display: none;
+  }
+  .kh-landing .kh-nav-lang button {
+    padding: 7px 8px;
   }
   .kh-landing .kh-footer-cols {
     grid-template-columns: 1fr 1fr;

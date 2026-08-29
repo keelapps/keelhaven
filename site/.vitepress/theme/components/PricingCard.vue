@@ -1,7 +1,7 @@
 <template>
-  <!-- Layout is identical whether #price holds a "Free while in beta" badge
-       or a real "$N one-time" figure — when pricing lands, only index.md
-       changes. Default slot: a markdown checkmark list. -->
+  <!-- Layout is agnostic to what #price holds — today a "Free and open
+       source" badge, driven entirely by index.md. Default slot: a markdown
+       checkmark list. -->
   <div class="kh-pricing-card">
     <div class="kh-pricing-top">
       <slot name="price" />

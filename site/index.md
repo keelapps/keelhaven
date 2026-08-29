@@ -165,7 +165,7 @@ Beta builds aren't notarised by Apple yet, so the very first launch takes one ex
 
 <PricingCard>
 <template #price><span class="kh-badge">Free and open source</span></template>
-<template #note>Free in beta, free after 1.0 — never a subscription. Down the road an optional Pro edition may add advanced conveniences, but backing up and restoring your data will never sit behind a paywall.</template>
+<template #note>Free in beta, free after 1.0. No subscription, no account, no strings attached.</template>
 
 - Unlimited backup plans and destinations
 - Universal build — Apple silicon and Intel
@@ -192,9 +192,9 @@ Nothing is wrong — beta builds aren't notarised with Apple yet, so macOS shows
 No — run both. Time Machine is excellent at putting a whole Mac back the way it was, from a drive on your desk. Keelhaven is for the second copy: the folders you can't lose, encrypted, somewhere that isn't your desk.
 
 </FaqItem>
-<FaqItem question="It's free — so how is it sustained?">
+<FaqItem question="It's free — what's the catch?">
 
-By earning a place on your Mac first. Keelhaven's backup engine is [restic](https://restic.net) — free, open source, and excellent — and Keelhaven adds everything a command-line tool deliberately leaves to you: a schedule that actually runs, passwords held in the macOS Keychain and never written to disk or logs, and a menu bar that stays quiet until something needs you. All of that is free and stays free. If enough people come to rely on it, a paid Pro edition may follow with advanced conveniences — think snapshot browsing or retention policies — and that would fund the free app rather than shrink it.
+There isn't one. Keelhaven's backup engine is [restic](https://restic.net) — free, open source, and excellent — and Keelhaven adds everything a command-line tool deliberately leaves to you: a schedule that actually runs, passwords held in the macOS Keychain and never written to disk or logs, and a menu bar that stays quiet until something needs you. There are no servers to pay for and no company behind it, and the whole thing is open source — it doesn't need a business model to stay alive. If it earns a place on your Mac, telling a friend is all the support it needs.
 
 </FaqItem>
 <FaqItem question="Am I locked into Keelhaven?">
