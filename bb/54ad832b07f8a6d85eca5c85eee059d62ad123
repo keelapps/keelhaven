@@ -1,0 +1,64 @@
+Keelhaven/EditPlan/EditPlanWindowView.swift
+  s_996692c72c618d::t_f61f9f7b705418 50-51
+  s_996692c72c618d::t_54743511974ae1 147-164
+  s_996692c72c618d::t_6345d0da86f249 70-71
+Keelhaven/Services/NotificationService.swift
+  s_996692c72c618d::t_833e770e0c7642 43-52
+KeelhavenCore/Tests/KeelhavenCoreTests/ResticCommandTests.swift
+  s_996692c72c618d::t_8f8d36e0a08eb3 33-51
+Keelhaven/EditPlan/EditPlanModel.swift
+  s_996692c72c618d::t_0de5df5c1f8352 17,27
+KeelhavenCore/Sources/KeelhavenCore/Models/BackupPlan.swift
+  s_996692c72c618d::t_07c065ee34b377 56-58,68,72
+  s_996692c72c618d::t_a2e95cf9e0b67e 36,39-40,49,53
+  s_996692c72c618d::t_73b7dbee28ae78 15,19
+Keelhaven/Localizable.xcstrings
+  s_996692c72c618d::t_02c9c35ba4f1c1 98-107,118-127,328-337,468-477,938-947,1448-1467,1648-1657,1840
+Keelhaven/MenuBar/PlanHealth.swift
+  s_996692c72c618d::t_37d20d187950ff 16
+KeelhavenCore/Sources/KeelhavenCore/Models/PruneRunRecord.swift
+  s_996692c72c618d::t_acb13fe05d7058 1-22
+KeelhavenCore/Tests/KeelhavenCoreTests/ResticRunnerIntegrationTests.swift
+  s_996692c72c618d::t_a9871c15f71032 92-107
+Keelhaven/MenuBar/PlanStatusRow.swift
+  s_996692c72c618d::t_502a8d9a6b5303 258-267
+KeelhavenCore/Sources/KeelhavenCore/Restic/ResticCommand.swift
+  s_996692c72c618d::t_4360e9a67d46dd 12-15
+  s_996692c72c618d::t_fc61b9787b3a25 44-45
+KeelhavenCore/Tests/KeelhavenCoreTests/PrunePolicyTests.swift
+  s_996692c72c618d::t_b0ee236f77b32e 1-58
+docs/ARCHITECTURE.md
+  s_996692c72c618d::t_e56361da4c64c3 57
+  s_996692c72c618d::t_f2690ed4598715 82-84
+Keelhaven/AppState.swift
+  s_996692c72c618d::t_a22116f256a348 197-199,203
+  s_996692c72c618d::t_63a41f0762f04f 167-168,178
+  s_996692c72c618d::t_af64dc9aafae16 355-402
+  s_996692c72c618d::t_7e01b7244b9893 120
+  s_996692c72c618d::t_b2d4008b77118b 271-279
+  s_996692c72c618d::t_0c861e105d685e 10
+KeelhavenCore/Sources/KeelhavenCore/Scheduling/PrunePolicy.swift
+  s_996692c72c618d::t_4ca4caffb8dc79 1-23
+KeelhavenCore/Sources/KeelhavenCore/Models/RetentionPolicy.swift
+  s_996692c72c618d::t_8479baff4bc898 1-39
+CLAUDE.md
+  s_996692c72c618d::t_cf33137637fcf5 55
+KeelhavenCore/Tests/KeelhavenCoreTests/ModelRoundTripTests.swift
+  s_996692c72c618d::t_6ecb4affe6dd4a 79-99,105,107-108,117-118,126-127
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "bb54ad832b07f8a6d85eca5c85eee059d62ad123",
+  "prompts": {},
+  "sessions": {
+    "s_996692c72c618d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6167a97b-3c9d-49f4-a832-05065685633e",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
