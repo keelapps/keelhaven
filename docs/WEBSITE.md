@@ -6,7 +6,7 @@ branch, which GitHub Pages serves at **https://keelhaven.app**.
 
 Sources live in this repo under the GPL-3.0-or-later license (`LICENSE` at the
 repo root); `gh-pages` holds only the rendered output, which keeps its own
-© Keelapps notice.
+© shenxianpeng notice.
 
 ## Working on it locally
 

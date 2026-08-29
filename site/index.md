@@ -24,7 +24,7 @@ landing:
   footer:
     tagline: Privacy-first backups for your Mac.
     versionNote: public beta
-    copyright: © Keelapps.
+    copyright: © shenxianpeng.
     groups:
       - title: Support
         links:

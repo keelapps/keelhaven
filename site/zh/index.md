@@ -24,7 +24,7 @@ landing:
   footer:
     tagline: 隐私优先的 Mac 备份。
     versionNote: 公开测试版
-    copyright: © Keelapps.
+    copyright: © shenxianpeng.
     groups:
       - title: 支持
         links:

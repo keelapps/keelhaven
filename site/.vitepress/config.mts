@@ -106,7 +106,7 @@ export default defineConfig({
       // licenses link is plenty here. Full credit lives on /licenses and in
       // the FAQ.
       message: `<a href="${base}privacy">Privacy</a> · <a href="${base}licenses">Licenses</a>`,
-      copyright: '© Keelapps.',
+      copyright: '© shenxianpeng.',
     },
   },
 
@@ -125,7 +125,7 @@ export default defineConfig({
         nav: [{ text: '首页', link: '/zh/' }],
         footer: {
           message: `<a href="${base}zh/privacy">隐私</a> · <a href="${base}zh/licenses">许可</a>`,
-          copyright: '© Keelapps.',
+          copyright: '© shenxianpeng.',
         },
       },
     },
