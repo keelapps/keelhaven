@@ -90,11 +90,18 @@ const releases = computed(
     <span>无遥测</span>
     <span>开源工具即可恢复</span>
   </p>
-  <p class="kh-hero-actions">
-    <DownloadButton label="下载 macOS 版" :fallback-href="releases" />
-    <a class="kh-btn kh-btn-ghost" href="#guide">先看指南</a>
-    <span class="kh-hero-install">或在终端安装：<code>brew install --cask shenxianpeng/tap/keelhaven</code></span>
-  </p>
+  <div class="kh-hero-actions">
+    <CommandBlock
+      command="brew install --cask shenxianpeng/tap/keelhaven"
+      note="一行命令，装完直接能开，不弹任何安全提示。"
+      copy-label="复制"
+      copied-label="已复制"
+    />
+    <p class="kh-hero-alt">
+      <DownloadButton label="下载 .dmg" :fallback-href="releases" ghost />
+      <a class="kh-btn kh-btn-ghost" href="#guide">先看指南</a>
+    </p>
+  </div>
 </section>
 
 <LandingSection id="tour" eyebrow="00 · 看一眼" title="一个菜单栏图标，就是整个应用。">

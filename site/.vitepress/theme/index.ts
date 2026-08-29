@@ -11,6 +11,7 @@ import MenuBarDemo from './components/MenuBarDemo.vue'
 import PricingCard from './components/PricingCard.vue'
 import FaqItem from './components/FaqItem.vue'
 import DownloadButton from './components/DownloadButton.vue'
+import CommandBlock from './components/CommandBlock.vue'
 import './landing.css'
 
 export default {
@@ -24,5 +25,6 @@ export default {
     app.component('PricingCard', PricingCard)
     app.component('FaqItem', FaqItem)
     app.component('DownloadButton', DownloadButton)
+    app.component('CommandBlock', CommandBlock)
   },
 } satisfies Theme
