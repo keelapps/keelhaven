@@ -69,11 +69,16 @@ const releases = computed(
     <span>No telemetry</span>
     <span>Restores with open tools</span>
   </p>
-  <p class="kh-hero-actions">
-    <DownloadButton label="Download for macOS" :fallback-href="releases" />
-    <a class="kh-btn kh-btn-ghost" href="#guide">Read the guide</a>
-    <span class="kh-hero-install">or from the terminal: <code>brew install --cask shenxianpeng/tap/keelhaven</code></span>
-  </p>
+  <div class="kh-hero-actions">
+    <CommandBlock
+      command="brew install --cask shenxianpeng/tap/keelhaven"
+      note="One command — installs and launches with no security prompt."
+    />
+    <p class="kh-hero-alt">
+      <DownloadButton label="Download the .dmg" :fallback-href="releases" ghost />
+      <a class="kh-btn kh-btn-ghost" href="#guide">Read the guide</a>
+    </p>
+  </div>
 </section>
 
 <LandingSection id="tour" eyebrow="00 · See it" title="One menu bar item. That's the whole app.">

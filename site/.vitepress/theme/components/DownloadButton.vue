@@ -5,24 +5,28 @@
 // the manifest loads.
 import { useLatestRelease } from '../latest'
 
-defineProps<{
+const props = defineProps<{
   label: string
   fallbackHref: string
+  // Secondary styling for when it sits under a primary CTA (the hero's
+  // command box). Defaults to the filled primary look used elsewhere.
+  ghost?: boolean
 }>()
 
 const { dmgURL, version } = useLatestRelease()
+const btnClass = ['kh-btn', props.ghost ? 'kh-btn-ghost' : 'kh-btn-primary']
 </script>
 
 <template>
   <!-- `download` keeps VitePress's SPA router from intercepting the click:
        .dmg is not in its known-extensions list, so without it the router
        rewrites the href to …dmg.html and lands on the 404 page. -->
-  <a v-if="dmgURL" class="kh-btn kh-btn-primary" :href="dmgURL" download>
+  <a v-if="dmgURL" :class="btnClass" :href="dmgURL" download>
     {{ label }}<span v-if="version" class="kh-btn-version">v{{ version }}</span>
   </a>
   <a
     v-else
-    class="kh-btn kh-btn-primary"
+    :class="btnClass"
     :href="fallbackHref"
     target="_blank"
     rel="noopener"

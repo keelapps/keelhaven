@@ -1,7 +1,9 @@
-Drag **Keelhaven** to Applications. This beta isn't notarized by Apple yet, so macOS asks you to allow it once on first launch:
+**Quickest install — no Gatekeeper prompt:**
 
-- **macOS 15 (Sequoia):** double-click the app, dismiss the warning, then open **System Settings › Privacy & Security**, scroll down, and click **Open Anyway**.
-- **macOS 14 (Sonoma):** right-click the app in Applications and choose **Open**, then **Open** again.
-- **Terminal instead:** `xattr -d com.apple.quarantine /Applications/Keelhaven.app`
+```
+brew install --cask shenxianpeng/tap/keelhaven
+```
 
-More detail: https://keelhaven.app/#faq
+No Homebrew? `curl -fsSL https://keelhaven.app/install.sh | bash` does the same.
+
+Or download the `.dmg` below and drag **Keelhaven** to Applications. This beta isn't notarized by Apple yet, so macOS asks you to allow it once on first launch — the [FAQ](https://keelhaven.app/#faq) has the three-click walkthrough.
