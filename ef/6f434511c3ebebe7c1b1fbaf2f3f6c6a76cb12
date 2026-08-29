@@ -1,0 +1,29 @@
+site/zh/index.md
+  s_996692c72c618d::t_72cd87b7cb92fc 188
+  s_996692c72c618d::t_61d2b035d731a1 215,217
+site/.vitepress/theme/components/PricingCard.vue
+  s_996692c72c618d::t_b9844a16ab4f7d 2-4
+README.md
+  s_996692c72c618d::t_62a4475db48d12 56
+CONTRIBUTING.md
+  s_996692c72c618d::t_eb321ea5e7cb78 122-123
+site/index.md
+  s_996692c72c618d::t_5c9019e091a044 168
+  s_996692c72c618d::t_3277a1542a4f02 195,197
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "ef6f434511c3ebebe7c1b1fbaf2f3f6c6a76cb12",
+  "prompts": {},
+  "sessions": {
+    "s_996692c72c618d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6167a97b-3c9d-49f4-a832-05065685633e",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
