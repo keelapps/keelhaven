@@ -1,0 +1,27 @@
+site/index.md
+  s_996692c72c618d::t_1457fa0138f328 27
+CLAUDE.md
+  s_996692c72c618d::t_ee5b20276688b4 43
+site/zh/index.md
+  s_996692c72c618d::t_8a9659b07320b5 27
+docs/WEBSITE.md
+  s_996692c72c618d::t_ffc24f85ad1b72 9
+site/.vitepress/config.mts
+  s_996692c72c618d::t_1395d8afb28900 109,128
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "af96047aa79844fc19d79ba71ea7df63be8781f8",
+  "prompts": {},
+  "sessions": {
+    "s_996692c72c618d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6167a97b-3c9d-49f4-a832-05065685633e",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
