@@ -2,7 +2,6 @@
 // Dark landing footer. Link groups, tagline, and legal copy come from
 // index.md frontmatter (localizable); the version comes from themeConfig
 // (read out of project.yml at build time in config.mts, locale-independent).
-// TODO when pricing lands: add Terms + Refund policy pages to the legal group.
 import { computed } from 'vue'
 import { useData, withBase } from 'vitepress'
 

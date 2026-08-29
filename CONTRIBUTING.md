@@ -119,9 +119,8 @@ site FAQ walk through it.
 
 ## Licensing of contributions
 
-Keelhaven is licensed under GPL-3.0-or-later (see `LICENSE`). The plan that
-funds its development is an optional, paid Pro edition built on this same
-code. For that to stay legally possible after your code is merged, one grant
+Keelhaven is licensed under GPL-3.0-or-later (see `LICENSE`). So that the
+project's licensing options stay open after your code is merged, one grant
 beyond the GPL is needed. By submitting a contribution you agree that:
 
 1. Your contribution is licensed under GPL-3.0-or-later, like the project.

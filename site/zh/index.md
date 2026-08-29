@@ -185,7 +185,7 @@ Beta 版还没做 Apple 公证，第一次打开要多点一次确认，[下面�
 
 <PricingCard>
 <template #price><span class="kh-badge">免费且开源</span></template>
-<template #note>Beta 免费，1.0 之后也免费，不做订阅。以后可能出一个可选的付费 Pro 版加些进阶功能，但备份和恢复你的数据永远免费。</template>
+<template #note>Beta 免费，1.0 之后也免费。没有订阅，没有账号，也没有任何附加条件。</template>
 
 - 备份计划和目的地数量不限
 - 通用构建，Apple 芯片和 Intel 都支持
@@ -212,9 +212,9 @@ Beta 版还没做 Apple 公证，第一次打开要多点一次确认，[下面�
 不能，两个一起用。时间机器擅长把整台 Mac 恢复原样，用的是桌上那块硬盘；Keelhaven 管的是第二份副本：丢不起的那些文件夹，加密后放到别的地方。
 
 </FaqItem>
-<FaqItem question="免费的，靠什么维持下去？">
+<FaqItem question="免费的，会不会有什么套路？">
 
-先把东西做好，让它值得留在你的 Mac 上。Keelhaven 的备份引擎是 [restic](https://restic.net)，免费、开源、久经考验；Keelhaven 补上命令行工具留给用户自己操心的部分：定时真的会跑，密码放钥匙串、不落盘不进日志，菜单栏没事不吭声。这些永远免费。哪天用的人多了，可能出付费 Pro 版加些进阶功能，比如快照内浏览文件、保留策略，用它养免费版，而不是砍免费版。
+没有套路。Keelhaven 的备份引擎是 [restic](https://restic.net)，免费、开源、久经考验；Keelhaven 补上命令行工具留给用户自己操心的部分：定时真的会跑，密码放钥匙串、不落盘不进日志，菜单栏没事不吭声。它没有服务器要养，背后也没有公司，整个项目开源，不需要商业模式也能活下去。要是它在你的 Mac 上站住了脚，向朋友推荐一句，就是对它最好的支持。
 
 </FaqItem>
 <FaqItem question="会被 Keelhaven 锁定吗？">
