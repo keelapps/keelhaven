@@ -1,0 +1,33 @@
+site/.vitepress/theme/index.ts
+  s_996692c72c618d::t_0fead858bb3952 14
+  s_996692c72c618d::t_3df04ba2ff3337 28
+site/.vitepress/theme/components/DownloadButton.vue
+  s_996692c72c618d::t_8a4d59dead534b 8,11-13,17,24,29
+site/zh/index.md
+  s_996692c72c618d::t_78419fdb6ab6f4 93-104
+Scripts/first-launch-note.md
+  s_996692c72c618d::t_d706714b9bda25 1,3-5,7-9
+site/.vitepress/theme/components/CommandBlock.vue
+  s_996692c72c618d::t_08043c8a098ab9 1-48
+site/.vitepress/theme/landing.css
+  s_996692c72c618d::t_afc3953eea73fa 342
+  s_996692c72c618d::t_ed969800f063b5 331-335,337-341,343-345,347-372,374-392
+site/index.md
+  s_996692c72c618d::t_ee96eedbf1335d 72-81
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "2b0d7ce1e8aaa612f069f42505abd7b9e3027b64",
+  "prompts": {},
+  "sessions": {
+    "s_996692c72c618d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6167a97b-3c9d-49f4-a832-05065685633e",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
