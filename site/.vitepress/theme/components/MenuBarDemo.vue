@@ -1,5 +1,35 @@
 <script setup>
-import { withBase } from 'vitepress'
+import { computed } from 'vue'
+import { useData, withBase } from 'vitepress'
+
+// Every visible string in the demo, overridable from frontmatter
+// (landing.demo) so zh/index.md can show the app's real Chinese UI — the
+// values there should come from the app's Localizable.xcstrings, keeping the
+// recreation honest in every language.
+const defaults = {
+  ariaLabel:
+    'Animated demo of the Keelhaven menu bar app running a backup: a plan named Documents is backed up to an external drive, showing only a small progress bar while running, then a Backup complete notification.',
+  clock: 'Mon 9:41 AM',
+  plan1Name: 'Documents',
+  plan1Sched: 'Daily at 9:00 AM',
+  plan1StatusIdle: 'Backed up 2 hours ago',
+  plan1StatusDone: 'Backed up 1 second ago',
+  plan2Name: 'Photos',
+  plan2Sched: 'Every hour',
+  plan2Status: 'Backed up 26 minutes ago',
+  backUpNow: 'Back Up Now',
+  addPlan: 'Add Backup Plan…',
+  startAtLogin: 'Start at Login',
+  quit: 'Quit Keelhaven',
+  notifTitle: 'Backup complete',
+  notifBody: 'Documents: 12 new files, 48 MB added.',
+}
+
+const { frontmatter } = useData()
+const t = computed(() => ({
+  ...defaults,
+  ...(frontmatter.value.landing?.demo ?? {}),
+}))
 </script>
 
 <template>
@@ -10,7 +40,7 @@ import { withBase } from 'vitepress'
        the completion notification the app actually posts. All timing lives
        in landing.css under .kh-demo-*. -->
   <div class="kh-demo" role="img"
-       aria-label="Animated demo of the Keelhaven menu bar app running a backup: a plan named Documents is backed up to an external drive, showing only a small progress bar while running, then a Backup complete notification.">
+       :aria-label="t.ariaLabel">
 
     <div class="kh-demo-scene" aria-hidden="true">
 
@@ -22,7 +52,7 @@ import { withBase } from 'vitepress'
         <!-- arrow.triangle.2.circlepath stand-in while a backup runs -->
         <svg class="kh-demo-mb-busy" width="17" height="17" viewBox="0 0 24 24"><g class="kh-demo-mb-busy-spin" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M 20 12 A 8 8 0 1 1 12 4"/><path d="M 8.6 1.6 L 12.6 4.1 L 9.6 7.6"/></g></svg>
       </span>
-      <span class="kh-demo-mb-clock">Mon 9:41 AM</span>
+      <span class="kh-demo-mb-clock">{{ t.clock }}</span>
     </div>
 
     <!-- The popover, hanging off the menu bar item -->
@@ -41,18 +71,18 @@ import { withBase } from 'vitepress'
         <span class="kh-demo-dot kh-demo-dot-1"></span>
         <div class="kh-demo-plan-body">
           <div class="kh-demo-plan-top">
-            <span class="kh-demo-plan-name">Documents</span>
-            <span class="kh-demo-runbtn kh-demo-runbtn-1">Back Up Now</span>
+            <span class="kh-demo-plan-name">{{ t.plan1Name }}</span>
+            <span class="kh-demo-runbtn kh-demo-runbtn-1">{{ t.backUpNow }}</span>
             <svg class="kh-demo-more" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="7.5" cy="12" r="1.15" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.15" fill="currentColor" stroke="none"/><circle cx="16.5" cy="12" r="1.15" fill="currentColor" stroke="none"/></svg>
           </div>
           <div class="kh-demo-plan-dest">/Volumes/Harbor</div>
           <div class="kh-demo-plan-sched">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2" stroke-linecap="round"/></svg>
-            Daily at 9:00 AM
+            {{ t.plan1Sched }}
           </div>
           <div class="kh-demo-statusline">
-            <span class="kh-demo-status kh-demo-status-idle">Backed up 2 hours ago</span>
-            <span class="kh-demo-status kh-demo-status-done">Backed up 1 second ago</span>
+            <span class="kh-demo-status kh-demo-status-idle">{{ t.plan1StatusIdle }}</span>
+            <span class="kh-demo-status kh-demo-status-done">{{ t.plan1StatusDone }}</span>
             <span class="kh-demo-progress"><span class="kh-demo-progress-fill"></span></span>
           </div>
         </div>
@@ -63,17 +93,17 @@ import { withBase } from 'vitepress'
         <span class="kh-demo-dot kh-demo-dot-2"></span>
         <div class="kh-demo-plan-body">
           <div class="kh-demo-plan-top">
-            <span class="kh-demo-plan-name">Photos</span>
-            <span class="kh-demo-runbtn kh-demo-runbtn-2">Back Up Now</span>
+            <span class="kh-demo-plan-name">{{ t.plan2Name }}</span>
+            <span class="kh-demo-runbtn kh-demo-runbtn-2">{{ t.backUpNow }}</span>
             <svg class="kh-demo-more" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="7.5" cy="12" r="1.15" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.15" fill="currentColor" stroke="none"/><circle cx="16.5" cy="12" r="1.15" fill="currentColor" stroke="none"/></svg>
           </div>
           <div class="kh-demo-plan-dest">s3://keelhaven-photos</div>
           <div class="kh-demo-plan-sched">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2" stroke-linecap="round"/></svg>
-            Every hour
+            {{ t.plan2Sched }}
           </div>
           <div class="kh-demo-statusline">
-            <span class="kh-demo-status is-on">Backed up 26 minutes ago</span>
+            <span class="kh-demo-status is-on">{{ t.plan2Status }}</span>
           </div>
         </div>
       </div>
@@ -81,16 +111,16 @@ import { withBase } from 'vitepress'
       <div class="kh-demo-divider"></div>
       <div class="kh-demo-addrow">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-        Add Backup Plan…
+        {{ t.addPlan }}
       </div>
       <div class="kh-demo-divider"></div>
 
       <div class="kh-demo-footrow">
-        <span>Start at Login</span>
+        <span>{{ t.startAtLogin }}</span>
         <span class="kh-demo-switch"><span class="kh-demo-knob"></span></span>
       </div>
       <div class="kh-demo-footrow kh-demo-quit">
-        <span>Quit Keelhaven</span>
+        <span>{{ t.quit }}</span>
         <span class="kh-demo-kbd">⌘Q</span>
       </div>
 
@@ -108,8 +138,8 @@ import { withBase } from 'vitepress'
     <div class="kh-demo-notif" aria-hidden="true">
       <img :src="withBase('/icon-128.png')" alt="" width="30" height="30" />
       <div>
-        <div class="kh-demo-notif-title">Backup complete</div>
-        <div class="kh-demo-notif-body">Documents: 12 new files, 48 MB added.</div>
+        <div class="kh-demo-notif-title">{{ t.notifTitle }}</div>
+        <div class="kh-demo-notif-body">{{ t.notifBody }}</div>
       </div>
     </div>
   </div>

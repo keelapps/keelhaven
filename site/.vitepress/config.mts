@@ -106,14 +106,28 @@ export default defineConfig({
       // licenses link is plenty here. Full credit lives on /licenses and in
       // the FAQ.
       message: `<a href="${base}privacy">Privacy</a> · <a href="${base}licenses">Licenses</a>`,
-      copyright: '© Keelapps.',
+      copyright: '© shenxianpeng.',
     },
   },
 
-  // English is the default locale at the site root. Chinese is planned but
-  // not written yet — when it is, uncomment and add pages under site/zh/.
-  // locales: {
-  //   root: { label: 'English', lang: 'en' },
-  //   zh: { label: '简体中文', lang: 'zh-Hans', link: '/zh/' },
-  // },
+  // English is the default locale at the site root; Chinese lives under
+  // site/zh/ as a full mirror (landing + privacy + licenses). Each locale's
+  // themeConfig only overrides what differs — appVersion, logo and
+  // socialLinks come from the root themeConfig above.
+  locales: {
+    root: { label: 'English', lang: 'en' },
+    zh: {
+      label: '简体中文',
+      lang: 'zh-Hans',
+      link: '/zh/',
+      description: '隐私优先的 Mac 备份。一个安静的菜单栏应用。',
+      themeConfig: {
+        nav: [{ text: '首页', link: '/zh/' }],
+        footer: {
+          message: `<a href="${base}zh/privacy">隐私</a> · <a href="${base}zh/licenses">许可</a>`,
+          copyright: '© shenxianpeng.',
+        },
+      },
+    },
+  },
 })

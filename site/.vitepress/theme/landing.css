@@ -191,6 +191,9 @@ body:has(.kh-landing) .VPLocalNav {
   font-size: 14.5px;
   color: var(--kh-ink-soft);
   transition: background 0.15s ease, color 0.15s ease;
+  /* CJK line-breaking would otherwise stack two-character zh labels
+     vertically on narrow screens. */
+  white-space: nowrap;
 }
 .kh-landing .kh-nav-links a:hover {
   color: var(--kh-ink);
@@ -198,6 +201,14 @@ body:has(.kh-landing) .VPLocalNav {
 .kh-landing .kh-nav-links a.active {
   background: var(--kh-chip);
   color: var(--kh-ink);
+}
+/* The language link sits with the section links but isn't one of them —
+   a hairline divider keeps the scroll-spy pills reading as a group. */
+.kh-landing .kh-nav-locale {
+  border-left: 1px solid var(--kh-line);
+  border-radius: 0 999px 999px 0;
+  margin-left: 5px;
+  padding-left: 14px;
 }
 
 .kh-landing .kh-nav-github {

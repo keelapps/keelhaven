@@ -1,15 +1,23 @@
 <script setup lang="ts">
 // Sticky pill nav for the landing page only. Items and CTA copy come from
-// index.md frontmatter (fm.landing) so a future zh/index.md localizes them
-// without touching this component. When the zh locale lands, add a small
-// locale link here — the default navbar (which normally hosts the switcher)
-// is hidden on the landing page.
+// the page's frontmatter (fm.landing) so index.md and zh/index.md localize
+// them without touching this component.
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useData, withBase } from 'vitepress'
 import { useLatestRelease } from '../latest'
 
-const { frontmatter } = useData()
+const { frontmatter, localeIndex } = useData()
 const landing = computed(() => frontmatter.value.landing ?? {})
+
+// The default navbar (which normally hosts VitePress's locale switcher) is
+// hidden on the landing page, so the nav carries its own link to the other
+// language's landing page. Labels are the target language's own name — the
+// one string a reader lost in the wrong language can always recognize.
+const localeLink = computed(() =>
+  localeIndex.value === 'zh'
+    ? { text: 'English', href: withBase('/') }
+    : { text: '中文', href: withBase('/zh/') }
+)
 
 const active = ref('')
 const scrolled = ref(false)
@@ -63,6 +71,7 @@ const ctaHref = computed(
           :href="item.anchor ? `#${item.anchor}` : withBase(item.link)"
           :class="{ active: item.anchor && active === item.anchor }"
         >{{ item.text }}</a>
+        <a class="kh-nav-locale" :href="localeLink.href">{{ localeLink.text }}</a>
       </div>
       <!-- Always visible, unlike the scroll-gated CTA next to it. -->
       <a

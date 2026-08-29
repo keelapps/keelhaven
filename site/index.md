@@ -4,7 +4,8 @@ navbar: false
 footer: false
 
 # All landing copy that components render lives here (not inside the
-# components) so a future zh/index.md can localize everything in one file.
+# components); zh/index.md mirrors this file section for section — when
+# editing copy here, make the same change there (and vice versa).
 landing:
   # The one place the support address is written. It is a Cloudflare Email
   # Routing alias on keelhaven.app that forwards to a real inbox, so it can be
@@ -23,7 +24,7 @@ landing:
   footer:
     tagline: Privacy-first backups for your Mac.
     versionNote: public beta
-    copyright: © Keelapps.
+    copyright: © shenxianpeng.
     groups:
       - title: Support
         links:
