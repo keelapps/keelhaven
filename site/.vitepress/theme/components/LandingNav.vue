@@ -10,14 +10,27 @@ const { frontmatter, localeIndex } = useData()
 const landing = computed(() => frontmatter.value.landing ?? {})
 
 // The default navbar (which normally hosts VitePress's locale switcher) is
-// hidden on the landing page, so the nav carries its own link to the other
-// language's landing page. Labels are the target language's own name — the
-// one string a reader lost in the wrong language can always recognize.
-const localeLink = computed(() =>
-  localeIndex.value === 'zh'
-    ? { text: 'English', href: withBase('/') }
-    : { text: '中文', href: withBase('/zh/') }
+// hidden on the landing page, so the nav carries its own: a globe button
+// opening a small menu, one row per language, the current one marked. Each
+// label is that language's own name — the one string a reader lost in the
+// wrong language can always recognize.
+const langOpen = ref(false)
+const languages = computed(() => [
+  { text: 'English', href: withBase('/'), current: localeIndex.value !== 'zh' },
+  { text: '简体中文', href: withBase('/zh/'), current: localeIndex.value === 'zh' },
+])
+const langLabel = computed(
+  () => languages.value.find((l) => l.current)?.text ?? 'English'
 )
+
+const closeLang = (event: MouseEvent) => {
+  if (!(event.target as Element | null)?.closest('.kh-nav-lang')) {
+    langOpen.value = false
+  }
+}
+const closeLangOnEscape = (event: KeyboardEvent) => {
+  if (event.key === 'Escape') langOpen.value = false
+}
 
 const active = ref('')
 const scrolled = ref(false)
@@ -30,6 +43,8 @@ const onScroll = () => {
 onMounted(() => {
   onScroll()
   window.addEventListener('scroll', onScroll, { passive: true })
+  document.addEventListener('click', closeLang)
+  document.addEventListener('keydown', closeLangOnEscape)
   observer = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
@@ -47,6 +62,8 @@ onMounted(() => {
 onUnmounted(() => {
   observer?.disconnect()
   window.removeEventListener('scroll', onScroll)
+  document.removeEventListener('click', closeLang)
+  document.removeEventListener('keydown', closeLangOnEscape)
 })
 
 // Same self-upgrading download link as the hero's DownloadButton: the GitHub
@@ -71,7 +88,34 @@ const ctaHref = computed(
           :href="item.anchor ? `#${item.anchor}` : withBase(item.link)"
           :class="{ active: item.anchor && active === item.anchor }"
         >{{ item.text }}</a>
-        <a class="kh-nav-locale" :href="localeLink.href">{{ localeLink.text }}</a>
+      </div>
+      <div class="kh-nav-lang">
+        <button
+          type="button"
+          :aria-label="localeIndex === 'zh' ? '选择语言' : 'Choose a language'"
+          :aria-expanded="langOpen"
+          aria-haspopup="menu"
+          @click="langOpen = !langOpen"
+        >
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M3 12h18M12 3c2.5 2.4 3.8 5.6 3.8 9S14.5 21 12 21.4 8.2 18.4 8.2 12 9.5 5.4 12 3Z" />
+          </svg>
+          <span class="kh-nav-lang-label">{{ langLabel }}</span>
+          <svg viewBox="0 0 24 24" width="11" height="11" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </button>
+        <div v-if="langOpen" class="kh-nav-lang-menu" role="menu">
+          <a
+            v-for="lang in languages"
+            :key="lang.text"
+            role="menuitem"
+            :href="lang.href"
+            :class="{ current: lang.current }"
+            :aria-current="lang.current ? 'true' : undefined"
+          >{{ lang.text }}</a>
+        </div>
       </div>
       <!-- Always visible, unlike the scroll-gated CTA next to it. -->
       <a

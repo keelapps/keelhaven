@@ -7,7 +7,7 @@ Keelhaven 是自由开源软件。本页说明 Keelhaven 自身的许可，并�
 Keelhaven 的源代码位于
 [github.com/shenxianpeng/keelhaven](https://github.com/shenxianpeng/keelhaven)，
 以 [GNU 通用公共许可证第 3 版或更高版本](https://github.com/shenxianpeng/keelhaven/blob/main/LICENSE)
-（GPL-3.0-or-later）发布。阅读、审计、构建、修改、fork——GPL 允许的一切都可以。
+（GPL-3.0-or-later）发布。阅读、审计、构建、修改、fork，GPL 允许的一切都可以。
 「Keelhaven」的名称和图标不在此授权范围内：fork 应当使用自己的名字发布。
 
 ## restic
