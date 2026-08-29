@@ -9,6 +9,10 @@ public enum ResticCommand: Equatable, Sendable {
     case snapshots
     case stats
     case check
+    /// Applies a retention policy and compacts the repository
+    /// (`forget --prune`). No `--json`: the output is progress text we don't
+    /// parse — the exit code decides, exactly like `check`.
+    case forget(retention: RetentionPolicy)
     /// Reads the repository config — the cheapest command that proves a
     /// password opens an existing repository (used when adopting one).
     case catConfig
@@ -37,6 +41,8 @@ public enum ResticCommand: Equatable, Sendable {
             return ["stats", "--json"]
         case .check:
             return ["check"]
+        case .forget(let retention):
+            return ["forget", "--prune"] + retention.keepArguments
         case .catConfig:
             return ["cat", "config", "--json"]
         case .restore(let snapshotID, let target):

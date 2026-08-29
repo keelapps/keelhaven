@@ -76,16 +76,36 @@ final class ModelRoundTripTests: XCTestCase {
         XCTAssertEqual(try roundTrip(plan), plan)
     }
 
-    func testLegacyPlanJSONDecodesWithCheckDefaults() throws {
-        // A plan saved by 0.2.0, before scheduled checks existed: same shape
-        // as today's encoder output minus the two check keys.
+    func testPlanWithRetentionFieldsRoundTrip() throws {
+        let plan = BackupPlan(
+            name: "Documents",
+            sourcePaths: ["/Users/me/Documents"],
+            destination: .local(path: "/Volumes/Backup/repo"),
+            schedule: .hourly,
+            retention: .year,
+            createdAt: date,
+            lastPrune: PruneRunRecord(
+                date: date,
+                success: false,
+                duration: 42.0,
+                errorMessage: "unable to create lock in backend"
+            )
+        )
+        XCTAssertEqual(try roundTrip(plan), plan)
+    }
+
+    func testLegacyPlanJSONDecodesWithFeatureDefaults() throws {
+        // A plan saved by 0.2.0, before scheduled checks and retention
+        // existed: same shape as today's encoder output minus those keys.
         let plan = BackupPlan(
             name: "Documents",
             sourcePaths: ["/Users/me/Documents"],
             destination: .local(path: "/Volumes/Backup/repo"),
             schedule: .daily(hour: 21, minute: 30),
+            retention: .month,
             createdAt: date,
-            lastCheck: CheckRunRecord(date: date, success: true)
+            lastCheck: CheckRunRecord(date: date, success: true),
+            lastPrune: PruneRunRecord(date: date, success: true)
         )
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
@@ -94,6 +114,8 @@ final class ModelRoundTripTests: XCTestCase {
         )
         object.removeValue(forKey: "checkCadence")
         object.removeValue(forKey: "lastCheck")
+        object.removeValue(forKey: "retention")
+        object.removeValue(forKey: "lastPrune")
         let legacyData = try JSONSerialization.data(withJSONObject: object)
 
         let decoder = JSONDecoder()
@@ -101,6 +123,8 @@ final class ModelRoundTripTests: XCTestCase {
         let decoded = try decoder.decode(BackupPlan.self, from: legacyData)
         XCTAssertEqual(decoded.checkCadence, .weekly)
         XCTAssertNil(decoded.lastCheck)
+        XCTAssertEqual(decoded.retention, .off)
+        XCTAssertNil(decoded.lastPrune)
         XCTAssertEqual(decoded.name, plan.name)
         XCTAssertEqual(decoded.schedule, plan.schedule)
     }

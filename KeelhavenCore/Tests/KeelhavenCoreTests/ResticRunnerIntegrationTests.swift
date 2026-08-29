@@ -89,6 +89,22 @@ final class ResticRunnerIntegrationTests: XCTestCase {
             credentials: credentials
         )
 
+        // forget --prune with a real keep policy: exits clean and keeps the
+        // only snapshot (every preset keeps the three most recent)
+        try await runner.runIgnoringOutput(
+            .forget(retention: .month),
+            destination: destination,
+            credentials: credentials
+        )
+        let afterPrune = try await runner.run(
+            .snapshots,
+            destination: destination,
+            credentials: credentials,
+            decoding: [ResticSnapshot].self
+        )
+        XCTAssertEqual(afterPrune.count, 1)
+        XCTAssertEqual(afterPrune[0].id, snapshotID)
+
         // restore the snapshot into a fresh target and verify the files
         let restoreTarget = workDirectory.appendingPathComponent("restored", isDirectory: true)
         var restoreSummary: RestoreSummary?

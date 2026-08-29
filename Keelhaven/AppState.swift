@@ -7,6 +7,7 @@ enum PlanRunState: Equatable {
     case idle
     case running(progress: Double)
     case checking
+    case pruning
     case succeeded(Date)
     case failed(String)
 }
@@ -116,7 +117,7 @@ final class AppState {
         let states = runStates.values
         if states.contains(where: {
             switch $0 {
-            case .running, .checking: return true
+            case .running, .checking, .pruning: return true
             default: return false
             }
         }) {
@@ -163,7 +164,8 @@ final class AppState {
         sourcePaths: [String],
         excludePatterns: [String],
         schedule: Schedule,
-        checkCadence: CheckCadence
+        checkCadence: CheckCadence,
+        retention: RetentionPolicy
     ) {
         let trimmed = name.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty, !sourcePaths.isEmpty,
@@ -173,6 +175,7 @@ final class AppState {
         plans[index].excludePatterns = excludePatterns
         plans[index].schedule = schedule
         plans[index].checkCadence = checkCadence
+        plans[index].retention = retention
         Task {
             try? await planStore.save(plans)
         }
@@ -191,13 +194,13 @@ final class AppState {
 
     // MARK: - Running backups
 
-    /// True while any plan has a restic process going — a backup or a
-    /// repository check. One restic at a time, app-wide: two invocations
-    /// would contend for the repository lock.
+    /// True while any plan has a restic process going — a backup, a
+    /// repository check, or a retention pass. One restic at a time, app-wide:
+    /// two invocations would contend for the repository lock.
     var isResticBusy: Bool {
         runStates.values.contains {
             switch $0 {
-            case .running, .checking: return true
+            case .running, .checking, .pruning: return true
             default: return false
             }
         }
@@ -264,6 +267,15 @@ final class AppState {
             if let current = plans.first(where: { $0.id == plan.id }),
                CheckPolicy.isDue(current, now: Date()) {
                 await performCheck(current, binaryURL: binaryURL)
+            }
+            // Retention rides the same tail, after any due check and only
+            // when the repository didn't just fail verification — compacting
+            // a repository restic reports as damaged could repack away the
+            // redundant copies a repair needs.
+            if let current = plans.first(where: { $0.id == plan.id }),
+               PrunePolicy.isDue(current, now: Date()),
+               current.lastCheck?.success != false {
+                await performPrune(current, binaryURL: binaryURL)
             }
         } catch {
             let message = (error as? ResticError)?.localizedDescription ?? error.localizedDescription
@@ -336,6 +348,54 @@ final class AppState {
     private func finishCheck(_ plan: BackupPlan, record: CheckRunRecord) async {
         if let index = plans.firstIndex(where: { $0.id == plan.id }) {
             plans[index].lastCheck = record
+        }
+        try? await planStore.save(plans)
+    }
+
+    // MARK: - Retention
+
+    /// Scheduled-only, chained off `performBackup` like checks — there is no
+    /// manual "prune now" action; enabling retention on an old plan makes the
+    /// first pass due at the very next backup.
+    private func performPrune(_ plan: BackupPlan, binaryURL: URL) async {
+        let stateBefore = runStates[plan.id] ?? .idle
+        runStates[plan.id] = .pruning
+        let startedAt = Date()
+        do {
+            let credentials = try credentials(for: plan)
+            let runner = ResticRunner(binaryURL: binaryURL)
+            try await runner.runIgnoringOutput(
+                .forget(retention: plan.retention),
+                destination: plan.destination,
+                credentials: credentials
+            )
+            await finishPrune(plan, record: PruneRunRecord(
+                date: startedAt,
+                success: true,
+                duration: Date().timeIntervalSince(startedAt)
+            ))
+            runStates[plan.id] = stateBefore
+            // Success is silent — space quietly reclaimed is the feature.
+        } catch {
+            let message = (error as? ResticError)?.localizedDescription ?? error.localizedDescription
+            await finishPrune(plan, record: PruneRunRecord(
+                date: startedAt,
+                success: false,
+                duration: Date().timeIntervalSince(startedAt),
+                errorMessage: message
+            ))
+            // Unlike a failed check, a failed prune keeps `stateBefore`: the
+            // backups themselves are intact, only the cleanup is late — the
+            // notification carries the details and the clock retries in a
+            // week.
+            runStates[plan.id] = stateBefore
+            await NotificationService.postPruneFailed(planName: plan.name, message: message)
+        }
+    }
+
+    private func finishPrune(_ plan: BackupPlan, record: PruneRunRecord) async {
+        if let index = plans.firstIndex(where: { $0.id == plan.id }) {
+            plans[index].lastPrune = record
         }
         try? await planStore.save(plans)
     }

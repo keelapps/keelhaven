@@ -30,6 +30,25 @@ final class ResticCommandTests: XCTestCase {
         XCTAssertEqual(ResticCommand.catConfig.arguments, ["cat", "config", "--json"])
     }
 
+    func testForgetArguments() {
+        XCTAssertEqual(ResticCommand.forget(retention: .year).arguments, [
+            "forget", "--prune",
+            "--keep-last", "3",
+            "--keep-daily", "7",
+            "--keep-weekly", "5",
+            "--keep-monthly", "12",
+        ])
+        XCTAssertEqual(ResticCommand.forget(retention: .month).arguments, [
+            "forget", "--prune",
+            "--keep-last", "3",
+            "--keep-daily", "7",
+            "--keep-weekly", "4",
+        ])
+        // Never issued by the app — PrunePolicy.isDue is false for .off —
+        // and restic rejects the bare command rather than deleting anything.
+        XCTAssertEqual(ResticCommand.forget(retention: .off).arguments, ["forget", "--prune"])
+    }
+
     func testRestoreArguments() {
         let command = ResticCommand.restore(snapshotID: "c4e6a708", target: "/tmp/restored")
         XCTAssertEqual(command.arguments, ["restore", "c4e6a708", "--target", "/tmp/restored", "--json"])
