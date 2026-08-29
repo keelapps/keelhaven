@@ -40,6 +40,16 @@ enum NotificationService {
         await post(content)
     }
 
+    /// Only failures notify — a successful retention pass is invisible by
+    /// design.
+    static func postPruneFailed(planName: String, message: String) async {
+        let content = UNMutableNotificationContent()
+        content.title = String(localized: "Backup cleanup failed")
+        content.body = "\(planName): \(message)"
+        content.sound = .default
+        await post(content)
+    }
+
     private static func post(_ content: UNMutableNotificationContent) async {
         let request = UNNotificationRequest(
             identifier: UUID().uuidString,

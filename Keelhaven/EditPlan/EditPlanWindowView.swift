@@ -47,6 +47,8 @@ struct EditPlanWindowView: View {
 
             verificationSection
 
+            retentionSection
+
             destinationRow(for: plan)
 
             excludeSection
@@ -65,7 +67,8 @@ struct EditPlanWindowView: View {
                         sourcePaths: model.sourcePaths,
                         excludePatterns: model.excludePatterns,
                         schedule: model.builtSchedule(),
-                        checkCadence: model.checkCadence
+                        checkCadence: model.checkCadence,
+                        retention: model.retention
                     )
                     dismiss()
                 }
@@ -136,6 +139,24 @@ struct EditPlanWindowView: View {
             .pickerStyle(.segmented)
             .frame(maxWidth: 260)
             Text("Runs restic's own repository check after a backup, and only speaks up when something is wrong.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private var retentionSection: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Retention")
+                .font(.headline)
+            Picker("Retention", selection: $model.retention) {
+                Text("Keep everything").tag(RetentionPolicy.off)
+                Text("A year of history").tag(RetentionPolicy.year)
+                Text("A month of history").tag(RetentionPolicy.month)
+            }
+            .labelsHidden()
+            .pickerStyle(.segmented)
+            .frame(maxWidth: 380)
+            Text("Thins older snapshots to daily, weekly and monthly keepers and reclaims the space — after a backup, at most once a week. Keep everything never deletes a snapshot.")
                 .font(.callout)
                 .foregroundStyle(.secondary)
         }

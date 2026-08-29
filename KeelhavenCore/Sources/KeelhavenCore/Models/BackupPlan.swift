@@ -12,9 +12,11 @@ public struct BackupPlan: Codable, Identifiable, Hashable, Sendable {
     public var schedule: Schedule
     public var excludePatterns: [String]
     public var checkCadence: CheckCadence
+    public var retention: RetentionPolicy
     public var createdAt: Date
     public var lastRun: BackupRunRecord?
     public var lastCheck: CheckRunRecord?
+    public var lastPrune: PruneRunRecord?
 
     public static let defaultExcludePatterns: [String] = [
         ".DS_Store",
@@ -31,9 +33,11 @@ public struct BackupPlan: Codable, Identifiable, Hashable, Sendable {
         schedule: Schedule,
         excludePatterns: [String] = BackupPlan.defaultExcludePatterns,
         checkCadence: CheckCadence = .weekly,
+        retention: RetentionPolicy = .off,
         createdAt: Date = Date(),
         lastRun: BackupRunRecord? = nil,
-        lastCheck: CheckRunRecord? = nil
+        lastCheck: CheckRunRecord? = nil,
+        lastPrune: PruneRunRecord? = nil
     ) {
         self.id = id
         self.name = name
@@ -42,14 +46,16 @@ public struct BackupPlan: Codable, Identifiable, Hashable, Sendable {
         self.schedule = schedule
         self.excludePatterns = excludePatterns
         self.checkCadence = checkCadence
+        self.retention = retention
         self.createdAt = createdAt
         self.lastRun = lastRun
         self.lastCheck = lastCheck
+        self.lastPrune = lastPrune
     }
 
-    /// Plans saved before scheduled checks existed lack the two check keys —
-    /// decode them leniently so an upgrade can never lose the plan list.
-    /// (`encode(to:)` and `CodingKeys` stay synthesized.)
+    /// Plans saved before scheduled checks or retention existed lack those
+    /// keys — decode them leniently so an upgrade can never lose the plan
+    /// list. (`encode(to:)` and `CodingKeys` stay synthesized.)
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(UUID.self, forKey: .id)
@@ -59,8 +65,10 @@ public struct BackupPlan: Codable, Identifiable, Hashable, Sendable {
         schedule = try container.decode(Schedule.self, forKey: .schedule)
         excludePatterns = try container.decode([String].self, forKey: .excludePatterns)
         checkCadence = try container.decodeIfPresent(CheckCadence.self, forKey: .checkCadence) ?? .weekly
+        retention = try container.decodeIfPresent(RetentionPolicy.self, forKey: .retention) ?? .off
         createdAt = try container.decode(Date.self, forKey: .createdAt)
         lastRun = try container.decodeIfPresent(BackupRunRecord.self, forKey: .lastRun)
         lastCheck = try container.decodeIfPresent(CheckRunRecord.self, forKey: .lastCheck)
+        lastPrune = try container.decodeIfPresent(PruneRunRecord.self, forKey: .lastPrune)
     }
 }

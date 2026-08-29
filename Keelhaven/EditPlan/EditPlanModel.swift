@@ -14,6 +14,7 @@ final class EditPlanModel {
     var dailyTime = Schedule.defaultDailyTime
     var weekday = Calendar.current.firstWeekday
     var checkCadence: CheckCadence = .weekly
+    var retention: RetentionPolicy = .off
     /// Scratch field for the exclude-pattern TextField.
     var newExcludePattern = ""
 
@@ -23,6 +24,7 @@ final class EditPlanModel {
         excludePatterns = plan.excludePatterns
         (scheduleKind, dailyTime, weekday) = plan.schedule.editorComponents
         checkCadence = plan.checkCadence
+        retention = plan.retention
         newExcludePattern = ""
     }
 

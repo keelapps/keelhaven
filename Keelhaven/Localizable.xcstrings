@@ -95,12 +95,32 @@
         }
       }
     },
+    "A month of history": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留一个月"
+          }
+        }
+      }
+    },
     "A password is required to encrypt the backup.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "需要设置密码来加密备份"
+          }
+        }
+      }
+    },
+    "A year of history": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留一年"
           }
         }
       }
@@ -305,6 +325,16 @@
         }
       }
     },
+    "Backup cleanup failed": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "备份清理失败"
+          }
+        }
+      }
+    },
     "Backup complete": {
       "localizations": {
         "zh-Hans": {
@@ -431,6 +461,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "选取…"
+          }
+        }
+      }
+    },
+    "Cleaning up old snapshots…": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在清理旧快照…"
           }
         }
       }
@@ -891,6 +931,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keelhaven 需要 restic %@ 或更新版本。请用以下命令更新：brew upgrade restic"
+          }
+        }
+      }
+    },
+    "Keep everything": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留全部"
           }
         }
       }
@@ -1395,6 +1445,26 @@
         }
       }
     },
+    "Retention": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留策略"
+          }
+        }
+      }
+    },
+    "Retention cleanup running": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留策略清理进行中"
+          }
+        }
+      }
+    },
     "S3, SFTP, or an existing repository": {
       "localizations": {
         "zh-Hans": {
@@ -1571,6 +1641,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "首次备份会在创建计划后立即开始；之后按此计划运行，睡眠或关机错过的时间点会自动补跑。"
+          }
+        }
+      }
+    },
+    "Thins older snapshots to daily, weekly and monthly keepers and reclaims the space — after a backup, at most once a week. Keep everything never deletes a snapshot.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "将较旧的快照按每日、每周、每月逐级精简并回收空间——在备份完成后进行，每周最多一次。“保留全部”不会删除任何快照。"
           }
         }
       }

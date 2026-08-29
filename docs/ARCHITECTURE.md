@@ -54,6 +54,7 @@ Backups are serialized: one at a time, app-wide.
 | In-app 60s timer + login item | No launchd plist lifecycle to manage | `SMAppService.agent(plistName:)` launchd agent reusing `SchedulePolicy` |
 | App Sandbox OFF (hardened runtime ON) | restic child needs arbitrary folder read, network, ssh | Security-scoped bookmarks + XPC — known App Store blocker, revisit post-v1 |
 | JSON files in Application Support | Human-readable, atomic writes, Codable round-trip tested | — |
+| Retention as three presets (`off`/`year`/`month`), `forget --prune` riding the backup tail weekly | A choice a person can read instead of five keep-count fields; off (never delete) is the default; output isn't parsed — the exit code decides, like `check` | Custom keep counts can become a parameterized case alongside the presets |
 
 ## restic contract
 
@@ -78,5 +79,6 @@ exercises the real binary end-to-end when it's installed.
 
 File-level browsing inside snapshots (whole-snapshot restore shipped:
 plan actions → Restore… lists snapshots and restores into a fresh subfolder),
-retention/prune policies, additional backends (rclone family),
-launchd scheduling, sandboxing.
+custom retention keep counts (preset retention shipped: Edit Plan →
+Retention), additional backends (rclone family), launchd scheduling,
+sandboxing.

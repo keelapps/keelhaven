@@ -255,6 +255,16 @@ struct PlanStatusRow: View {
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(String(localized: "Backup verification running"))
+        case .pruning:
+            HStack(spacing: 6) {
+                ProgressView()
+                    .controlSize(.small)
+                Text("Cleaning up old snapshots…")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(String(localized: "Retention cleanup running"))
         case .failed(let message):
             Text(message)
                 .font(.callout)
