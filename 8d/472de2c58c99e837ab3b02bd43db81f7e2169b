@@ -1,0 +1,32 @@
+site/.vitepress/theme/components/LandingNav.vue
+  s_996692c72c618d::t_a61ce28675ff5f 46-47
+  s_996692c72c618d::t_ae189e8beaf8fc 13-23,26-33
+  s_996692c72c618d::t_45ff4bb3ab1774 91-118
+  s_996692c72c618d::t_5d993a35f74730 65-66
+  s_996692c72c618d::t_5b7e03044497b7 34
+site/zh/licenses.md
+  s_996692c72c618d::t_c938d9776300bc 10
+site/zh/index.md
+  s_996692c72c618d::t_2cdf6981e2e866 7-8,18,23,39,86,95,108,115,120,122,127,129,134,136,143,148,150,155,157,162,164,171,178,184,188,191-193,199,203,205-207,210,212,215,217,220,222,227,232,237,240,242,245,247,250,252,255,257,260,262,267
+site/.vitepress/theme/landing.css
+  s_996692c72c618d::t_89018d82754756 205-256
+  s_996692c72c618d::t_2ab66cc8d01fe7 737-743
+site/zh/privacy.md
+  s_996692c72c618d::t_0a41b0a9365d1d 3,5-8,10,12-13,15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "8d472de2c58c99e837ab3b02bd43db81f7e2169b",
+  "prompts": {},
+  "sessions": {
+    "s_996692c72c618d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6167a97b-3c9d-49f4-a832-05065685633e",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
