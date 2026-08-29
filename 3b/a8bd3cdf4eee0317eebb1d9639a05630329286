@@ -1,0 +1,43 @@
+site/zh/index.md
+  s_996692c72c618d::t_b71f0531f4f0a9 1-16,19-22,24-81,85-274
+  s_996692c72c618d::t_3a95cb8b5ed534 82-84
+  s_996692c72c618d::t_7e10b75aadd5d2 17-18,23
+site/.vitepress/theme/landing.css
+  s_996692c72c618d::t_89bb06d6d2f4b1 205-212
+  s_996692c72c618d::t_fab14b1420cfe7 194-196
+site/.vitepress/theme/components/LandingNav.vue
+  s_996692c72c618d::t_d18598c649413b 3-4,9,12-20
+  s_996692c72c618d::t_36c64516b415d5 74
+  s_996692c72c618d::t_c8bde78d214207 21
+site/zh/privacy.md
+  s_996692c72c618d::t_dd8b658221b1a8 1-15
+CLAUDE.md
+  s_996692c72c618d::t_d79e0c1667dfbe 43
+site/zh/licenses.md
+  s_996692c72c618d::t_775bf211b3c7f1 1-67
+site/.vitepress/config.mts
+  s_996692c72c618d::t_8d64bb8f754c16 113-132
+site/index.md
+  s_996692c72c618d::t_7ed54cda83a0b2 7-8
+site/.vitepress/theme/components/MenuBarDemo.vue
+  s_996692c72c618d::t_dc3aa5097be2b2 43,55,74-75,81,84-85,96-97,103,106,114,119,123,141-142
+  s_996692c72c618d::t_24ac531f50a027 2-32
+docs/WEBSITE.md
+  s_996692c72c618d::t_a1db2c4de235a9 20-22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "3ba8bd3cdf4eee0317eebb1d9639a05630329286",
+  "prompts": {},
+  "sessions": {
+    "s_996692c72c618d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6167a97b-3c9d-49f4-a832-05065685633e",
+        "model": "claude-fable-5"
+      },
+      "human_author": "shenxianpeng <xianpeng.shen@gmail.com>"
+    }
+  }
+}
