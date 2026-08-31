@@ -8,8 +8,13 @@ enum PlanRunState: Equatable {
     case running(progress: Double)
     case checking
     case pruning
+    case unlocking
     case succeeded(Date)
     case failed(String)
+    /// A failure restic blames on a repository lock (exit code 11). Separate
+    /// from `failed` for one reason: it is the only failure the row can offer
+    /// a fix for, so it carries an unlock button instead of dead red text.
+    case failedLocked(String)
 }
 
 /// Root observable state: owns the plan list, run states, and all services.
@@ -117,13 +122,18 @@ final class AppState {
         let states = runStates.values
         if states.contains(where: {
             switch $0 {
-            case .running, .checking, .pruning: return true
+            case .running, .checking, .pruning, .unlocking: return true
             default: return false
             }
         }) {
             return .symbol("arrow.triangle.2.circlepath")
         }
-        if states.contains(where: { if case .failed = $0 { return true }; return false }) {
+        if states.contains(where: {
+            switch $0 {
+            case .failed, .failedLocked: return true
+            default: return false
+            }
+        }) {
             return .symbol("exclamationmark.triangle")
         }
         return .idle
@@ -195,12 +205,12 @@ final class AppState {
     // MARK: - Running backups
 
     /// True while any plan has a restic process going — a backup, a
-    /// repository check, or a retention pass. One restic at a time, app-wide:
-    /// two invocations would contend for the repository lock.
+    /// repository check, a retention pass, or an unlock. One restic at a time,
+    /// app-wide: two invocations would contend for the repository lock.
     var isResticBusy: Bool {
         runStates.values.contains {
             switch $0 {
-            case .running, .checking, .pruning: return true
+            case .running, .checking, .pruning, .unlocking: return true
             default: return false
             }
         }
@@ -278,10 +288,13 @@ final class AppState {
                 await performPrune(current, binaryURL: binaryURL)
             }
         } catch {
-            let message = (error as? ResticError)?.localizedDescription ?? error.localizedDescription
+            let resticError = error as? ResticError
+            let message = resticError?.localizedDescription ?? error.localizedDescription
             let record = BackupRunRecord(date: startedAt, success: false, errorMessage: message)
             await finishRun(plan, record: record)
-            runStates[plan.id] = .failed(message)
+            runStates[plan.id] = resticError?.isRepositoryLocked == true
+                ? .failedLocked(message)
+                : .failed(message)
             await NotificationService.postBackupFailed(planName: plan.name, message: message)
         }
     }
@@ -352,6 +365,48 @@ final class AppState {
         try? await planStore.save(plans)
     }
 
+    // MARK: - Repository locks
+
+    /// Clears stale locks, then runs the backup they were blocking.
+    ///
+    /// Safe by construction: `restic unlock` (no `--remove-all`) removes only
+    /// locks whose owner is gone, so another Mac genuinely mid-backup keeps
+    /// its lock and its run. That also bounds what this can fix — against a
+    /// live lock it succeeds and changes nothing, and the plan stays blocked
+    /// until the other backup finishes, which is the correct outcome.
+    ///
+    /// The backup follows because clearing a lock is never the goal in
+    /// itself; it also re-runs the retention pass, which is what the lock was
+    /// really holding up.
+    func unlockRepository(_ plan: BackupPlan) {
+        guard !isResticBusy else { return }
+        guard let binaryURL = resticBinaryURL else {
+            runStates[plan.id] = .failed(ResticError.binaryNotFound.localizedDescription)
+            return
+        }
+        runStates[plan.id] = .unlocking
+        Task {
+            do {
+                let credentials = try credentials(for: plan)
+                let runner = ResticRunner(binaryURL: binaryURL)
+                try await runner.runIgnoringOutput(
+                    .unlock,
+                    destination: plan.destination,
+                    credentials: credentials
+                )
+                runStates[plan.id] = .idle
+                runBackup(plan)
+            } catch {
+                let resticError = error as? ResticError
+                let message = resticError?.localizedDescription ?? error.localizedDescription
+                // A lock that survives its own removal is not something the
+                // button can fix twice — fall back to plain `failed` so the
+                // row stops offering the same dead end.
+                runStates[plan.id] = .failed(message)
+            }
+        }
+    }
+
     // MARK: - Retention
 
     /// Scheduled-only, chained off `performBackup` like checks — there is no
@@ -377,17 +432,27 @@ final class AppState {
             runStates[plan.id] = stateBefore
             // Success is silent — space quietly reclaimed is the feature.
         } catch {
-            let message = (error as? ResticError)?.localizedDescription ?? error.localizedDescription
+            let resticError = error as? ResticError
+            let message = resticError?.localizedDescription ?? error.localizedDescription
+            let blockedByLock = resticError?.isRepositoryLocked == true
             await finishPrune(plan, record: PruneRunRecord(
                 date: startedAt,
                 success: false,
                 duration: Date().timeIntervalSince(startedAt),
-                errorMessage: message
+                errorMessage: message,
+                blockedByLock: blockedByLock
             ))
             // Unlike a failed check, a failed prune keeps `stateBefore`: the
             // backups themselves are intact, only the cleanup is late — the
             // notification carries the details and the clock retries in a
             // week.
+            //
+            // A lock is the exception, and the reason `blockedByLock` exists.
+            // `forget --prune` needs an exclusive lock, so one stale lock
+            // blocks it every week from here on while backups keep succeeding
+            // — a plan that looks healthy and quietly never reclaims a byte.
+            // The row surfaces that one and offers the unlock; retrying on a
+            // weekly timer would never have cleared it.
             runStates[plan.id] = stateBefore
             await NotificationService.postPruneFailed(planName: plan.name, message: message)
         }

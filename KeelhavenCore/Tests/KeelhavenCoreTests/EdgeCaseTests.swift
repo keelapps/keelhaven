@@ -7,9 +7,27 @@ final class ResticErrorDescriptionTests: XCTestCase {
         XCTAssertEqual(error, .repositoryLocked(message: "repo already locked"))
     }
 
+    /// The lock is the only failure the app offers a fix for, so every other
+    /// case must stay out of that branch — a stray true would put an unlock
+    /// button on a failure unlocking cannot help.
+    func testOnlyRepositoryLockedIsUnlockable() {
+        XCTAssertTrue(ResticError.repositoryLocked(message: "m").isRepositoryLocked)
+        let others: [ResticError] = [
+            .binaryNotFound,
+            .repositoryDoesNotExist(message: "m"),
+            .repositoryAlreadyExists(message: "m"),
+            .wrongPassword(message: "m"),
+            .commandFailed(exitCode: 3, message: "m"),
+            .outputDecodingFailed(message: "m"),
+        ]
+        for error in others {
+            XCTAssertFalse(error.isRepositoryLocked, "\(error) must not offer unlock")
+        }
+    }
+
     func testEveryCaseHasAnActionableDescription() {
         let cases: [(ResticError, String)] = [
-            (.binaryNotFound, "could not be found"),
+            (.binaryNotFound, "backup engine is missing"),
             (.repositoryDoesNotExist(message: "m"), "was not found"),
             (.repositoryAlreadyExists(message: "m"), "already contains a backup repository"),
             (.repositoryLocked(message: "m"), "locked by another process"),

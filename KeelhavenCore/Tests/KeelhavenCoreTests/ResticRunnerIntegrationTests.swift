@@ -159,6 +159,129 @@ final class ResticRunnerIntegrationTests: XCTestCase {
         }
     }
 
+    /// The lock path, end to end against a real restic — the exact failure
+    /// the menu bar's unlock button exists for.
+    ///
+    /// A backup killed outright (power cut, force quit) leaves its
+    /// non-exclusive lock behind. Plain backups step around it, so the plan
+    /// keeps looking healthy; `forget --prune` cannot, because it needs an
+    /// exclusive lock, so retention fails with exit code 11 every week from
+    /// then on and never reclaims a byte. `unlock` is what clears it.
+    ///
+    /// The lock is held by `backup --stdin` reading a pipe nothing writes to:
+    /// it takes the lock immediately and holds it until EOF, so SIGKILL lands
+    /// while the lock is definitely there. Backing up real files would race —
+    /// it finishes, and releases the lock, before the kill.
+    func testStaleLockBlocksPruneUntilUnlockClearsIt() async throws {
+        guard let binary = IntegrationTestSupport.locateRestic() else {
+            throw XCTSkip("restic is not installed; run: brew install restic")
+        }
+
+        let repoURL = workDirectory.appendingPathComponent("repo", isDirectory: true)
+        let sourceURL = workDirectory.appendingPathComponent("src", isDirectory: true)
+        try FileManager.default.createDirectory(at: sourceURL, withIntermediateDirectories: true)
+        try Data("lock test\n".utf8).write(to: sourceURL.appendingPathComponent("a.txt"))
+
+        let destination = Destination.local(path: repoURL.path)
+        let credentials = RepoCredentials(repositoryPassword: "lock-test-password")
+        let runner = ResticRunner(binaryURL: binary)
+
+        _ = try await runner.run(
+            .initRepository,
+            destination: destination,
+            credentials: credentials,
+            decoding: ResticInitResult.self
+        )
+        // A snapshot, so the retention pass below has something real to do.
+        for try await _ in runner.backupStream(
+            .backup(sources: [sourceURL.path], excludes: [], tag: "keelhaven-test"),
+            destination: destination,
+            credentials: credentials
+        ) {}
+
+        let holder = Process()
+        holder.executableURL = binary
+        holder.arguments = ["backup", "--stdin", "--stdin-filename", "held.txt"]
+        holder.environment = [
+            "RESTIC_REPOSITORY": repoURL.path,
+            "RESTIC_PASSWORD": credentials.repositoryPassword,
+            "PATH": "/usr/bin:/bin",
+            "HOME": NSHomeDirectory(),
+            "TMPDIR": NSTemporaryDirectory(),
+        ]
+        let holderInput = Pipe()
+        holder.standardInput = holderInput
+        holder.standardOutput = FileHandle.nullDevice
+        holder.standardError = FileHandle.nullDevice
+        try holder.run()
+        defer {
+            try? holderInput.fileHandleForWriting.close()
+            if holder.isRunning {
+                holder.terminate()
+                holder.waitUntilExit()
+            }
+        }
+
+        let locksURL = repoURL.appendingPathComponent("locks", isDirectory: true)
+        func lockCount() -> Int {
+            ((try? FileManager.default.contentsOfDirectory(atPath: locksURL.path)) ?? []).count
+        }
+        var lockAppeared = false
+        for _ in 0..<100 where !lockAppeared {
+            if lockCount() == 0 {
+                try await Task.sleep(nanoseconds: 50_000_000)
+            } else {
+                lockAppeared = true
+            }
+        }
+        guard lockAppeared else {
+            return XCTFail("The holder process never took a lock — test setup is broken")
+        }
+
+        // SIGKILL, not terminate: restic handles SIGTERM by releasing the
+        // lock, which is precisely the case that needs no recovery.
+        kill(holder.processIdentifier, SIGKILL)
+        holder.waitUntilExit()
+        XCTAssertEqual(lockCount(), 1, "SIGKILL should have left the lock behind")
+
+        // Backups are unaffected — the reason this failure hides so well.
+        for try await _ in runner.backupStream(
+            .backup(sources: [sourceURL.path], excludes: [], tag: "keelhaven-test"),
+            destination: destination,
+            credentials: credentials
+        ) {}
+
+        // Retention is not: exclusive lock, so exit code 11.
+        do {
+            try await runner.runIgnoringOutput(
+                .forget(retention: .year),
+                destination: destination,
+                credentials: credentials
+            )
+            XCTFail("Expected the stale lock to block forget --prune")
+        } catch let error as ResticError {
+            guard case .repositoryLocked = error else {
+                return XCTFail("Expected repositoryLocked, got \(error)")
+            }
+            XCTAssertTrue(error.isRepositoryLocked)
+        }
+
+        // The way out the unlock button takes.
+        try await runner.runIgnoringOutput(
+            .unlock,
+            destination: destination,
+            credentials: credentials
+        )
+        XCTAssertEqual(lockCount(), 0, "unlock left the stale lock behind")
+
+        // Same command, now unblocked — the recovery actually recovers.
+        try await runner.runIgnoringOutput(
+            .forget(retention: .year),
+            destination: destination,
+            credentials: credentials
+        )
+    }
+
     func testMissingBinaryThrowsBinaryNotFound() async {
         let runner = ResticRunner(binaryURL: URL(fileURLWithPath: "/nonexistent/restic"))
         do {

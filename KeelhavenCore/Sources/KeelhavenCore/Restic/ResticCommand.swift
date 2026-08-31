@@ -18,6 +18,15 @@ public enum ResticCommand: Equatable, Sendable {
     case catConfig
     /// Restores a whole snapshot into the target folder.
     case restore(snapshotID: String, target: String)
+    /// Clears stale locks so retention passes can run again.
+    ///
+    /// Deliberately without `--remove-all`. Verified against restic 0.19.1:
+    /// the plain command removes only locks whose owning process is gone,
+    /// and leaves a lock another machine is actively holding exactly where it
+    /// is — so it can never cut short a backup running elsewhere against the
+    /// same repository. `--remove-all` does tear those out, which is why it
+    /// stays out of the app entirely.
+    case unlock
 
     public var arguments: [String] {
         switch self {
@@ -47,6 +56,8 @@ public enum ResticCommand: Equatable, Sendable {
             return ["cat", "config", "--json"]
         case .restore(let snapshotID, let target):
             return ["restore", snapshotID, "--target", target, "--json"]
+        case .unlock:
+            return ["unlock"]
         }
     }
 }

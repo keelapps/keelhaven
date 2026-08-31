@@ -13,9 +13,9 @@ enum PlanHealth {
 extension BackupPlan {
     func health(runState: PlanRunState) -> PlanHealth {
         switch runState {
-        case .running, .checking, .pruning:
+        case .running, .checking, .pruning, .unlocking:
             return .running
-        case .failed:
+        case .failed, .failedLocked:
             return .needsAttention
         case .succeeded:
             return .ok

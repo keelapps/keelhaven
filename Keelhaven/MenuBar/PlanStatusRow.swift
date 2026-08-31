@@ -89,6 +89,15 @@ struct PlanStatusRow: View {
                 if let lastCheck = plan.lastCheck {
                     verificationLine(lastCheck)
                 }
+                // A lock-blocked cleanup is the one failure that never clears
+                // itself and never shows up anywhere else: backups keep
+                // succeeding, the dot stays green, and the weekly retry hits
+                // the same lock forever. Its own line, with the way out.
+                if let lastPrune = plan.lastPrune,
+                   !lastPrune.success,
+                   lastPrune.blockedByLock == true {
+                    retentionBlockedLine(lastPrune)
+                }
                 statusLine
             }
         }
@@ -122,6 +131,14 @@ struct PlanStatusRow: View {
         }
         Button("Verify Backup Now") {
             appState.runCheck(plan)
+        }
+        .disabled(appState.isResticBusy || appState.resticBinaryURL == nil)
+        // Also reachable from the failed row itself. It stays in the menu for
+        // the case the row can't cover: a relaunch resets the run state to
+        // idle, so a plan still locked from yesterday shows only red text
+        // until its next scheduled attempt re-detects the lock.
+        Button("Unlock Repository…") {
+            confirmAndUnlock()
         }
         .disabled(appState.isResticBusy || appState.resticBinaryURL == nil)
         Button("Edit Plan…") {
@@ -172,6 +189,22 @@ struct PlanStatusRow: View {
         alert.addButton(withTitle: String(localized: "Cancel"))
         guard alert.runModal() == .alertFirstButtonReturn else { return }
         deletePlan()
+    }
+
+    /// No Touch ID gate and no warning styling: this destroys no backup data,
+    /// and `restic unlock` leaves a lock another Mac is actively holding
+    /// alone. It still asks first, because it is worth saying what it does
+    /// and does not reach.
+    private func confirmAndUnlock() {
+        NSApp.activate(ignoringOtherApps: true)
+        let alert = NSAlert()
+        alert.messageText = String(localized: "Unlock the repository for “\(plan.name)”?")
+        alert.informativeText = String(localized: "This clears locks left behind by a backup that was interrupted — the usual reason cleanup keeps failing. A backup running right now on another Mac keeps its own lock and is left alone; that one has to finish on its own.\n\nKeelhaven retries this plan's backup right after unlocking.")
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: String(localized: "Unlock"))
+        alert.addButton(withTitle: String(localized: "Cancel"))
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+        appState.unlockRepository(plan)
     }
 
     /// Both actions below are gated behind Touch ID (login password fallback
@@ -237,6 +270,23 @@ struct PlanStatusRow: View {
             : String(localized: "Backup verification failed"))
     }
 
+    /// Orange, not red: the backups themselves are fine and the health dot
+    /// stays green — it is only the space reclaim that is stuck.
+    private func retentionBlockedLine(_ prune: PruneRunRecord) -> some View {
+        HStack(spacing: 4) {
+            Image(systemName: "clock.badge.exclamationmark")
+            Text("Cleanup blocked by a repository lock")
+            Button("Unlock…") {
+                confirmAndUnlock()
+            }
+            .buttonStyle(.link)
+            .disabled(appState.isResticBusy || appState.resticBinaryURL == nil)
+        }
+        .font(.callout)
+        .foregroundStyle(.orange)
+        .help(prune.errorMessage ?? String(localized: "The last retention pass could not get a lock on the repository"))
+    }
+
     @ViewBuilder
     private var statusLine: some View {
         switch runState {
@@ -265,11 +315,37 @@ struct PlanStatusRow: View {
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(String(localized: "Retention cleanup running"))
+        case .unlocking:
+            HStack(spacing: 6) {
+                ProgressView()
+                    .controlSize(.small)
+                Text("Unlocking repository…")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(String(localized: "Unlocking repository"))
         case .failed(let message):
             Text(message)
                 .font(.callout)
                 .foregroundStyle(.red)
                 .help(message)
+        case .failedLocked(let message):
+            // restic's own three lines of PID-and-hostname detail stay in the
+            // tooltip; the row says the one thing that matters and offers the
+            // way out, which is the whole point of splitting this state off.
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Backup blocked by a repository lock")
+                    .font(.callout)
+                    .foregroundStyle(.red)
+                Button("Unlock…") {
+                    confirmAndUnlock()
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .disabled(appState.isResticBusy || appState.resticBinaryURL == nil)
+            }
+            .help(message)
         case .succeeded(let date):
             RelativeTimeText(kind: .backedUp, date: date)
                 .font(.callout)

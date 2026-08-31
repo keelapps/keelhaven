@@ -88,10 +88,38 @@ final class ModelRoundTripTests: XCTestCase {
                 date: date,
                 success: false,
                 duration: 42.0,
-                errorMessage: "unable to create lock in backend"
+                errorMessage: "unable to create lock in backend",
+                blockedByLock: true
             )
         )
         XCTAssertEqual(try roundTrip(plan), plan)
+        XCTAssertEqual(try roundTrip(plan).lastPrune?.blockedByLock, true)
+    }
+
+    /// A plan saved before `blockedByLock` existed must decode with it nil —
+    /// not false — so the row can tell "no lock problem" from "never checked".
+    func testPruneRecordWithoutLockFlagDecodesAsUnknown() throws {
+        let record = PruneRunRecord(
+            date: date,
+            success: false,
+            errorMessage: "something else went wrong"
+        )
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        var object = try XCTUnwrap(
+            try JSONSerialization.jsonObject(with: encoder.encode(record)) as? [String: Any]
+        )
+        XCTAssertNil(object["blockedByLock"], "nil must not be encoded at all")
+        object.removeValue(forKey: "blockedByLock")
+
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let decoded = try decoder.decode(
+            PruneRunRecord.self,
+            from: try JSONSerialization.data(withJSONObject: object)
+        )
+        XCTAssertNil(decoded.blockedByLock)
+        XCTAssertEqual(decoded, record)
     }
 
     func testLegacyPlanJSONDecodesWithFeatureDefaults() throws {
