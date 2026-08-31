@@ -3,7 +3,7 @@
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap test restic build dmg release install update dev-site deploy-site clean
+.PHONY: help bootstrap test bench-remote restic build dmg release install update dev-site deploy-site clean
 
 help: ## List available targets
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "  make %-12s %s\n", $$1, $$2}'
@@ -13,6 +13,9 @@ bootstrap: ## Install development dependencies via Homebrew
 
 test: ## Run KeelhavenCore tests (incl. the real-restic integration suite)
 	swift test --package-path KeelhavenCore
+
+bench-remote: ## Measure restic ls latency against S3/SFTP at injected round trips
+	./Scripts/bench-remote-ls.sh
 
 restic: ## Vendor the universal restic binary that gets bundled into the app
 	./Scripts/fetch-restic.sh

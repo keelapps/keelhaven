@@ -50,6 +50,29 @@ Both suites honor `KEELHAVEN_TEST_S3_*` / `KEELHAVEN_TEST_SFTP_*` environment
 overrides for pointing at real cloud storage or a NAS — see the test file
 headers.
 
+### Remote latency benchmark
+
+Those suites prove the backends *work*; they say nothing about how they feel
+over a real network, because on loopback S3 and SFTP are indistinguishable
+from a local disk. `make bench-remote` measures that: it stands up its own
+MinIO and a throwaway sshd, puts `Scripts/netdelay.py` in front of them to
+inject a round trip in both directions, and times `restic ls`.
+
+```bash
+make bench-remote                                    # 15k files, 0/20/60 ms
+BENCH_FILES=2000 BENCH_RTTS="0 100" make bench-remote # quick, or a slow link
+```
+
+Everything is unprivileged and self-cleaning — your Remote Login setting is
+never touched, and the servers and temp data go away on exit. The same script
+runs in CI via the manual **Remote backend benchmark** workflow when you want
+a second opinion from a clean machine.
+
+Worth re-running when bumping the pinned restic version, when changing how
+the app calls restic, or before committing to a design that invokes restic
+more than once per user action — connection setup is the dominant cost on
+SFTP, and it is paid per invocation.
+
 ### Manual smoke test
 
 1. Run the app — it appears in the menu bar only (no Dock icon).

@@ -1,0 +1,81 @@
+name: Remote backend benchmark
+
+# Manual only, deliberately. This measures `restic ls` against S3 and SFTP at
+# injected round-trip times — useful when a design decision hangs on it, not
+# on every PR:
+#   - macOS runners bill at 10× (see ci.yml; the quota ran dry once), and a
+#     full matrix is minutes of wall clock
+#   - shared runners have noisy CPU and disk, so absolute times wobble between
+#     runs; a flaky number gating a PR would be worse than no number at all
+#
+# The numbers that matter are the *ratios* — SFTP against S3, one-level
+# against full, warm cache against cold — and those hold up across runs.
+#
+# Scripts/bench-remote-ls.sh does the real work and runs the same way on a
+# laptop (`make bench-remote`), which is usually the faster way to get an
+# answer. This workflow exists for a clean-room second opinion.
+on:
+  workflow_dispatch:
+    inputs:
+      files:
+        description: Files in the synthetic dataset
+        default: "15000"
+        required: false
+      rtts:
+        description: Round-trip times to measure, milliseconds, space-separated
+        default: "0 20 60"
+        required: false
+      backends:
+        description: Backends to measure
+        default: "s3 sftp"
+        required: false
+      no_cache:
+        description: Also measure with restic's cache disabled (slow — minutes)
+        type: boolean
+        default: false
+        required: false
+
+concurrency:
+  group: bench-remote-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  benchmark:
+    name: restic ls latency
+    runs-on: macos-15
+    # A wedged backend would otherwise burn to the 6-hour default, which on a
+    # 10× runner is 3600 billed minutes.
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install restic
+        # untap: the runner image ships an untrusted aws/tap that makes every
+        # brew command print tap-trust warnings; we don't use it.
+        run: |
+          brew untap aws/tap || true
+          brew install restic
+      - name: Run benchmark
+        env:
+          BENCH_FILES: ${{ inputs.files }}
+          BENCH_RTTS: ${{ inputs.rtts }}
+          BENCH_BACKENDS: ${{ inputs.backends }}
+          BENCH_NO_CACHE: ${{ inputs.no_cache && '1' || '0' }}
+        run: |
+          set -o pipefail
+          ./Scripts/bench-remote-ls.sh 2>&1 | tee "$RUNNER_TEMP/bench.txt"
+      - name: Publish results to the run summary
+        if: always()
+        run: |
+          {
+            echo "## restic ls latency"
+            echo
+            echo "restic: \`$(restic version)\`"
+            echo "dataset: ${{ inputs.files }} files · rtts: ${{ inputs.rtts }} ms"
+            echo
+            echo '```'
+            # Strip the bold escape sequences the script prints for terminals.
+            sed $'s/\033\\[[0-9;]*m//g' "$RUNNER_TEMP/bench.txt"
+            echo '```'
+            echo
+            echo "> Absolute times move with runner load; read the ratios."
+          } >> "$GITHUB_STEP_SUMMARY"
