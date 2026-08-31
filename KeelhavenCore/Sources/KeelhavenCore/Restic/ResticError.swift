@@ -3,8 +3,9 @@ import Foundation
 /// Typed failures from the restic layer.
 ///
 /// Exit codes verified against restic 0.19.1 (see Tests/…/Fixtures):
-///   10 = repository does not exist, 12 = wrong password.
-///   11 (lock) is documented by restic but not reproduced in fixtures.
+///   10 = repository does not exist, 12 = wrong password,
+///   11 = repository already locked (reproduced end to end in
+///   ResticRunnerIntegrationTests, which races two real restic processes).
 public enum ResticError: Error, Equatable, Sendable {
     case binaryNotFound
     case repositoryDoesNotExist(message: String)
@@ -13,6 +14,16 @@ public enum ResticError: Error, Equatable, Sendable {
     case wrongPassword(message: String)
     case commandFailed(exitCode: Int, message: String)
     case outputDecodingFailed(message: String)
+
+    /// True for the one failure the app can offer a way out of. Two things
+    /// produce it: a stale lock from an interrupted run, which `unlock`
+    /// clears, and a live lock from another machine backing up to the same
+    /// repository, which simply needs waiting out. Everything else needs the
+    /// user to change something.
+    public var isRepositoryLocked: Bool {
+        if case .repositoryLocked = self { return true }
+        return false
+    }
 
     public static func classify(exitCode: Int32, stderr: String) -> ResticError {
         // restic ≥0.17 writes a {"message_type":"exit_error","code":…,"message":…}
@@ -55,7 +66,7 @@ extension ResticError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .binaryNotFound:
-            return String(localized: "The restic command-line tool could not be found. Install it with: brew install restic", bundle: .module)
+            return String(localized: "Keelhaven's backup engine is missing from the app. Reinstalling Keelhaven from keelhaven.app restores it.", bundle: .module)
         case .repositoryDoesNotExist(let message):
             return String(localized: "The backup repository was not found. \(message)", bundle: .module)
         case .repositoryAlreadyExists:

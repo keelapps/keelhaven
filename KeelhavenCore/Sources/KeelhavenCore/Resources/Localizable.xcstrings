@@ -2,9 +2,9 @@
   "sourceLanguage" : "en",
   "version" : "1.0",
   "strings" : {
-    "The restic command-line tool could not be found. Install it with: brew install restic" : {
+    "Keelhaven's backup engine is missing from the app. Reinstalling Keelhaven from keelhaven.app restores it." : {
       "localizations" : {
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "找不到 restic 备份引擎。请用以下命令安装：brew install restic" } }
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "Keelhaven 的备份引擎不在应用里了。从 keelhaven.app 重新安装 Keelhaven 即可恢复。" } }
       }
     },
     "The backup repository was not found. %@" : {

@@ -26,6 +26,13 @@ final class ResticCommandTests: XCTestCase {
         XCTAssertEqual(command.arguments, ["backup", "--json", "/tmp/data"])
     }
 
+    /// No `--remove-all`: that would also drop the exclusive locks
+    /// `forget --prune` holds, turning a recovery into a way to corrupt a
+    /// concurrent repack.
+    func testUnlockArguments() {
+        XCTAssertEqual(ResticCommand.unlock.arguments, ["unlock"])
+    }
+
     func testCatConfigArguments() {
         XCTAssertEqual(ResticCommand.catConfig.arguments, ["cat", "config", "--json"])
     }

@@ -334,6 +334,16 @@
         }
       }
     },
+    "Backup blocked by a repository lock": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "备份被仓库的锁挡住了"
+          }
+        }
+      }
+    },
     "Backup cleanup failed": {
       "localizations": {
         "zh-Hans": {
@@ -510,6 +520,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "正在清理旧快照…"
+          }
+        }
+      }
+    },
+    "Cleanup blocked by a repository lock": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理被仓库的锁挡住了"
           }
         }
       }
@@ -1737,6 +1757,16 @@
         }
       }
     },
+    "The last retention pass could not get a lock on the repository": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上一次保留策略清理没能获得仓库的锁"
+          }
+        }
+      }
+    },
     "Thins older snapshots to daily, weekly and monthly keepers and reclaims the space — after a backup, at most once a week. Keep everything never deletes a snapshot.": {
       "localizations": {
         "zh-Hans": {
@@ -1757,6 +1787,16 @@
         }
       }
     },
+    "This clears locks left behind by a backup that was interrupted — the usual reason cleanup keeps failing. A backup running right now on another Mac keeps its own lock and is left alone; that one has to finish on its own.\n\nKeelhaven retries this plan's backup right after unlocking.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这会清除被中断的备份留下的锁 —— 清理反复失败通常就是这个原因。如果此刻另一台 Mac 正在备份，它的锁不受影响，那次备份得由它自己跑完。\n\n解锁后 Keelhaven 会立即重试这个计划的备份。"
+          }
+        }
+      }
+    },
     "This folder already contains a backup repository. Connect to it under Advanced options, or choose an empty folder.": {
       "localizations": {
         "zh-Hans": {
@@ -1773,6 +1813,66 @@
           "stringUnit": {
             "state": "translated",
             "value": "改为自己输入"
+          }
+        }
+      }
+    },
+    "Unlock": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解锁"
+          }
+        }
+      }
+    },
+    "Unlock Repository…": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解锁仓库…"
+          }
+        }
+      }
+    },
+    "Unlock the repository for “%@”?": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要解锁“%@”的仓库吗？"
+          }
+        }
+      }
+    },
+    "Unlocking repository": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在解锁仓库"
+          }
+        }
+      }
+    },
+    "Unlocking repository…": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在解锁仓库…"
+          }
+        }
+      }
+    },
+    "Unlock…": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解锁…"
           }
         }
       }
