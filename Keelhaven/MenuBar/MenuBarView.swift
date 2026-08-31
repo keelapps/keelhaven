@@ -38,8 +38,13 @@ struct MenuBarView: View {
             }
 
             if appState.resticBinaryURL == nil {
+                // Deliberately the same sentence the failure path throws, read
+                // straight off the error rather than restated here: the two
+                // drifted apart once already, and this copy is the one users
+                // meet first — it sits at the top of the panel on launch,
+                // while the other only appears once something is attempted.
                 Label(
-                    "restic was not found. Install it with: brew install restic",
+                    ResticError.binaryNotFound.localizedDescription,
                     systemImage: "exclamationmark.triangle"
                 )
                 .font(.callout)

@@ -2090,16 +2090,6 @@
         }
       }
     },
-    "restic was not found. Install it with: brew install restic": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "找不到 restic 备份引擎。请用以下命令安装：brew install restic"
-          }
-        }
-      }
-    },
     "s3.amazonaws.com": {
       "shouldTranslate": false
     },
