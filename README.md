@@ -20,12 +20,13 @@ Keelhaven wraps the battle-tested [restic](https://restic.net) engine in a nativ
 **Status: public beta.** The engine, wizard, scheduled backups, whole-snapshot restore, periodic repository verification, and retention presets all work — app and website in English and Simplified Chinese; file-level browsing inside snapshots is next.
 
 <p align="center">
-  <img src="docs/assets/screenshots/menu-bar.png" width="380"
-       alt="Keelhaven's menu bar panel: three backup plans — Documents to an external drive, Photos to an S3 bucket, Projects to a NAS over SFTP — each with a green status dot, its schedule, when it was last verified, and how long ago it last ran.">
+  <img src="docs/assets/screenshots/overview.png" width="880"
+       alt="Three Keelhaven windows side by side: the menu bar panel listing three backup plans with green status dots, the new-plan wizard asking where the encrypted backup should go with tabs for a local drive, S3 and SFTP, and the restore window listing snapshots by date.">
 </p>
 
-<p align="center"><em>The whole app: one menu bar panel. A Simplified Chinese
-build is <a href="docs/assets/screenshots/menu-bar-zh.png">here</a>.</em></p>
+<p align="center"><em>The menu bar panel, choosing a destination, and restoring
+from a point in time. Also in
+<a href="docs/assets/screenshots/menu-bar-zh.png">Simplified Chinese</a>.</em></p>
 
 ## Install
 
