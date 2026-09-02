@@ -15,6 +15,15 @@ enum PlanRunState: Equatable {
     /// from `failed` for one reason: it is the only failure the row can offer
     /// a fix for, so it carries an unlock button instead of dead red text.
     case failedLocked(String)
+
+    /// A restic process is going for this plan right now. The four cases that
+    /// hold the repository lock; everything else is a resting state.
+    var isActive: Bool {
+        switch self {
+        case .running, .checking, .pruning, .unlocking: return true
+        default: return false
+        }
+    }
 }
 
 /// Root observable state: owns the plan list, run states, and all services.
@@ -120,12 +129,7 @@ final class AppState {
 
     var menuBarIcon: MenuBarIcon {
         let states = runStates.values
-        if states.contains(where: {
-            switch $0 {
-            case .running, .checking, .pruning, .unlocking: return true
-            default: return false
-            }
-        }) {
+        if states.contains(where: \.isActive) {
             return .symbol("arrow.triangle.2.circlepath")
         }
         if states.contains(where: {
@@ -191,8 +195,27 @@ final class AppState {
         }
     }
 
-    func deletePlan(_ plan: BackupPlan) {
-        guard !isResticBusy else { return }
+    /// Why `deletePlan` declined, so the caller can say so. It used to
+    /// `guard !isResticBusy else { return }` — and a delete the user had just
+    /// confirmed and authenticated with Touch ID would then do nothing at all,
+    /// which on screen is indistinguishable from the list failing to refresh.
+    /// The window was easy to hit: a scheduled `restic check` chains straight
+    /// off a finished backup, so "Back Up Now, then delete" landed inside it.
+    enum DeleteRefusal: Equatable {
+        /// This plan's own backup, check, prune or unlock is mid-flight.
+        case planIsActive
+    }
+
+    /// Removes a plan, its run states, its Keychain secrets and its history.
+    /// Declines only while *this* plan's restic is running: that process holds
+    /// the repository and its credentials, and pulling them out from under it
+    /// is the one thing here that could leave the destination inconsistent.
+    /// Another plan's run is unrelated (its secrets and process are its own),
+    /// and the scheduler never starts a second restic while one is going, so
+    /// deleting under it is safe.
+    @discardableResult
+    func deletePlan(_ plan: BackupPlan) -> DeleteRefusal? {
+        if (runStates[plan.id] ?? .idle).isActive { return .planIsActive }
         plans.removeAll { $0.id == plan.id }
         runStates.removeValue(forKey: plan.id)
         planManager.removeSecrets(planID: plan.id)
@@ -200,6 +223,7 @@ final class AppState {
             try? await planStore.save(plans)
             try? await historyStore.deleteHistory(for: plan.id)
         }
+        return nil
     }
 
     // MARK: - Running backups
@@ -208,12 +232,7 @@ final class AppState {
     /// repository check, a retention pass, or an unlock. One restic at a time,
     /// app-wide: two invocations would contend for the repository lock.
     var isResticBusy: Bool {
-        runStates.values.contains {
-            switch $0 {
-            case .running, .checking, .pruning, .unlocking: return true
-            default: return false
-            }
-        }
+        runStates.values.contains(where: \.isActive)
     }
 
     private func runDuePlans() {

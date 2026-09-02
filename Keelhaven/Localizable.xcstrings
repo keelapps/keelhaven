@@ -104,6 +104,16 @@
         }
       }
     },
+    "A backup or repository check for this plan is still running. Wait for it to finish, then delete the plan.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这个计划的备份或仓库校验还在进行中。等它结束后再删除。"
+          }
+        }
+      }
+    },
     "A month of history": {
       "localizations": {
         "zh-Hans": {
@@ -2092,6 +2102,16 @@
     },
     "s3.amazonaws.com": {
       "shouldTranslate": false
+    },
+    "“%@” is busy right now": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@”正在忙"
+          }
+        }
+      }
     },
     "⌘Q": {
       "shouldTranslate": false

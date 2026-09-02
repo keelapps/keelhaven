@@ -156,7 +156,8 @@ struct PlanStatusRow: View {
         Button("Delete Backup Plan…", role: .destructive) {
             confirmAndDelete()
         }
-        .disabled(appState.isResticBusy)
+        // Only this plan's own run blocks deletion — see AppState.deletePlan.
+        .disabled(runState.isActive)
     }
 
     /// Confirmation dialogs use app-modal NSAlert, not SwiftUI `.alert`:
@@ -229,8 +230,24 @@ struct PlanStatusRow: View {
             guard await BiometricAuthService.authenticate(
                 reason: String(localized: "delete the backup plan “\(plan.name)”")
             ) else { return }
-            appState.deletePlan(plan)
+            // Seconds pass in Touch ID; the plan can start a scheduled check
+            // meanwhile. The menu item was enabled when clicked, so if the
+            // delete is declined now, say so — a silent no-op after a confirm
+            // and a fingerprint reads as "it didn't work".
+            if appState.deletePlan(plan) == .planIsActive {
+                explainDeleteDeclined()
+            }
         }
+    }
+
+    private func explainDeleteDeclined() {
+        NSApp.activate(ignoringOtherApps: true)
+        let alert = NSAlert()
+        alert.messageText = String(localized: "“\(plan.name)” is busy right now")
+        alert.informativeText = String(localized: "A backup or repository check for this plan is still running. Wait for it to finish, then delete the plan.")
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: String(localized: "OK"))
+        alert.runModal()
     }
 
     @ViewBuilder
