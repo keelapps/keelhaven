@@ -144,7 +144,9 @@ under Workers & Pages › Create › import `shenxianpeng/keelhaven`:
 | Production branch | `main` |
 
 With the Cloudflare GitHub app installed on the repo, each push to a PR
-branch builds and Cloudflare comments the preview URL on the PR. Pushes to
+branch builds and Cloudflare comments the preview URL on the PR. Only pushes
+made after the project was connected count: a branch that was already open
+when you set this up gets no build until its next push. Pushes to
 `main` also deploy to the worker's production URL, which is harmless and
 unused — do not attach the custom domain to it.
 
