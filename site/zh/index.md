@@ -21,6 +21,7 @@ landing:
     - { text: 功能, anchor: features }
     - { text: 指南, anchor: guide }
     - { text: 定价, anchor: pricing }
+    - { text: 评价, anchor: voices }
     - { text: FAQ, anchor: faq }
   footer:
     tagline: 隐私优先的 Mac 备份。
@@ -203,7 +204,19 @@ Beta 版还没做 Apple 公证，第一次打开要多点一次确认，[下面�
 
 </LandingSection>
 
-<LandingSection id="faq" eyebrow="04 · 常见问题" title="不绕弯子的回答">
+<LandingSection id="voices" eyebrow="04 · 评价" title="别人怎么说">
+
+<div class="kh-voices">
+<VoiceCard name="mao mao" handle="@maomao000211" source="X" href="https://x.com/maomao000211/status/2095382774874267938">
+
+Nice scope — restic plus a menu bar UI is exactly the missing piece, and keeping the repo format standard means people aren't locked into your app. The no-account, no-telemetry stance will do a lot of the selling for you.
+
+</VoiceCard>
+</div>
+
+</LandingSection>
+
+<LandingSection id="faq" eyebrow="05 · 常见问题" title="不绕弯子的回答">
 
 <FaqItem question="macOS 说无法验证 Keelhaven，是出问题了吗？">
 

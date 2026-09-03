@@ -10,6 +10,7 @@ import ShotFrame from './components/ShotFrame.vue'
 import MenuBarDemo from './components/MenuBarDemo.vue'
 import PricingCard from './components/PricingCard.vue'
 import FaqItem from './components/FaqItem.vue'
+import VoiceCard from './components/VoiceCard.vue'
 import DownloadButton from './components/DownloadButton.vue'
 import CommandBlock from './components/CommandBlock.vue'
 import './landing.css'
@@ -24,6 +25,7 @@ export default {
     app.component('MenuBarDemo', MenuBarDemo)
     app.component('PricingCard', PricingCard)
     app.component('FaqItem', FaqItem)
+    app.component('VoiceCard', VoiceCard)
     app.component('DownloadButton', DownloadButton)
     app.component('CommandBlock', CommandBlock)
   },
