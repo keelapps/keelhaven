@@ -532,7 +532,7 @@ body:has(.kh-landing) .VPLocalNav {
   line-height: 1.5;
   letter-spacing: -0.005em;
   color: var(--kh-ink);
-  max-width: 44ch;
+  max-width: 64ch;
   text-wrap: pretty;
 }
 .kh-landing .kh-voice-quote::before {
