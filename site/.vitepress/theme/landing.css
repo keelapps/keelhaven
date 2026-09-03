@@ -504,6 +504,74 @@ body:has(.kh-landing) .VPLocalNav {
   gap: 12px 18px;
   margin-bottom: 6px;
 }
+/* Voices: quotes from real posts, each linked to its source. The serif is
+ * the page's heading face, so a quote reads as a pull-quote rather than a
+ * card of body text. No amber here — the pricing badge above already spent
+ * this screen's one warm accent. */
+.kh-landing .kh-voices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 20px;
+}
+.kh-landing .kh-voice {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  border-radius: 20px;
+  border: 1px solid var(--kh-line);
+  background: var(--kh-surface);
+  padding: clamp(24px, 4vw, 36px);
+}
+.kh-landing .kh-voice-quote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: var(--kh-serif);
+  font-size: clamp(18px, 2.1vw, 21px);
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  color: var(--kh-ink);
+  max-width: 64ch;
+  text-wrap: pretty;
+}
+.kh-landing .kh-voice-quote::before {
+  content: '\201C';
+  display: block;
+  font-size: 44px;
+  line-height: 0.6;
+  margin-bottom: 10px;
+  color: var(--kh-ink-soft);
+}
+.kh-landing .kh-voice-quote p {
+  margin: 0;
+}
+.kh-landing .kh-voice-who {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  font-size: 14.5px;
+}
+.kh-landing .kh-voice-name {
+  font-weight: 700;
+}
+.kh-landing .kh-voice-handle {
+  color: var(--kh-ink-soft);
+}
+.kh-landing .kh-voice-source {
+  margin-left: auto;
+  color: var(--kh-ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--kh-line);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.kh-landing .kh-voice-source:hover {
+  color: var(--kh-ink);
+  border-color: var(--kh-sea);
+}
+
 .kh-landing .kh-badge {
   display: inline-block;
   border-radius: 999px;

@@ -123,6 +123,46 @@ curl -sI https://www.keelhaven.app | head -5        # 301 to the apex
 curl -s https://keelhaven.app/sitemap.xml | head -3
 ```
 
+## Preview deployments
+
+Every branch gets a throwaway copy of the site on Cloudflare, so a docs PR
+can be looked at rendered before it merges. This is separate from production:
+keelhaven.app is still GitHub Pages, published by `website.yml`, and nothing
+about that changes. The preview only ever lives on `*.workers.dev` URLs.
+
+It is an assets-only Cloudflare Worker — no script, just VitePress's build
+output — described by `site/wrangler.jsonc`. The one-time dashboard setup,
+under Workers & Pages › Create › import `shenxianpeng/keelhaven`:
+
+| Field | Value |
+|---|---|
+| Project name | `keelhaven-site` (must match `name` in `site/wrangler.jsonc`) |
+| Root directory (Advanced settings) | `site` |
+| Build command | `npm ci && npm run build` |
+| Deploy command | `npx wrangler deploy` |
+| Builds for non-production branches | on — this is what produces PR previews |
+| Production branch | `main` |
+
+With the Cloudflare GitHub app installed on the repo, each push to a PR
+branch builds and Cloudflare comments the preview URL on the PR. Only pushes
+made after the project was connected count: a branch that was already open
+when you set this up gets no build until its next push. Pushes to
+`main` also deploy to the worker's production URL, which is harmless and
+unused — do not attach the custom domain to it.
+
+Two things look broken on a preview and aren't. `/latest.json` and
+`/downloads/` 404, because `Scripts/deploy-site.sh` mirrors those into
+`site/public/` only for the real deploy; the download button falls back to
+the GitHub Releases page, as designed. And Google Analytics still loads,
+so preview traffic shows up in the same property as the live site.
+
+Check the config without deploying:
+
+```bash
+npm --prefix site run build
+cd site && npx wrangler deploy --dry-run
+```
+
 ## When it breaks
 
 - **`keelhaven.app` 404s, `shenxianpeng.github.io` works.** The CNAME file is

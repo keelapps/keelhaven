@@ -20,6 +20,7 @@ landing:
     - { text: Features, anchor: features }
     - { text: Guide, anchor: guide }
     - { text: Pricing, anchor: pricing }
+    - { text: Voices, anchor: voices }
     - { text: FAQ, anchor: faq }
   footer:
     tagline: Privacy-first backups for your Mac.
@@ -181,7 +182,19 @@ Beta builds aren't notarised by Apple yet, so the very first launch takes one ex
 
 </LandingSection>
 
-<LandingSection id="faq" eyebrow="04 · Questions" title="Straight answers">
+<LandingSection id="voices" eyebrow="04 · Voices" title="In other people's words">
+
+<div class="kh-voices">
+<VoiceCard name="mao mao" handle="@maomao000211" source="X" href="https://x.com/maomao000211/status/2095382774874267938">
+
+Nice scope — restic plus a menu bar UI is exactly the missing piece, and keeping the repo format standard means people aren't locked into your app. The no-account, no-telemetry stance will do a lot of the selling for you.
+
+</VoiceCard>
+</div>
+
+</LandingSection>
+
+<LandingSection id="faq" eyebrow="05 · Questions" title="Straight answers">
 
 <FaqItem question="macOS says it can't verify Keelhaven. Is something wrong?">
 
